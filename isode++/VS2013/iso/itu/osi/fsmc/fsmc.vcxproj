@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8438EBFD-D646-47FB-86A6-6DB7C382BE36}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>fsmc</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <Import Project="$(SolutionDir)/solution.props" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>$(ProjectName)d</TargetName>
+    <IncludePath>../../../../../code\iso\itu\osi;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(ProjectName)</TargetName>
+    <IncludePath>../../../../../code\iso\itu\osi;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Character.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Comment.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Identifier.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\IndentStream.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Keyword.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Number.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Operator.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Parser.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\String.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\TabularStream.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Token.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Tokenizer.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ActionForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ArgumentForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\BinaryOperationForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\CompilableForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ElementForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\EntryForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ExitForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ExpressionForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FactoryForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FSMForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FunctionForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\GuardForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\LiteralForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\MapForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ParameterForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ReferenceForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\StateForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\TransitionForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\UnaryOperationForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\VariableForCpp.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Action.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Actions.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Argument.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\BinaryOperation.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Compilable.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Print.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Element.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Entry.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Exit.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Expression.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Factory.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\FSM.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Function.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Guard.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Literal.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Map.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Operation.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Parameter.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Dumper.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Reference.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\SMC.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\State.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Transition.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\UnaryOperation.h" />
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Variable.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\BNF.txt" />
+    <Text Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\BNF.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Character.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Comment.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\fsmc.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Identifier.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\IndentStream.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Keyword.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Number.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Operator.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Parser.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\String.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\TabularStream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Token.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Tokenizer.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ActionForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ArgumentForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\BinaryOperationForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\CompilableForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ElementForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\EntryForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ExitForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ExpressionForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FactoryForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FSMForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FunctionForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\GuardForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\LiteralForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\MapForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ParameterForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ReferenceForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\StateForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\TransitionForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\UnaryOperationForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\VariableForCpp.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Action.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Actions.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Argument.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\BinaryOperation.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Print.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Element.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Entry.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Exit.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Expression.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\FSM.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Function.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Guard.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Literal.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Map.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Operation.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Parameter.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Dumper.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Reference.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\State.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Transition.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\UnaryOperation.cpp" />
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Variable.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

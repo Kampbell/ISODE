@@ -1,0 +1,734 @@
+//============================================================================
+// Name        :EchoClient.cpp
+// Author      : FA
+// Version     :
+// Copyright   : Your copyright notice
+// Description : SSAP EchoClient
+//============================================================================
+
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include "Poco/Format.h"
+#include "Poco/DateTime.h"
+#include "Poco/DateTimeFormatter.h"
+#include "Poco/Util/LoggingConfigurator.h"
+#include "Poco/Util/PropertyFileConfiguration.h"
+#include "Poco/AutoPtr.h"
+#include "Poco/Net/SocketReactor.h"
+#include "Poco/Net/SocketAcceptor.h"
+#include "Poco/Net/SocketNotification.h"
+#include "Poco/Net/StreamSocket.h"
+#include "Poco/Net/ServerSocket.h"
+#include "Poco/NObserver.h"
+#include "Poco/Exception.h"
+#include "Poco/Semaphore.h"
+#include "Poco/Thread.h"
+#include "Poco/Util/ServerApplication.h"
+#include "Poco/Util/Option.h"
+#include "Poco/Util/OptionSet.h"
+#include "Poco/Util/HelpFormatter.h"
+#include "Poco/Random.h"
+using Poco::Net::SocketReactor;
+using Poco::Net::SocketAcceptor;
+using Poco::Net::ReadableNotification;
+using Poco::Net::ShutdownNotification;
+using Poco::Net::WritableNotification;
+using Poco::Net::TimeoutNotification;
+using Poco::Net::IdleNotification;
+using Poco::Net::ServerSocket;
+using Poco::Net::StreamSocket;
+using Poco::Net::SocketAddress;
+using Poco::Semaphore;
+using Poco::NObserver;
+using Poco::AutoPtr;
+using Poco::Thread;
+using Poco::Util::ServerApplication;
+using Poco::Util::Application;
+using Poco::Util::Option;
+using Poco::Util::OptionSet;
+using Poco::Util::HelpFormatter;
+using Poco::Util::LoggingConfigurator;
+using Poco::Util::PropertyFileConfiguration;
+using Poco::AutoPtr;
+using Poco::Random;
+using Poco::format;
+
+
+#include "als/base/root/Logger.h"
+#include "als/nsap/addr/PSAPAddr.h"
+#include "als/ssap/Literal.h"
+#include "als/ssap/ActivityId.h"
+#include "als/ssap/Token.h"
+#include "als/ssap/AbortCode.h"
+#include "als/ssap/Requirement.h"
+#include "als/ssap/user/Initiator.h"
+#include "als/ssap/serv/Initiator.h"
+#include "als/ssap/prov/Provider.h"
+#include "../EchoClient.h"
+
+using ALS::BASE::ROOT::Logger;
+using ALS::SSAP::ActivityId;
+using ALS::SSAP::Literal;
+using ALS::SSAP::Token;
+using ALS::SSAP::Requirement;
+using ALS::SSAP::PROV::Provider;
+using ALS::SSAP::USER::Initiator;
+
+
+using namespace std;
+
+using namespace ALS::NSAP::ADDR;
+
+Semaphore semaphore(0, 1);
+
+namespace ALS {
+namespace SSAP {
+static const nat4 req =
+	Requirement::toint(HALFDUPLEX)		+
+	Requirement::toint(DUPLEX)			+
+	Requirement::toint(EXPEDITED)		+
+	Requirement::toint(MINORSYNC)		+
+	Requirement::toint(MAJORSYNC)		+
+	Requirement::toint(RESYNCHRONIZE)	+
+	Requirement::toint(ACTIVITY)		+
+	Requirement::toint(NEGOTIATED)		+
+	Requirement::toint(CAPABILITY)		+
+	Requirement::toint(EXCEPTIONS)		+
+	Requirement::toint(TYPEDATA)
+//  +
+//	Requirement::toint(SYMETRIC)        +
+//	Requirement::toint(SEPARATION)
+	;
+
+static const Requirement SREQUIREMENTS(req);
+
+class SSAPEchoClient :
+	public EchoClient,
+	public Poco::Util::ServerApplication,
+	public ALS::SSAP::USER::Initiator,
+	public ALS::SSAP::Token
+/// The main application class.
+///
+/// This class handles command-line arguments and
+/// configuration files.
+/// Start the SSAPEchoClient executable with the help
+/// option (/help on Windows, --help on Unix) for
+/// the available command line options.
+///
+/// To use the sample configuration file (SSAPEchoClient.properties),
+/// copy the file to the directory where the SSAPEchoClient executable
+/// resides.
+{
+  private:
+	enum Request {
+		REQUEST_NORMAL,
+		REQUEST_EXPEDITED,
+		REQUEST_TYPED,
+		REQUEST_CAPABILITY
+	};
+
+	//	Semaphore sema(0);
+	ALS::SSAP::SERV::Initiator* initiator;
+	Requirement					requirements;
+	int							owned = 0;
+	int							avail = 0;
+	SSN							ssn;
+	SSN							firstInitialSSN;
+	SSN							secondInitialSSN;
+	ActivityId					activityId;
+	Reference					reference;
+	byte						tokens = 0;
+	char*						userdata = NULL;
+	Random						random;
+	volatile ReturnCode			grc;
+	Request						datamodes[4];
+	Request						request;
+	int							nmodes;
+
+
+	ALS::SSAP::SERV::Initiator&ssap() {
+		return *initiator;
+	}
+  public:
+	SSAPEchoClient(): help(false) {
+		requirements = SREQUIREMENTS;
+		initiator = new ALS::SSAP::PROV::Provider(this);
+	}
+
+	~SSAPEchoClient() {
+		delete initiator;
+	}
+
+	ReturnCode SConnectConfirmation(const Reference& reference, const SSAPAddr& responding, int result, const QualityOfService& qualityOfService, const Requirement& requirements, const SSN& firstInitialSSN, const SSN& secondInitialSSN, int settings, int ssdusize, int cc = 0, const void* data = NULL, int rdcc = 0, const void* realdata = NULL) {
+		//ssap.logger().info("responding SSAP address: " + sc_responding.toString());
+		if (data != NULL && cc > 0) {
+			string s("greetings: ");
+			s.append(to_string(cc));
+			s.append(" octets");
+			ssap().logger()->information(s);
+			ssap().logger()->information(string((char*)data, cc));
+		}
+		this->requirements = requirements;
+		nmodes = 0;
+		datamodes[nmodes++] = REQUEST_NORMAL;
+		if (requirements[EXPEDITED])
+			datamodes[nmodes++] = REQUEST_EXPEDITED;
+		if (requirements[CAPABILITY] && requirements[ACTIVITY])
+			datamodes[nmodes++] = REQUEST_CAPABILITY;
+		if (requirements[TYPEDATA])
+			datamodes[nmodes++] = REQUEST_TYPED;
+
+		ssn = firstInitialSSN;
+		if (result != SC_ACCEPT) {
+			cout << "connexion failed" << endl;
+			if (data != NULL && cc > 0)
+				ss_adios("connection rejected: [");//FIXME  +SSAPAbort.SErrorString(result) + "] " + string(data));
+			else
+				ss_adios("connection rejected: [");//FIXME + SSAPAbort.SErrorString(result) + "]");
+			grc = NOTOK;
+		} else {
+			cout << "connexion succeded: connected" << endl;
+			grc = DONE;
+		}
+#define ISODE
+#ifdef ISODE
+#define dotoken(requires,shift,bit,type) \
+		{ \
+    if (requirements.has(requires)) \
+	switch (settings & (CHOICE_MASK << shift)) { \
+	    case CALLED_VALUE: \
+		adios (NULL, format("%s token: choice", type)); \
+		break; \
+ \
+	    case INITIATOR_VALUE: \
+		owned |= bit, avail |= bit; \
+		break; \
+ \
+	    case RESPONDER_VALUE: \
+		avail |= bit; \
+		break; \
+ \
+	    default: \
+		adios (NULL, format("%s token: reserved", type)); \
+	} \
+}
+		dotokens ();
+#undef	dotoken
+#else
+		if (srequirements.has(RELEASE_UNIT_EXISTS)) {
+			switch (selectReleaseToken(settings)) {
+			case CALLED_VALUE:
+				adios(NULL, "release token: choice");
+				break;
+
+			case INITIATOR_VALUE:
+				owned = addReleaseToken(owned);
+				avail = addReleaseToken(avail);
+				break;
+
+			case RESPONDER_VALUE:
+				avail = addReleaseToken(avail);
+				break;
+
+			default:
+				adios(NULL, "release token: reserved");
+			}
+		}
+
+		if (srequirements.has(MAJOR_UNIT_EXISTS)) {
+			switch (selectMajorToken(settings)) {
+			case CALLED_VALUE:
+				adios(NULL, "majorsync token: choice");
+				break;
+
+			case INITIATOR_VALUE:
+				owned = addMajorToken(owned);
+				avail = addMajorToken(avail);
+				break;
+
+			case RESPONDER_VALUE:
+				avail = addMajorToken(avail);
+				break;
+
+			default:
+				adios(NULL, "majorsync token: reserved");
+			}
+		}
+
+		if (srequirements.has(MINOR_UNIT_EXISTS)) {
+			switch (selectMinorToken(settings)) {
+			case CALLED_VALUE:
+				adios(NULL, "minorsync token: choice");
+				break;
+
+			case INITIATOR_VALUE:
+				owned = addMinorToken(owned);
+				avail = addMinorToken(avail);
+				break;
+
+			case RESPONDER_VALUE:
+				avail = addMinorToken(avail);
+				break;
+
+			default:
+				adios(NULL, "minorsync token: reserved");
+			}
+		}
+
+		if (srequirements.has(DATA_UNIT_EXISTS)) {
+			switch (selectDataToken(settings)) {
+			case CALLED_VALUE:
+				adios(NULL, "data token: choice");
+				break;
+
+			case INITIATOR_VALUE:
+				owned = addDataToken(owned);
+				avail = addDataToken(avail);
+				break;
+
+			case RESPONDER_VALUE:
+				avail = addDataToken(avail);
+				break;
+
+			default:
+				adios(NULL, "data token: reserved");
+			}
+		}
+#endif
+		ssap().logger()->information(string("avail=") + Token::initiator(avail));
+		ssap().logger()->information(string("owned=") + Token::initiator(owned));
+		release();
+		return grc;
+	}
+	ReturnCode SUAbortIndication(int reason, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SPAbortIndication(int reason, int extension, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SActivityDiscardIndication(int reason, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SActivityDiscardConfirmation(int cc = 0, const void* data = NULL) {
+		release();
+		return DONE;
+	}
+	ReturnCode SActivityEndIndication(const SSN& firstSSN, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SActivityEndConfirmation(const SSN& secondSSN, int cc = 0, const void* data = NULL) {
+		release();
+		return DONE;
+	}
+	ReturnCode SActivityInterruptIndication(int reason, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SActivityInterruptConfirmation(int cc = 0, const void* data = NULL) {
+		release();
+		return DONE;
+	}
+	ReturnCode SActivityResumeIndication(const ActivityId&  activityId, const ActivityId&  oldActivityId, const SSN& firstSSN, const SSN& secondSSN, const Reference& oldSessionReference, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SActivityStartIndication(const ActivityId&  activityId, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SDataIndication(shared_ptr<Buffer>& data) {
+		return DONE;
+	}
+	ReturnCode SCapabilityDataIndication(shared_ptr<Buffer>& data) {
+		return DONE;
+	}
+	ReturnCode SCapabilityDataConfirmation(shared_ptr<Buffer>& data) {
+		release();
+		return DONE;
+	}
+	ReturnCode SExpeditedDataIndication(shared_ptr<Buffer>& data) {
+		return DONE;
+	}
+	ReturnCode STypedDataIndication(shared_ptr<Buffer>& data) {
+		return DONE;
+	}
+	ReturnCode SUExceptionReportIndication(int reason, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SPExceptionReportIndication(int reason) {
+		return DONE;
+	}
+	ReturnCode SResynchronizeIndication(const ResyncOption& firstResync, const SSN& firstSSN, const ResyncOption& secondResync, const SSN& secondSSN, int settings, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SResynchronizeConfirmation(const ResyncOption& firstResync, const SSN& firstSSN, const ResyncOption& secondResync, const SSN& secondSSN, int settings, int cc = 0, const void* data = NULL) {
+		release();
+		return DONE;
+	}
+	ReturnCode SSyncMajorIndication(const SSN& firsSSN, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SSyncMajorConfirmation(int cc = 0, const void* data = NULL) {
+		release();
+		return DONE;
+	}
+	ReturnCode SSyncMajorConfirmation(const SSN& secondSSN, int cc = 0, const void* data = NULL) {
+		release();
+		return DONE;
+	}
+	ReturnCode SSyncMinorIndication(const SyncOption& type, bool dataSeparation, const SSN& firstSSN, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SSyncMinorConfirmation(const SSN& firstSSN, int cc = 0, const void* data = NULL) {
+		release();
+		return DONE;
+	}
+	ReturnCode SControlGiveIndication(int tokens, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode STokenGiveIndication(int tokens, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode STokenPleaseIndication(int tokens, int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SReleaseIndication(int cc = 0, const void* data = NULL) {
+		return DONE;
+	}
+	ReturnCode SReleaseConfirmation(bool affirmative, int cc = 0, const void* data = NULL) {
+		release();
+		return DONE;
+	}
+	ReturnCode adios(const char* what, const char* message) const {
+		return NOTOK;
+	}
+	ReturnCode adios(const char* what, const string& message) const {
+		return NOTOK;
+	}
+	ReturnCode ss_adios(const string& message) const {
+		return NOTOK;
+	}
+  protected:
+	void initialize(Application& self) {
+		loadConfiguration(); // load default configuration files, if present
+		ServerApplication::initialize(self);
+	}
+
+	void uninitialize() {
+		ServerApplication::uninitialize();
+	}
+
+	void defineOptions(OptionSet& options) {
+		ServerApplication::defineOptions(options);
+
+		options.addOption(
+			Option("help", "h", "display help information on command line arguments")
+			.required(false)
+			.repeatable(false));
+	}
+
+	void handleOption(const std::string& name, const std::string& value) {
+		ServerApplication::handleOption(name, value);
+
+		if (name == "help")
+			help = true;
+	}
+
+	void displayHelp() {
+		HelpFormatter helpFormatter(options());
+		helpFormatter.setCommand(commandName());
+		helpFormatter.setUsage("OPTIONS");
+		helpFormatter.setHeader("An echo server implemented using the Reactor and Acceptor patterns.");
+		helpFormatter.format(std::cout);
+	}
+
+	ReturnCode SWaitFor()  {
+
+		acquire();
+		switch (grc) {
+		case NOTOK:
+			//sa = new SSAPAbort(logger);
+			return NOTOK;// ss_adios(sa, S_READ_REQUEST);
+
+		case OK:
+			return OK;
+
+		case DONE:
+			return DONE;
+
+		default:
+			return NOTOK;
+		}
+	}
+
+	void perform() {
+		ReturnCode rc;
+		PSAPAddr psapaddr;
+		const char* addr = "#128//TELEX+00728722+RFC-1006+03+127.0.0.1";
+		psapaddr.parse(addr);
+		SSAPAddr calling;
+		SSAPAddr called = psapaddr.ssapaddr();
+		QualityOfService qualityOfService;
+		Reference sf(6, "idefix");
+
+#ifdef ISODE
+		tokens = 0;
+#define dotoken(requires,shift,bit,type) \
+{ \
+    if (requirements.has(requires)) \
+	tokens |= CALLED_VALUE << shift; \
+}
+		dotokens ();
+#undef	dotoken
+#else
+		if (srequirements.has(RELEASE_UNIT_EXISTS))
+			tokens = addCalledChoiceRelease(tokens);
+		if (srequirements.has(MAJOR_UNIT_EXISTS))
+			tokens = addCalledChoiceMajor(tokens);
+		if (srequirements.has(MINOR_UNIT_EXISTS))
+			tokens = addCalledChoiceMinor(tokens);
+		if (srequirements.has(DATA_UNIT_EXISTS))
+			tokens = addCalledChoiceData(tokens);
+#endif
+
+		cout << addr << endl;
+		cout << called.to_string() << endl;
+		userdata = "this is the connection request";
+		rc = ssap().SConnectRequest(sf, calling, called, qualityOfService, requirements, isn(requirements),
+									isn(requirements), tokens, strlen(userdata), userdata);
+		if (rc == NOTOK) {
+			cout << "failed" << endl;
+			ss_adios(Literal::S_CONNECT_REQUEST);
+		}
+		SWaitFor();
+
+		if (requirements[ACTIVITY]) {
+			userdata = "this is the activity start request";
+			ActivityId id(mode == Mode::echo ? "echo" : "sink");
+			if (ssap().SActivityStartRequest(id, strlen(userdata), userdata) == NOTOK)
+				ss_adios(Literal::S_ACTIVITY_START_REQUEST);
+		}
+
+			if (file == null) {
+				userdata = "12345678".getBytes();
+				for (int i = 3; i > 0; i--) {
+					if (timer)
+						timer(0);
+					request(ssap, REQUEST_NORMAL);
+					if (timer)
+						timer(userdata.length);
+				}
+			} else {
+				int turn = 0;
+				int datamode = 0;
+				String line;
+				Request request;
+				FileReader fr = new FileReader(file);
+				LineNumberReader lnr = new LineNumberReader(fr);
+
+				for (line = lnr.readLine(); line != null; line = lnr.readLine()) {
+					userdata = line.getBytes();
+					request = (datamode >= nmodes) ? REQUEST_EXPEDITED : datamodes[datamode++ % nmodes];
+					if ((userdata.length) > SX_EXSIZE && request == REQUEST_EXPEDITED) {
+						if ((request = datamodes[datamode++ % nmodes]) == REQUEST_EXPEDITED)
+							request = datamodes[datamode++ % nmodes];
+					}
+
+					switch (request) {
+					case REQUEST_CAPABILITY:
+						if (!bool(srequirements & RESYNCHONIZE) || bool(turn++ & 0x01)) {
+							SGetToken(ACTIVITY_TOKEN);
+							if (bool(turn & 0x03)) {
+								if (ssap.SActivityInterruptRequest(SP_LOCAL, null, sa) == NOTOK)
+									ss_adios(sa, S_ACTIVITY_INTERRUPT_REQUEST);
+							} else {
+								if (ssap.SActivityDiscardRequest(SP_SEQUENCE, null, sa) == NOTOK)
+									ss_adios(sa, S_ACTIVITY_DISCARD_REQUEST);
+							}
+							SWaitFor();
+							grc = SGetToken(-1);
+							request(ssap, request);
+							if (request == REQUEST_CAPABILITY
+								&& ssap.SActivityResumeRequest(id, id, isn(srequirements), null, sf, /*SV_SIZE,*/
+								userdata, sa) == NOTOK)
+								ss_adios(sa, S_ACTIVITY_RESUME_REQUEST);
+							break;
+						}
+						if (!bool(srequirements & RESYNCHONIZE))
+							break;
+						tokens = 0;
+						if (bool(srequirements & RELEASE_UNIT_EXISTS))
+							tokens = SSAPToken.addCalledChoiceRelease(tokens);
+						if (bool(srequirements & MAJOR_UNIT_EXISTS))
+							tokens = SSAPToken.addCalledChoiceMajor(tokens);
+						if (bool(srequirements & MINOR_UNIT_EXISTS))
+							tokens = SSAPToken.addCalledChoiceMinor(tokens);
+						if (bool(srequirements & DATA_UNIT_EXISTS))
+							tokens = SSAPToken.addCalledChoiceData(tokens);
+						ssn.ssn(ssn.ssn() - 1);
+						if (ssap.SResynchronizeRequest(SET, ssn, null, null, tokens, userdata, sa) == NOTOK)
+							ss_adios(sa, S_RESYNCHRONIZE_REQUEST);
+						SWaitFor();
+						grc = SGetToken(-1);
+						break;
+
+					case REQUEST_EXPEDITED:
+						if (datamode >= nmodes)
+							datamode = datamode % nmodes;/* fall... */
+						if (!bool(srequirements & EXPEDITED))
+							request = REQUEST_NORMAL; /* fall... */
+					default:
+						request(ssap, request);
+						if (request == REQUEST_CAPABILITY
+							&& ssap.SActivityResumeRequest(id, id, isn(srequirements), null, sf, /*SV_SIZE,*/
+							userdata, sa) == NOTOK)
+							ss_adios(sa, S_ACTIVITY_RESUME_REQUEST);
+						break;
+					}
+				}
+
+				if (bool(srequirements & EXCEPTIONS)) {
+					if (bool(owned & DATA_TOKEN))
+						if (ssap.STokenGiveRequest(DATA_TOKEN, null, sa) == NOTOK)
+							ss_adios(sa, S_TOKEN_GIVE_REQUEST);
+						else
+							owned &= ~DATA_TOKEN;
+					if (ssap.SUExceptionReportRequest(SP_NOREASON, userdata, sa) == NOTOK)
+						ss_adios(sa, S_U_EXCEPTION_REPORT_REQUEST);
+					SWaitFor();
+					grc = SGetToken(-1);
+				}
+			}
+
+			if (bool(srequirements & MAJORSYNC) && !bool(srequirements & ACTIVITY)) {
+				if (ssap.SSyncMajorRequest(ssn, userdata, sa) == NOTOK)
+					switch (sa.reason()) {
+					case invalid_operation:
+						SGetToken(DATA_TOKEN | MINOR_TOKEN | MAJOR_TOKEN);
+						if (ssap.SSyncMajorRequest(ssn, userdata, sa) == OK)
+							break; /* else fall */
+
+					default:
+						ss_adios(sa, S_SYNC_MAJOR_REQUEST);
+					}
+
+				SWaitFor();
+				SGetToken(-1);
+			}
+
+			if (bool(srequirements & ACTIVITY)) {
+				if (ssap.SActivityEndRequest(ssn, userdata, sa) == NOTOK)
+					switch (sa.reason()) {
+					case invalid_operation:
+						grc = SGetToken(avail);
+						if (ssap.SActivityEndRequest(ssn, userdata, sa) == OK)
+							break; /* else fall */
+
+					default:
+						ss_adios(sa, S_ACTIVITY_END_REQUEST);
+					}
+
+				SWaitFor();
+				grc = SGetToken(-1);
+
+				if (ssap.SControlGiveRequest(sa) == NOTOK)
+					switch (sa.reason()) {
+					case invalid_operation:
+						grc = SGetToken(avail);
+						if (ssap.SControlGiveRequest(sa) == OK)
+							break; /* else fall */
+
+					default:
+						ss_adios(sa, S_CONTROL_GIVE_REQUEST);
+					}
+
+				owned = 0;
+
+				SWaitFor();
+				grc = SGetToken(-1);
+			}
+
+			if (ssap.SReleaseRequest(userdata, INFINITE, sa) == NOTOK) {
+				switch (sa.reason()) {
+				case invalid_operation:
+				case indications_waiting:
+					grc = SGetToken(avail);
+					if (ssap.SReleaseRequest(userdata, INFINITE, sa) == OK)
+						break; /* else fall */
+
+				default:
+					ss_adios(sa, S_RELEASE_REQUEST);
+				}
+				SWaitFor();
+			}
+	}
+	SSN isn(Requirement req) {
+		int isn;
+		if (req[MINORSYNC] || req[MAJORSYNC] || req[RESYNCHRONIZE] || req[ACTIVITY]) {
+			isn = (int)  random.next() % SSN::range();
+			if (isn < 0)
+				isn = -isn;
+		} else {
+			isn = SSN::SERIAL_NONE;
+		}
+		return isn;
+	}
+	ReturnCode SWaitFor() {
+		acquire();
+		switch (grc) {
+		case NOTOK:
+			return ss_adios(Literal::S_READ_REQUEST);
+
+		case OK:
+			return OK;
+
+		case DONE:
+			return DONE;
+
+		default:
+			return NOTOK;
+		}
+	}
+
+	void acquire() {
+		semaphore.wait();
+	}
+
+	void release() {
+		semaphore.set();
+	}
+
+	ReturnCode ss_adios(const char* message) {
+		return NOTOK;
+	}
+	int main(const std::vector<std::string>& args) {
+		if (help) {
+			displayHelp();
+		} else {
+			// get parameters from configuration file
+			unsigned short port = 102;//(unsigned short) config().getInt("SSAPEchoClient.port", 9977);
+			perform();
+
+		}
+		return Application::EXIT_OK;
+	}
+
+  private:
+	bool help;
+};
+}
+}
+
+int main(int argc, char** argv) {
+	ALS::SSAP::SSAPEchoClient app;
+	try {
+		return app.run(argc, argv);
+	} catch (const Poco::Exception& e) {
+		Application& app = Application::instance();
+		app.logger().log(e);
+	} catch (const std::exception& e) {
+		Application& app = Application::instance();
+		app.logger().error(e.what());
+	} catch (...) {
+		Application& app = Application::instance();
+		app.logger().error("unknown exception");
+	}
+}

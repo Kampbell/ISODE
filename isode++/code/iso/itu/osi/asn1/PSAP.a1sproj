@@ -1,0 +1,52 @@
+<OssGuiProject compiler="ASN.1/C++" version="2.0" productVersion="7.0" product="ASN.1 Studio" compilerVersionLastUsed="6.0 T" compilerSettingsChangeTime="2015-01-03T14:39:02">
+ <Asn1Files>
+  <File>asn/ACSE-1.asn</File>
+  <File>asn/ISO8823-PRESENTATION.asn</File>
+  <File>asn/Reliable-Transfer-APDU.asn</File>
+  <File>asn/Remote-Operations-Abstract-Syntaxes.asn</File>
+  <File>asn/Remote-Operations-Generic-ROS-PDUs.asn</File>
+  <File>asn/Remote-Operations-Information-Objects.asn</File>
+  <File>asn/Remote-Operations-Information-Objects-extensions.asn</File>
+  <File>asn/Remote-Operations-Realizations.asn</File>
+  <File>asn/Remote-Operations-Useful-Definitions.asn</File>
+  <File>asn/SelectedAttributeTypes.asn</File>
+  <File>asn/UsefulDefinitions.asn</File>
+  <File>asn/InformationFramework.asn</File>
+  <File>asn/UpperBounds.asn</File>
+ </Asn1Files>
+ <CompilerSettings>
+  <Setting present="true" name="cppNamespaceCheckBox">ASN</Setting>
+  <Setting prefix="ASN" name="cppOutputDirLineEdit">csn</Setting>
+  <Setting present="true" name="cppToedRadioButton"/>
+  <Setting present="true" name="disablCAGLMessagesCheckBox"/>
+  <Setting present="false" name="encOnlyRadioButton"/>
+  <Setting present="true" name="genDirCheckBox"/>
+  <Setting present="true" name="modListRadioButton"/>
+ </CompilerSettings>
+ <EncodingFiles/>
+ <GeneratedFiles>
+  <File>csn/ASN.lst</File>
+  <File>csn/ASN.gen</File>
+  <File>csn/ASN.h</File>
+  <File>csn/ASN.cpp</File>
+ </GeneratedFiles>
+ <Settings>
+  <Setting name="-2008"/>
+  <Setting name="-ber"/>
+  <Setting name="-der"/>
+  <Setting name="-informatoryMessages"/>
+  <Setting present="false" name="-noRelaxedMode"/>
+  <Setting name="-per"/>
+  <Setting present="false" name="-relaySafe"/>
+  <Setting name="-root"/>
+  <Setting name="-warningMessages"/>
+  <Setting name="AUTOMATIC_ENCDEC"/>
+  <Setting name="DEBUGPDU"/>
+  <Setting name="OSS_AUTO_ENCODE_WITHOUT_CHECKING_CONSTRAINT"/>
+  <Setting name="OSS_HEXBYTES"/>
+  <Setting name="OSS_PRINT_COMMENTS"/>
+  <Setting name="OSS_PRINT_OFFSET"/>
+  <Setting name="OSS_PRINT_TYPE_INFO"/>
+ </Settings>
+ <UserFiles/>
+</OssGuiProject>

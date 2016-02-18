@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="prov">
+      <UniqueIdentifier>{a12c25c6-6ee1-4295-a615-26d9703fc253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="serv">
+      <UniqueIdentifier>{75a1c27a-87d0-4592-9423-1a008e875d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user">
+      <UniqueIdentifier>{ab7bdccd-e5eb-44b1-8b5c-bcec16c86dda}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\AbortIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\ActivityIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\DataIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\Initiator.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\Linker.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\ReleaseIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\ReportIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\Responder.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\SynchronizeIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\TokenIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\AbortRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\ActivityRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\ActivityResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\DataRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\DataResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\Initiator.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\ReleaseRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\ReleaseResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\ReportRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\Responder.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\Service.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\SynchronizeRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\SynchronizeResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\TokenRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\prov\Logger.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\prov\Provider.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\psap.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\ContextIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\ContextRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\serv\ContextResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\ActivityConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\prov\FSM.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\FunctionalUnit.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\ContextConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\DataConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\ReleaseConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\user\SynchronizeConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\Literal.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\TransfertSyntaxes.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\prov\Logger.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\prov\Provider.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\prov\FSM.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\Literal.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\asn1\csn\ASN.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\TransfertSyntaxes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\psap\prov\PSAP.sm">
+      <Filter>prov</Filter>
+    </None>
+  </ItemGroup>
+</Project>

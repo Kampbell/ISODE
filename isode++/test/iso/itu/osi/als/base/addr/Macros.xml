@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<osi xmlns='urn:cfg.svc.als.osi.itu.iso'
+xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+xsi:schemaLocation='urn:cfg.svc.als.osi.itu.iso cfg.xsd'>
+  <addr>
+    <macros>
+      <!--
+        macros used in presentation address definition as specified in RFC1278
+        A string encoding of Presentation Address"	from S.E Hardcastle-Kille.
+        ###############################################################################
+        #
+        # Syntax:
+        #
+        #	<macro>  <string>
+        #
+        #	Each token is separated by LWSP, though double-quotes may be
+        #	used to prevent separation
+        #
+        ###############################################################################
+
+
+        # standard macros, defined in "A string encoding of Presentation Address"
+
+        Int-X25(80)			    TELEX+00728722+X.25(80)+01+
+        Janet				        TELEX+00728722+X.25(80)+02+
+        Internet-RFC-1006 	TELEX+00728722+RFC-1006+03+
+
+
+        # ISODE standard macros
+
+        X25(80)				      TELEX+00728722+X.25(80)+
+        TCP					        TELEX+00728722+RFC-1006+
+
+
+        # Interim Community Names
+
+        realNS				    NS+
+        Int-X25				    X25(80)=01+
+        # Janet				    X25(80)=02+
+        Internet			    TCP=03+
+        localTCP			    TCP=05+
+        localHost			    localTCP=127.0.0.1+
+        IXI					      X25(80)=06+
+
+        NSAP				      NS+
+
+        # US GOSIP v2 Addresses
+
+        us					      NS+47000580
+        nsfnet  			    us=ffff00
+        psinet				    us=fffc00
+
+        # UK CONS addresses
+        UKNS				      DCC+826+d
+        JanetNS				    UKNS=11000
+     -->
+      <macro name='X25(80)' 		value='TELEX+00728722+X.25(80)+'/>
+      <macro name='TCP' 			  value='TELEX+00728722+RFC-1006+'/>
+      <macro name='Int-X25(80)' value='TELEX+00728722+X.25(80)+01+'/>
+      <macro name='Janet' 			value='X25(80)=02+'/>
+      <macro name='realNS' 			value='NS+'/>
+      <macro name='Int-X25' 		value='X25(80)=01+'/>
+      <macro name='Internet' 		value='TCP=03+'/>
+      <macro name='localTCP' 		value='TCP=05+'/>
+      <macro name='localhost' 	value='localTCP=127.0.0.1+'/>
+      <macro name='IXI' 			  value='X25(80)=06+'/>
+      <macro name='NSAP' 			  value='NS+'/>
+    </macros>
+  </addr>
+</osi>

@@ -1,0 +1,668 @@
+%start		PSAP::STAI0
+%fsmclass	FSM
+%fsmcfile	FSM
+%package	ALS::PSAP::PROV
+%header		als/psap/prov/Provider.h
+%class		Provider
+//%include	"als/ssap/ResyncOption.h"
+
+
+
+/*
+Recommendation ITU-T X.226
+CONNECTION-ORIENTED PROTOCOL SPECIFICATION
+PPRESENTATION SERVICE PROTOCOL
+
+
+Incoming events
+------------------------------------------------------------------
+Abbreviated Name 	Category Name and Description
+AC 			PPDU 			ALTER CONTEXT
+ACA 		PPDU 			ALTER CONTEXT ACKNOWLEDGE
+ARP 		PPDU 			PROVIDER ABORT
+ARU 		PPDU 			USER ABORT
+CP 			PPDU 			PRESENTATION CONNECT
+CPA 		PPDU 			PRESENTATION CONNECT ACCEPT
+CPR 		PPDU 			PRESENTATION CONNECT REJECT
+P-ACTDreq 	PS primitive 	P-ACTIVITY-DISCARD request
+P-ACTDrsp 	PS primitive 	P-ACTIVITY-DISCARD response
+P-ACTEreq 	PS primitive 	P-ACTIVITY-END request
+P-ACTErsp 	PS primitive 	P-ACTIVITY-END response
+P-ACTIreq 	PS primitive 	P-ACTIVITY-INTERRUPT request
+P-ACTIrsp 	PS primitive 	P-ACTIVITY-INTERRUPT response
+P-ACTRreq 	PS primitive 	P-ACTIVITY-RESUME request
+P-ACTSreq 	PS primitive 	P-ACTIVITY-START request
+P-ALTERreq 	PS primitive 	P-ALTER-CONTEXT request
+P-ALTERrsp 	PS primitive 	P-ALTER-CONTEXT response
+P-CDreq 	PS primitive 	P-CAPABILITY-DATA request
+P-CDrsp 	PS primitive 	P-CAPABILITY-DATA response
+P-CGreq 	PS primitive 	P-CONTROL-GIVE request
+P-CONreq 	PS primitive 	P-CONNECT request
+P-CONrsp+ 	PS primitive 	P-CONNECT response accept
+P-CONrsp- 	PS primitive 	P-CONNECT response reject
+P-DTreq 	PS primitive 	P-DATA request
+P-EXreq 	PS primitive 	P-EXPEDITED-DATA request
+P-GTreq 	PS primitive 	P-TOKEN-GIVE request
+P-PTreq 	PS primitive 	P-TOKEN-PLEASE request
+P-RELreq 	PS primitive 	P-RELEASE request
+P-RELrsp+ 	PS primitive 	P-RELEASE response accept
+P-RELrsp- 	PS primitive 	P-RELEASE response reject
+P-RSYNreq 	PS primitive 	P-RESYNCHRONIZE request
+P-RSYNrsp 	PS primitive 	P-RESYNCHRONIZE response
+P-SYNMreq 	PS primitive 	P-SYNC-MAJOR request
+P-SYNMrsp 	PS primitive 	P-SYNC-MAJOR response
+P-SYNmreq 	PS primitive 	P-SYNC-MINOR request
+P-SYNmrsp 	PS primitive	P-SYNC-MINOR response
+P-TDreq 	PS primitive	P-TYPED-DATA request
+P-UABreq 	PS primitive	P-U-ABORT request
+P-UERreq 	PS primitive	P-U-EXCEPTION-REPORT request
+RS 			PPDU 			RESYNCHRONIZE
+RSA 		PPDU 			RESYNCHRONIZE ACKNOWLEDGE
+S-ACTDcnf 	SS primitive	S-ACTIVITY-DISCARD confirm
+S-ACTDind	SS primitive	S-ACTIVITY-DISCARD indication
+S-ACTEcnf	SS primitive	S-ACTIVITY-END confirm
+S-ACTEind	SS primitive	S-ACTIVITY-END indication
+S-ACTIcnf	SS primitive	S-ACTIVITY-INTERRUPT confirm
+S-ACTIind	SS primitive	S-ACTIVITY-INTERRUPT indication
+S-ACTRind	SS primitive	S-ACTIVITY-RESUME indication
+S-ACTSind	SS primitive	S-ACTIVITY-START indication
+S-CGind		SS primitive	S-CONTROL-GIVE indication
+S-CONcnf-p	SS primitive	S-CONNECT confirm reject (provider)
+S-GTind		SS primitive	S-TOKEN-GIVE indication
+S-P-ABind	SS primitive	S-P-ABORT indication
+S-PERind	SS primitive	S-P-EXCEPTION-REPORT indication
+S-PTind		SS primitive	S-TOKEN-PLEASE indication
+S-RELcnf+	SS primitive	S-RELEASE confirm accept
+S-RELcnf-	SS primitive	S-RELEASE confirm reject
+S-RELind	SS primitive	S-RELEASE indication
+S-RSYNcnf	SS primitive	S-RESYNCHRONIZE confirm
+S-RSYNind	SS primitive	S-RESYNCHRONIZE indication
+S-SYNMcnf	SS primitive	S-SYNC-MAJOR confirm
+S-SYNMind	SS primitive	S-SYNC-MAJOR indication
+S-SYNmcnf	SS primitive	S-SYNC-MINOR confirm
+S-SYNmind	SS primitive	S-SYNC-MINOR indication
+S-UERind	SS primitive	S-U-EXCEPTION-REPORT indication
+TC 			PPDU 			CAPABILITY DATA
+TCC 		PPDU 			CAPABILITY DATA ACKNOWLEDGE
+TD 			PPDU 			DATA
+TE 			PPDU 			EXPEDITED DAT
+
+
+States
+------------------------------------------------------------------
+Abbreviated Name Name and Description
+STAI0 		idle - no connection
+STAI1 		await CPA PPDU
+STAI2 		await P-CONNECT response
+STAt0 		connected - data transfer
+STAac0 		await ACA PPDU
+STAac1 		await P-ALTER-CONTEXT response
+STAac2 		await ACA PPDU or P-ALTER-CONTEXT response
+
+
+Outgoing events
+------------------------------------------------------------------
+AC	 		PPDU 			ALTER CONTEXT
+ACA	 		PPDU 			ALTER CONTEXT ACKNOWLEDGE
+ARP	 		PPDU 			PROVIDER ABORT
+ARU	 		PPDU 			USER ABORT
+CP	 		PPDU 			PRESENTATION CONNECT
+CPA			PPDU 			PRESENTATION CONNECT ACCEPT
+CPR	 		PPDU 			PRESENTATION CONNECT REJECT
+P-ACTDcnf	PS primitive	P-ACTIVITY-DISCARD confirm
+P-ACTDind	PS primitive	P-ACTIVITY-DISCARD indication
+P-ACTEcnf	PS primitive	P-ACTIVITY-END confirm
+P-ACTEind	PS primitive	P-ACTIVITY-END indication
+P-ACTIcnf	PS primitive	P-ACTIVITY-INTERRUPT confirm
+P-ACTIind	PS primitive	P-ACTIVITY-INTERRUPT indication
+P-ACTRind	PS primitive	P-ACTIVITY-RESUME indication
+P-ACTSind	PS primitive	P-ACTIVITY-START indication
+P-ALTERcnf	PS primitive	P-ALTER-CONTEXT confirm
+P-ALTERind	PS primitive	P-ALTER-CONTEXT indication
+P-CDcnf	 	PS primitive	P-CAPABILITY-DATA confirm
+P-CDind	 	PS primitive	P-CAPABILITY-DATA indication
+P-CGind	 	PS primitive	P-CONTROL-GIVE indication
+P-CONcnf+	PS primitive	P-CONNECT confirm accept
+P-CONcnf-	PS primitive	P-CONNECT confirm reject
+P-CONind	PS primitive	P-CONNECT indication
+P-DTind	 	PS primitive	P-DATA indication
+P-EXind		PS primitive	P-EXPEDITED-DATA indication
+P-GTind	 	PS primitive	P-TOKEN-GIVE indication
+P-PABind	PS primitive	P-P-ABORT indication
+P-PERind	PS primitive	P-P-EXCEPTION-REPORT indication
+P-PTind	 	PS primitive	P-TOKEN-PLEASE indication
+P-RELcnf+	PS primitive	P-RELEASE confirm accept
+P-RELcnf-	PS primitive	P-RELEASE confirm reject
+P-RELind	PS primitive	P-RELEASE indication
+P-RSYNcnf	PS primitive	P-RESYNCHRONIZE confirm
+P-RSYNind	PS primitive	P-RESYNCHRONIZE indication
+P-SYNMcnf	PS primitive	P-SYNC-MAJOR confirm
+P-SYNMind	PS primitive	P-SYNC-MAJOR indication
+P-SYNmcnf	PS primitive	P-SYNC-MINOR confirm
+P-SYNmind	PS primitive	P-SYNC-MINOR indication
+P-TDind	 	PS primitive	P-TYPED-DATA indication
+P-UABind 	PS primitive 	P-U-ABORT indication
+P-UERind 	PS primitive 	P-U-EXCEPTION-REPORT indication
+RS 			PPDU 			RESYNCHRONIZE
+RSA 		PPDU 			RESYNCHRONIZE acknowledge
+S-ACTDreq	SS primitive	S-ACTIVITY-DISCARD request
+S-ACTDrsp	SS primitive	S-ACTIVITY-DISCARD response
+S-ACTEreq	SS primitive	S-ACTIVITY-END request
+S-ACTErsp	SS primitive	S-ACTIVITY-END response
+S-ACTIreq	SS primitive	S-ACTIVITY-INTERRUPT request
+S-ACTIrsp	SS primitive	S-ACTIVITY-INTERRUPT response
+S-ACTRreq	SS primitive	S-ACTIVITY-RESUME request
+S-ACTSreq	SS primitive	S-ACTIVITY-START request
+S-CGreq		SS primitive	S-CONTROL-GIVE request
+S-GTreq		SS primitive	S-TOKEN-GIVE request
+S-PTreq		SS primitive	S-TOKEN-PLEASE request
+S-RELreq	SS primitive	S-RELEASE request
+S-RELrsp+	SS primitive	S-RELEASE response accept
+S-RELrsp-	SS primitive	S-RELEASE response reject
+S-RSYNreq	SS primitive	S-RESYNCHRONIZE request
+S-RSYNrsp	SS primitive	S-RESYNCHRONIZE response
+S-SYNMreq	SS primitive	S-SYNCHRONIZE-MAJOR request
+S-SYNMrsp	SS primitive	S-SYNCHRONIZE-MAJOR response
+S-SYNmreq	SS primitive	S-SYNCHRONIZE-MINOR request
+S-SYNmrsp	SS primitive	S-SYNCHRONIZE-MINOR response
+S-UERreq	SS primitive	S-U-EXCEPTION-REPORT request
+TC 			PPDU 			CAPABILITY DATA
+TCC 		PPDU 			CAPABILITY DATA ACKNOWLEDGE
+TD 			PPDU 			DATA
+TE 			PPDU 			EXPEDITED DATA
+TTD 		PPDU 			P-TYPED DATA
+
+
+Specific action
+------------------------------------------------------------------
+[01] Mark presentation contexts proposed for definition which provider cannot support as provider-rejection.
+[02] Set cr and rl to FALSE.
+[03] Record abstract and transfer syntaxes for the presentation contexts of the agreed DCS and for the default context.
+[04] Propose at least one transfer syntax for each presentation context.
+[05] Propose a transfer syntax for the default context if one is named in the request service primitive.
+[06] Select one transfer syntax for each presentation context agreed for definition and include the agreed presentation
+contexts in the DCS.
+[07] Set rl to TRUE.
+[08] If rl is TRUE then set cr to TRUE.
+[09] If aep is TRUE then:
+a) set aep to FALSE; and
+b) if FU(CR) is TRUE then the synchronization points associated with the last activity no longer have associated
+DCSs.
+[10] Record selected transfer syntax for each new presentation context and include new presentation
+[11] Remove the presentation contexts agreed for deletion from the DCS.
+[12] Record FU(f) for f in fu-dom according to the presentation requirements in the CPA PPDU.
+[13] If FU(CR) then associate the DCS with the syncpoint identifier.
+[14] If FU(CR) and an activity is in progress, set the DCS to the inter-activity DCS.
+[15] Set aep to TRUE.
+[16] Set the DCS to that associated with the syncpoint identifier.
+[17] If FU(CR) then remember the DCS as the inter-activity DCS.
+[18] Set the DCS to that agreed during presentation-connection establishment.
+[19] Eliminate any associations between syncpoint serial number and the DCS for the current activity.
+[20] Set aep to FALSE.
+[21] Set the DCS as specified by the Presentation context identifier list parameter of the PPDU.
+[22] If FU(CR), then eliminate any associations between syncpoint identifiers and DCSs.
+
+
+Predicat
+------------------------------------------------------------------
+p01 The presentation-connection is acceptable to the PPM (local matter).
+p02 If present, the named default context can be supported.
+p03 Each presentation data value is from a presentation context of the DCS proposed in the presentation-connection
+establishment, or from the default context if this DCS is empty.
+p04 Each presentation data value is from a presentations contexts of the DCS being accepted in the presentationconnection
+establishment, or from the default context if this DCS is empty.
+p05 Each presentation data value is from presentation contexts of the DCS, or from the default context if the DCS is
+empty.
+p06 Each presentation data value is from presentation contexts of the DCS not proposed for deletion from the DCS by
+the peer PPM.
+p07 Each presentation data value is from presentation contexts of the DCS not proposed for deletion from the DCS by
+the local PPM.
+p08 The value of cr is TRUE.
+p09 Each presentation data value is from presentation contexts of the DCS not accepted for deletion from the DCS, or
+from presentation contexts accepted for addition to the DCS, or if no such presentation contexts are available,
+from the default context.
+p11 FU(CM) is TRUE.
+p13 Each presentation data value is from the default context.
+p14 FU(CM) is false, or FU(CM) is true and typed data functional unit was selected as a User session requirement.
+p15 Each presentation data value is from presentation contexts of the DCS which was agreed during presentationconnection
+establishment, or from the default context if this DCS is empty.
+p16 Each presentation data value is from presentation contexts of the DCS associated with the pair of Old activity
+identifier and Synchronization point serial number parameter values or from the default context when this DCS is
+empty.
+p17 FU(CR) is TRUE.
+p18 Each presentation data value is in presentation contexts of the DCS associated with the syncpoint identifier or
+from the default context if this DCS is empty.
+p19 Either no syncpoint identifier is associated with a DCS or the resync identifier is not associated with a DCS and is
+greater than the lowest syncpoint identifier which has an associated DCS.
+p20 The PPDU contains a Presentation context identifier list parameter.
+p21 Each presentation data value is from presentation contexts specified in the PPDU, or from the default context if no
+presentation contexts are specified in the PPDU.
+p22 For each presentation data value, an instance (chosen as a local matter) of encoding is supported by the PPM.
+p23 For each presentation data value the encoding is supported by the PPM.
+p24 Each presentation data value is from presentation contexts of the DCS, or from presentation contexts proposed for
+addition to the DCS by the local PPM, or from the default context if either the DCS is empty or all presentation
+contexts of the DCS were proposed for deletion by the local PPM.
+p25 Each presentation data value is from presentation contexts of the DCS not proposed for deletion by the peer PPM
+or from presentation contexts proposed for addition to the DCS by the local PPM.
+p26 The syncpoint identifier has an associated DCS.
+p27 Old session connection identifier parameter present.
+p28 There is a DCS associated with the pair of Old activity identifier and Synchronization point serial number
+parameters values.
+p29 Each presentation data value is from presentation contexts of the inter-activity DCS or from the default context if
+the inter-activity DCS is empty.
+p30 The value of rs is TRUE.
+*/
+
+%map PSAP
+%%
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STAI0 {		// idle - no connection
+//	Connection establishment -----------------------------------------------------------------------
+	P-CONreq				[p02()&&p03()]							STAI1				{sa04();sa05();sa02();sa20();CP();}
+	CP						[p01()&&p02()&&p03()&&p22()]			STAI2				{sa01();sa02();sa20();P-CONind();}
+	CP						[!p01()||!p02()||!p22()]				STAI0				{sa01();CPR();}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STAI1 {		// await CPA PPDU
+//	Connection establishment -----------------------------------------------------------------------
+	CPA						[p04()]									STAt0				{sa03();sa12();P-CONcnf(true);}
+	CPR						[p04()]									STAI0				{P-CONcnf(false);}
+	S-CONcnf(accept: bool)	[!accept]								STAI0				{P-CONcnf(false);}
+
+//	Connection release (abort) --------------------------------------------------------------------
+	P-UABreq				[p03()]									STAI0				{ARU();}
+	ARU						[p03()&&p21()]							STAI0				{P-UABind();}
+	ARP																STAI0				{P-PABind();}
+	S-PABind														STAI0				{P-PABind();}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STAI2 {		// await P-CONNECT response
+//	Connection establishment -----------------------------------------------------------------------
+	P-CONcnf(accept: bool)	[ accept&&p04()]						STAt0				{sa06();sa12();CPA();}
+	P-CONcnf(accept: bool)	[!accept&&p04()]						STAI0				{sa06();CPR();}
+
+//	Connection release (abort) --------------------------------------------------------------------
+	P-UABreq				[p03()]									STAI0				{ARU();}
+	ARU						[p03()&&p21()&&p23()]					STAI0				{P-UABind();}
+	ARP																STAI0				{P-PABind();}
+	S-PABind														STAI0				{P-PABind();}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STAt0 {		// connected - data transfer
+//	Connection release (normal) --------------------------------------------------------------------
+	P-RELreq				[p05()]									STAt0				{sa08();sa07();S-RELreq();}
+	S-RELind				[p05()]									STAt0				{sa08();sa07();P-RELind();}
+	P-RELrsp(accept: bool)	[ accept&&p05()&&!p08()]				STAI0				{S-RELrsp(true);}
+	P-RELrsp(accept: bool)	[ accept&&p05()&&p08()]					STAt0				{sa02();S-RELrsp(true);}
+	P-RELrsp(accept: bool)	[!accept&&p05()]						STAt0				{sa02();S-RELrsp(false);}
+	S-RELcnf(accept: bool)	[ accept&&p05()&&!p08()]				STAI0				{P-RELcnf(true);}
+	S-RELcnf(accept: bool)	[ accept&&p05()&&p08()]					STAt0				{sa02();P-RELcnf(true);}
+	S-RELcnf(accept: bool)	[!accept&&p05()]						STAt0				{sa02();P-RELcnf(false);}
+
+//	Connection release (abort) --------------------------------------------------------------------
+	P-UABreq				[p05()]									STAI0				{ARU();}
+	ARU						[p05()&&p21()]							STAI0				{P-UABind();}
+	ARP																STAI0				{P-PABind();}
+	S-PABind														STAI0				{P-PABind();}
+
+//	Context management ---------------------------------------------------------------------------
+	P-ALTERreq				[p05()&&p11()]							STAac0				{sa04();AC();}
+	AC						[p05()&&p11()]							STAac0				{sa01();sa09();P-ALTERind();}	
+
+//	Data transfer --------------------------------------------------------------------------------
+	P-DTreq					[p05()]									STAt0				{TD();}
+	TD						[p05()]									STAt0				{sa09();P-DTind();}
+	P-TDreq					[p05()&&p14()]							STAt0				{TTD();}
+	TTD						[p05()&&p14()]							STAt0				{sa09();P-TDind();}
+	P-EXreq					[p13()]									STAt0				{TE();}
+	TE						[p13()]									STAt0				{sa09();P-EXind();}
+	P-CDreq					[p05()]									STAt0				{TC();}
+	TC						[p05()]									STAt0				{sa09();P-CDind();}
+	P-CDrsp					[p05()]									STAt0				{TCC();}
+	TCC						[p05()]									STAt0				{P-CDcnf();}
+
+//	Token handling -------------------------------------------------------------------------------
+	P-GTreq					[p05()]									STAt0				{S-GTreq();}
+	P-PTreq					[p05()]									STAt0				{S-PTreq();}
+	P-CGreq					[p05()]									STAt0				{S-CGreq();}
+
+	S-GTind					[p05()]									STAt0				{sa09();P-GTind();}
+	S-PTind					[p05()]									STAt0				{sa09();P-PTind();}
+	S-CGind					[p05()]									STAt0				{sa09();P-CGind();}
+
+//	Synchronization ------------------------------------------------------------------------------
+	P-SYNmreq				[p05()]									STAt0				{S-SYNmreq();sa13();}
+	P-SYNmrsp				[p05()]									STAt0				{S-SYNmrsp();}	// was P-SYNMind
+	P-SYNMreq				[p05()]									STAt0				{S-SYNMreq();}
+	P-SYNMrsp				[p05()]									STAt0				{S-SYNMrsp();sa22();sa13();}
+
+	S-SYNmind				[p05()]									STAt0				{P-SYNmind();sa13();}
+	S-SYNmcnf				[p06()]									STAt0				{P-SYNmcnf();}
+	S-SYNMind				[p05()]									STAt0				{P-SYNMind();}	// was S-SYNMind
+	S-SYNMcnf				[p05()]									STAt0				{P-SYNMcnf();sa22();sa13();}
+
+//	Activity management and exception handling ---------------------------------------------------
+	P-ACTSreq				[p05()]									STAt0				{sa17();S-ACTSreq();}
+	P-ACTEreq				[p05()]									STAt0				{S-ACTEreq();}
+	P-ACTErsp				[p05()]									STAt0				{sa14();sa15();S-ACTErsp();}
+	P-ACTIreq				[!p17()]								STAt0				{S-ACTIreq();}
+	P-ACTIreq				[p17()&&p29()]							STAt0				{sa14();S-ACTIreq();}
+	P-ACTIrsp				[!p17()||p29()]							STAt0				{sa14();S-ACTIrsp();}	// FIXME !p17()||(p17()&&p29())
+	P-ACTRreq				[(!p17()||p27()||!p28())&&p05()]		STAt0				{S-ACTRreq();}
+	P-ACTRreq				[!p27()&&p28()&&p17()&&p16()]			STAt0				{sa17();sa16();S-ACTRreq();}
+	P-ACTDreq				[!p17()]								STAt0				{S-ACTDreq();}
+	P-ACTDreq				[!p17()&&p29()]							STAt0				{sa14();S-ACTDreq();}
+	P-ACTDrsp				[!p17()||p17()&&p29()]					STAt0				{sa14();sa19();S-ACTDrsp();}
+	P-UERreq				[p05()]									STAt0				{S-UERreq();}
+
+	S-ACTSind				[p05()]									STAt0				{sa09();sa17();P-ACTSind();}
+	S-ACTEind				[p05()]									STAt0				{P-ACTEind();}
+	S-ACTEcnf				[p05()]									STAt0				{sa14();sa19();P-ACTEcnf();}
+	S-ACTIind				[!p17()]								STAt0				{sa20();P-ACTIind();}
+	S-ACTIind				[p17()&&p29()]							STAt0				{sa14();sa20();P-ACTIind();}
+	S-ACTIcnf				[!p17()||p29()]							STAt0				{sa14();P-ACTIcnf();}	// FIXME !p17()||(p17()&&p29())
+	S-ACTRind				[(!p17()||p27()||!p28())&&p05()]		STAt0				{sa09();P-ACTRind();}
+	S-ACTRind				[!p27()&&p28()&&p17()&&p16()]			STAt0				{sa09();sa17();sa16();P-ACTRind();}
+	S-ACTDcnf				[!p17()||p17()&&p29()]					STAt0				{sa14();sa19();P-ACTDcnf();}	// is !p17() || p17() always true
+//	was P-ACTDind: fixed by replacing by S-ACTDind
+	S-ACTDind				[!p17()]								STAt0				{sa09();P-ACTDind();}			
+//	was P-ACTDind: fixed by replacing by S-ACTDind
+	S-ACTDind				[!p17()&&p29()]							STAt0				{sa14();sa09();P-ACTDind();}
+	S-UERind				[p05()]									STAt0				{P-UERind();}
+	S-PERind														STAt0				{P-PERind();}
+
+//	Reynchronization ------------------------------------------------------------------------------
+	P-RSYNreq				[!p11()&&p05()]							STAt0				{RS();}
+	P-RSYNreq				[ p11()&&!p17()&&p05()]					STAt0				{RS();}
+	P-RSYNreq				[ p11()&&p17()&&p19()&&p05()]			STAt0				{RS();}
+	P-RSYNreq				[ p11()&&p17()&&p26()&&p18()]			STAt0				{RS();}
+	P-RSYNreq				[ p11()&&!p17()&&!p19()&&p26()&&p15()]	STAt0				{sa18();RS();}
+	RS						[!p11()&&p05()]							STAt0				{P-RSYNind();}
+	RS						[ p11()&&!p17()&&p21()]					STAt0				{P-RSYNind();}
+	RS						[ p11()&&p17()&&p19()&&p21()]			STAt0				{P-RSYNind();}
+	RS						[ p11()&&p17()&&p26()&&p18()]			STAt0				{sa16();P-RSYNind();}
+	RS						[ p11()&&!p17()&&!p19()&&!p26()&&p15()]	STAt0				{sa18();P-RSYNind();}
+
+	P-RSYNrsp				[!p11()&&p05()]							STAt0				{RSA();}
+	P-RSYNrsp				[p11()&&!p17()&&p05()]					STAt0				{RSA();}
+	P-RSYNrsp				[p11()&&p17()&&p19()&&p05()]			STAt0				{RSA();}
+	P-RSYNrsp				[p11()&&p17()&&p26()&&p05()]			STAt0				{RSA();}
+	P-RSYNrsp				[p11()&&p17()&&!p19()&&!p26()&& p05()]	STAt0				{RSA();}
+	RSA						[!p11()&&p05()]							STAt0				{P-RSYNcnf();}
+	RSA						[p11()&&!p17()&&p05()]					STAt0				{sa21();P-RSYNcnf();}
+	RSA						[p11()&&p17()&&p19()&&p05()]			STAt0				{sa21();P-RSYNcnf();}
+	RSA						[p11()&&p17()&&p26()&&p05()]			STAt0				{P-RSYNcnf();}
+	RSA						[p11()&&p17()&&!p19()&&!p26()&& p05()]	STAt0				{P-RSYNcnf();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STAac0 { 	// await ACA PPDU
+//
+//	Connection release (normal) --------------------------------------------------------------------
+	P-RELreq				[p07()]									STAac0				{sa08();sa07();S-RELreq();}
+	S-RELind				[p05()]									STAac0				{sa08();sa07();P-RELind();}
+	P-RELrsp(accept: bool)	[ accept&&p07()&&!p08()]				STAI0				{S-RELrsp(true);}
+	P-RELrsp(accept: bool)	[ accept&&p07()&&p08()]					STAt0				{sa02();S-RELrsp(true);}
+	P-RELrsp(accept: bool)	[!accept&&p07()]						STAac0				{sa02();S-RELrsp(false);}
+	S-RELcnf(accept: bool)	[ accept&&p05()&&!p08()]				STAI0				{P-RELcnf(true);}
+	S-RELcnf(accept: bool)	[ accept&&p05()&&p08()]					STAt0				{sa02();P-RELcnf(true);}
+	S-RELcnf(accept: bool)	[!accept&&p05()]						STAac0				{sa02();P-RELcnf(false);}
+
+//	Connection release (abort) --------------------------------------------------------------------
+	P-UABreq				[p07()]									STAI0				{ARU();}
+	ARU						[p21()&&p24()]							STAI0				{P-UABind();}
+	ARP																STAI0				{P-PABind();}
+	S-PABind														STAI0				{P-PABind();}
+
+//	Context management ---------------------------------------------------------------------------
+	AC						[p06()]									STAac2				{sa01();P-ALTERind();}
+	ACA						[p09()]									STAt0				{sa10();sa11();P-ALTERcnf();}
+
+//	Data transfer --------------------------------------------------------------------------------
+	P-DTreq					[p07()]									STAac0				{TD();}
+	TD						[p05()]									STAac0				{P-DTind();}
+	P-TDreq					[p07()&&p14()]							STAac0				{TTD();}
+	TTD						[p05()&&p14()]							STAac0				{P-TDind();}
+	P-EXreq					[p13()]									STAac0				{TE();}
+	TE						[p13()]									STAac0				{P-EXind();}
+	P-CDreq					[p07()]									STAac0				{TC();}
+	TC						[p05()]									STAac0				{P-CDind();}
+	P-CDrsp					[p07()]									STAac0				{TCC();}
+	TCC						[p05()]									STAac0				{P-CDcnf();}
+
+//	Token handling -------------------------------------------------------------------------------
+	P-GTreq					[p07()]									STAac0				{S-GTreq();}
+	P-PTreq					[p07()]									STAac0				{S-PTreq();}
+	P-CGreq					[p07()]									STAac0				{S-CGreq();}
+	
+	S-GTind					[p05()]									STAac0				{P-GTind();}
+	S-PTind					[p05()]									STAac0				{P-PTind();}
+	S-CGind					[p05()]									STAac0				{P-CGind();}
+
+//	Synchronization ------------------------------------------------------------------------------
+	P-SYNmreq				[!p17()&&p07()]							STAac0				{S-SYNmreq();}
+	P-SYNmrsp				[p07()]									STAac0				{S-SYNmrsp();}
+	P-SYNMreq				[!p17()&&p07()]							STAac0				{S-SYNMreq();}
+	P-SYNMrsp				[p07()]									STAac0				{S-SYNMrsp();sa22();sa13();}
+	
+	S-SYNmind				[p05()]									STAac0				{P-SYNmind();sa13();}
+	S-SYNmcnf				[p05()]									STAac0				{P-SYNmcnf();}
+	S-SYNMind				[p05()]									STAac0				{P-SYNMind();}
+	S-SYNMcnf				[!p17()&&p05()]							STAac0				{P-SYNMcnf();}
+
+//	Activity management and exception handling ---------------------------------------------------
+	P-ACTSreq				[!p17()&&p07()]							STAac0				{S-ACTSreq();}
+	P-ACTEreq				[!p17()&&p07()]							STAac0				{S-ACTEreq();}
+	P-ACTErsp				[p07()]									STAac0				{sa14();sa15();S-ACTErsp();}
+	P-ACTIreq				[!p17()]								STAt0				{S-ACTIreq();}
+	P-ACTIreq				[ p17()&&p29()]							STAt0				{sa14();S-ACTIreq();}
+	P-ACTRreq				[!p17()&&p07()]							STAac0				{S-ACTRreq();}
+	P-ACTDreq				[!p17()]								STAt0				{S-ACTDreq();}
+	P-ACTDreq				[!p17()&&p29()]							STAt0				{sa14();S-ACTDreq();}
+	P-ACTDind				[!p17()]								STAt0				{sa09();S-ACTDind();}
+	P-ACTDind				[!p17()&&p29()]							STAt0				{sa14();sa09();S-ACTDind();}
+	P-UERreq				[p07()]									STAt0				{S-UERreq();}
+		
+	S-ACTSind				[p05()]									STAac0				{sa09();sa17();P-ACTSind();}
+	S-ACTEind				[p05()]									STAac0				{P-ACTEind();}
+	S-ACTEcnf				[!p17()&&p05()]							STAac0				{P-ACTEcnf();}
+	S-ACTIind				[!p17()]								STAt0				{sa20();P-ACTIind();}
+	S-ACTIind				[ p17()&&p29()]							STAt0				{sa14();sa20();P-ACTIind();}
+	S-ACTRind				[(!p17()||p27()||!p28())&&p05()]		STAac0				{sa09();P-ACTRind();}
+	S-ACTRind				[!p27()&&p28()&&p17()&&p16()]			STAac0				{sa09();sa17();sa16();P-ACTRind();}
+	S-ACTDind				[!p17()]								STAt0				{sa09();P-ACTDind();}
+	S-ACTDind				[p17()&&p29()]							STAt0				{sa14();sa09();P-ACTDind();}
+	S-UERind				[p05()]									STAt0				{P-UERind();}
+	S-PERind														STAt0				{P-PERind();}
+
+//	Reynchronization ------------------------------------------------------------------------------
+	P-RSYNreq				[!p17()&&p07()]							STAt0				{RS();}
+	P-RSYNreq				[ p17()&&p19()&&p07()]					STAt0				{RS();}
+	P-RSYNreq				[ p17()&&p26()&&p18()]					STAt0				{RS();}
+	P-RSYNreq				[ p17()&&!p19()&&!p26()&&p15()]			STAt0				{sa18();RS();}
+	RS						[!p17()&&p21()]							STAt0				{sa21();P-RSYNind();}
+	RS						[ p17()&&p19()&&p21()]					STAt0				{sa21();P-RSYNind();}
+	RS						[ p17()&&p26()&&p18()]					STAt0				{sa16();P-RSYNind();}
+	RS						[ p17()&&!p19()&&!p26()&&p15()]			STAt0				{sa18();P-RSYNind();}
+
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STAac1 { 	// await P-ALTER-CONTEXT response
+//
+//	Connection release (normal) --------------------------------------------------------------------
+	P-RELreq				[p05()]									STAac1				{sa08();sa07();S-RELreq();}
+	S-RELind				[p06()]									STAac1				{sa08();sa07();P-RELind();}
+	P-RELrsp(accept: bool)	[ accept&&p05()&&!p08()]				STAI0				{S-RELrsp(true);}
+	P-RELrsp(accept: bool)	[ accept&&p05()&&p08()]					STAt0				{sa02();S-RELrsp(true);}
+	P-RELrsp(accept: bool)	[!accept&&p05()]						STAac1				{sa02();S-RELrsp(false);}
+	S-RELcnf(accept: bool)	[ accept&&p06()&&!p08()]				STAI0				{P-RELcnf(true);}
+	S-RELcnf(accept: bool)	[ accept&&p06()&&p08()]					STAt0				{sa02();P-RELcnf(true);}
+	S-RELcnf(accept: bool)	[!accept&&p06()]						STAac1				{sa02();P-RELcnf(false);}
+
+//	Connection release (abort) --------------------------------------------------------------------
+	P-UABreq				[p05()]									STAI0				{ARU();}
+	ARU						[p06()&&p21()]							STAI0				{P-UABind();}
+	ARP																STAI0				{P-PABind();}
+	S-PABind														STAI0				{P-PABind();}
+
+//	Context management ---------------------------------------------------------------------------
+	P-ALTERreq				[p05()]									STAac2				{sa04();AC();}
+	P-ALTERrsp				[p09()]									STAt0				{sa06();sa11();ACA();}
+
+//	Data transfer --------------------------------------------------------------------------------
+	P-DTreq					[p05()]									STAac1				{TD();}
+	TD						[p06()]									STAac1				{P-DTind();}
+	P-TDreq					[p05()&&p14()]							STAac1				{TTD();}
+	TTD						[p06()&&p14()]							STAac1				{P-TDind();}
+	P-EXreq					[p13()]									STAac1				{TE();}
+	TE						[p13()]									STAac1				{P-EXind();}
+	P-CDreq					[p05()]									STAac1				{TC();}
+	TC						[p06()]									STAac1				{P-CDind();}
+	P-CDrsp					[p05()]									STAac1				{TCC();}
+	TCC						[p06()]									STAac1				{P-CDcnf();}
+
+//	Token handling -------------------------------------------------------------------------------
+	P-GTreq					[p05()]									STAac1				{S-GTreq();}
+	P-PTreq					[p05()]									STAac1				{S-PTreq();}
+	P-CGreq					[p05()]									STAac1				{S-CGreq();}
+	
+	S-GTind					[p06()]									STAac1				{P-GTind();}
+	S-PTind					[p06()]									STAac1				{P-PTind();}
+	S-CGind					[p06()]									STAac1				{P-CGind();}
+
+//	Synchronization ------------------------------------------------------------------------------
+	P-SYNmreq				[p05()]									STAac1				{S-SYNmreq();sa13();}
+	P-SYNmrsp				[p05()]									STAac1				{S-SYNmrsp();}  // was P-SYNmind
+	P-SYNMreq				[p05()]									STAac1				{S-SYNMreq();}
+	P-SYNMrsp				[!p17()&&p05()]							STAac1				{S-SYNMrsp();}
+	
+	S-SYNmind				[!p17()&&p06()]							STAac1				{P-SYNmind();}
+	S-SYNmcnf				[p06()]									STAac1				{P-SYNmcnf();}
+	S-SYNMind				[!p17()&&p06()]							STAac1				{P-SYNMind();}	// was S-SYNMind
+	S-SYNMcnf				[p06()]									STAac1				{P-SYNMcnf();sa22();sa13();}
+
+//	Activity management and exception handling ---------------------------------------------------
+	P-ACTSreq				[p05()]									STAac1				{sa17();S-ACTSreq();}
+	P-ACTEreq				[p05()]									STAac1				{S-ACTEreq();}
+	P-ACTErsp				[!p17()&&p05()]							STAac1				{S-ACTErsp();}
+	P-ACTIreq				[!p17()]								STAt0				{S-ACTIreq();}
+	P-ACTIreq				[p17()&&p29()]							STAt0				{sa14();S-ACTIreq();}
+	P-ACTRreq				[(!p17()||p27()||!p28())&&p05()]		STAac1				{S-ACTRreq();}
+	P-ACTRreq				[!p27()&&p28()&&p17()&&p16()]			STAac1				{sa17();sa16();S-ACTRreq();}
+	P-ACTDreq				[!p17()]								STAt0				{S-ACTDreq();}
+	P-ACTDreq				[!p17()&&p29()]							STAt0				{sa14();S-ACTDreq();}
+	P-ACTDind				[!p17()]								STAt0				{sa09();S-ACTDind();}
+	P-ACTDind				[!p17()&&p29()]							STAt0				{sa14();sa09();S-ACTDind();}
+	P-UERreq				[p05()]									STAt0				{S-UERreq();}
+
+	S-ACTSind				[!p17()&&p06()]							STAac1				{P-ACTSind();}
+	S-ACTEind				[!p17()&&p06()]							STAac1				{P-ACTEind();}
+	S-ACTEcnf				[p06()]									STAac1				{sa14();sa19();P-ACTEcnf();}
+	S-ACTIind				[!p17()]								STAt0				{sa20();P-ACTIind();}
+	S-ACTIind				[p17()&&p29()]							STAt0				{sa14();sa20();P-ACTIind();}
+	S-ACTRind				[!p17()&&p06()]							STAac1				{P-ACTRind();}
+	S-UERind				[p06()]									STAt0				{P-UERind();}
+	S-PERind														STAt0				{P-PERind();}
+
+//	Reynchronization ------------------------------------------------------------------------------
+	P-RSYNreq				[!p17()&&p05()]							STAt0				{RS();}
+	P-RSYNreq				[ p17()&&p19()&&p05()]					STAt0				{RS();}
+	P-RSYNreq				[ p17()&&p26()&&p18()]					STAt0				{RS();}
+	P-RSYNreq				[ p17()&&!p19()&&!p26()&&p15()]			STAt0				{sa18();RS();}
+	RS						[!p17()&&p21()]							STAt0				{P-RSYNind();}
+	RS						[ p17()&&p19()&&p21()]					STAt0				{P-RSYNind();}
+	RS						[ p17()&&p26()&&p18()]					STAt0				{sa16();P-RSYNind();}
+	RS						[ p17()&&!p19()&&!p26()&&p15()]			STAt0				{sa18();P-RSYNind();}
+
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//
+STAac2 { 	// await ACA PPDU or P-ALTER-CONTEXT response
+//	Connection release (normal) --------------------------------------------------------------------
+	P-RELreq				[p07()]									STAac2				{sa08();sa07();S-RELreq();}
+	S-RELind				[p06()]									STAac2				{sa08();sa07();P-RELind();}
+	P-RELrsp(accept: bool)	[ accept&&p07()&&!p08()]				STAI0				{S-RELrsp(true);}
+	P-RELrsp(accept: bool)	[ accept&&p07()&&p08()]					STAt0				{sa02();S-RELrsp(true);}
+	P-RELrsp(accept: bool)	[!accept&&p07()]						STAac2				{sa02();S-RELrsp(false);}
+	S-RELcnf(accept: bool)	[ accept&&p06()&&!p08()]				STAI0				{P-RELcnf(true);}
+	S-RELcnf(accept: bool)	[ accept&&p06()&&p08()]					STAt0				{sa02();P-RELcnf(true);}
+	S-RELcnf(accept: bool)	[!accept&&p06()]						STAac2				{sa02();P-RELcnf(false);}
+
+//	Connection release (abort) --------------------------------------------------------------------
+	P-UABreq				[p07()]									STAI0				{ARU();}
+	ARU						[p21()&&p25()]							STAI0				{P-UABind();}
+	ARP																STAI0				{P-PABind();}
+	S-PABind														STAI0				{P-PABind();}
+
+//	Context management ---------------------------------------------------------------------------
+	P-ALTERrsp				[p09()]									STAt0				{sa06();sa11();ACA();}
+	ACA						[p09()&&p06()]							STAac1				{sa10();sa11();P-ALTERcnf();}
+
+//	Data transfer --------------------------------------------------------------------------------
+	P-DTreq					[p07()]									STAac2				{TD();}
+	TD						[p06()]									STAac2				{P-DTind();}
+	P-TDreq					[p07()&&p14()]							STAac2				{TTD();}
+	TTD						[p06()&&p14()]							STAac2				{P-TDind();}
+	P-EXreq					[p13()]									STAac2				{TE();}
+	TE						[p13()]									STAac2				{P-EXind();}
+	P-CDreq					[p07()]									STAac2				{TC();}
+	TC						[p06()]									STAac2				{P-CDind();}
+	P-CDrsp					[p07()]									STAac2				{TCC();}
+	TCC						[p06()]									STAac2				{P-CDcnf();}
+
+//	Token handling -------------------------------------------------------------------------------
+	P-GTreq					[p07()]									STAac2				{S-GTreq();}
+	P-PTreq					[p07()]									STAac2				{S-PTreq();}
+	P-CGreq					[p07()]									STAac2				{S-CGreq();}
+
+	S-GTind					[p06()]									STAac2				{P-GTind();}
+	S-PTind					[p06()]									STAac2				{P-PTind();}
+	S-CGind					[p06()]									STAac2				{P-CGind();}
+
+//	Synchronization ------------------------------------------------------------------------------
+	P-SYNmreq				[!p17()&&p07()]							STAac2				{S-SYNmreq();}
+	P-SYNmrsp				[p07()]									STAac2				{S-SYNmrsp();}	// was P-SYNMind
+	P-SYNMreq				[!p17()&&p07()]							STAac2				{S-SYNMreq();}
+	P-SYNMrsp				[!p17()&&p07()]							STAac2				{S-SYNMrsp();}
+
+	S-SYNmind				[!p17()&&p06()]							STAac2				{P-SYNmind();}
+	S-SYNmcnf				[p06()]									STAac2				{P-SYNmcnf();}
+	S-SYNMind				[!p17()&&p06()]							STAac2				{P-SYNMind();}	// was S-SYNMind
+	S-SYNMcnf				[!p17()&&p06()]							STAac2				{P-SYNMcnf();}
+
+//	Activity management and exception handling ---------------------------------------------------
+	P-ACTSreq				[!p17()&&p07()]							STAac2				{S-ACTSreq();}
+	P-ACTEreq				[!p17()&&p07()]							STAac2				{S-ACTEreq();}
+	P-ACTErsp				[!p17()&&p07()]							STAac2				{S-ACTErsp();}
+	P-ACTIreq				[!p17()]								STAt0				{S-ACTIreq();}
+	P-ACTIreq				[p17()&&p29()]							STAt0				{sa14();S-ACTIreq();}
+	P-ACTRreq				[!p17()&&p07()]							STAac2				{S-ACTRreq();}
+	P-ACTDreq				[!p17()]								STAt0				{S-ACTDreq();}
+	P-ACTDreq				[!p17()&&p29()]							STAt0				{sa14();S-ACTDreq();}
+	P-ACTDind				[!p17()]								STAt0				{sa09();S-ACTDind();}
+	P-ACTDind				[!p17()&&p29()]							STAt0				{sa14();sa09();S-ACTDind();}
+	P-UERreq				[p07()]									STAt0				{S-UERreq();}
+
+	S-ACTSind				[!p17()&&p06()]							STAac2				{P-ACTSind();}
+	S-ACTEind				[!p17()&&p06()]							STAac2				{P-ACTEind();}
+	S-ACTEcnf				[!p17()&&p06()]							STAac2				{P-ACTEcnf();}
+	S-ACTIind				[!p17()]								STAt0				{sa20();P-ACTIind();}
+	S-ACTIind				[p17()&&p29()]							STAt0				{sa14();sa20();P-ACTIind();}
+	S-ACTRind				[!p17()&&p06()]							STAac2				{P-ACTRind();}
+	S-UERind				[p06()]									STAt0				{P-UERind();}
+	S-PERind														STAt0				{P-PERind();}
+
+//	Reynchronization ------------------------------------------------------------------------------
+	P-RSYNreq				[!p17()&&p07()]							STAt0				{RS();}
+	P-RSYNreq				[ p17()&&p19()&&p07()]					STAt0				{RS();}
+	P-RSYNreq				[ p17()&&p26()&&p18()]					STAt0				{RS();}
+	P-RSYNreq				[ p17()&&!p19()&&!p26()&&p15()]			STAt0				{sa18();RS();}
+	RS						[!p17()&&p21()]							STAt0				{sa21();P-RSYNind();}
+	RS						[ p17()&&p19()&&p21()]					STAt0				{sa21();P-RSYNind();}
+	RS						[ p17()&&p26()&&p18()]					STAt0				{sa16();P-RSYNind();}
+	RS						[ p17()&&!p19()&&!p26()&&p15()]			STAt0				{sa18();P-RSYNind();}
+}
+
+%%

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\BaseTestSuite.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\Driver.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\addr\AddrTestSuite.cpp">
+      <Filter>addr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\util\BufferTest.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\util\InputOutputStreamTest.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\addr\MacrosTest.cpp">
+      <Filter>addr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\addr\SelectorTest.cpp">
+      <Filter>addr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\srvc\SrvcTestSuite.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\util\UtilTestSuite.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\util\SharedBufferTest.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\BaseTestSuite.h" />
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\addr\AddrTestSuite.h">
+      <Filter>addr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\util\BufferTest.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\util\InputOutputStreamTest.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\addr\MacrosTest.h">
+      <Filter>addr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\addr\SelectorTest.h">
+      <Filter>addr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\srvc\SrvcTestSuite.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\util\UtilTestSuite.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\util\SharedBufferTest.h">
+      <Filter>util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addr">
+      <UniqueIdentifier>{ff18c020-7df3-40fd-ba75-c6126b63de71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{0e489ea4-4a79-4d3b-8aea-32795a3a9df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="srvc">
+      <UniqueIdentifier>{bc3ea11c-e6c3-45aa-b3f0-e342a1ee7ab0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\..\..\..\..\test\iso\itu\osi\als\base\addr\Macros.xml">
+      <Filter>addr</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>

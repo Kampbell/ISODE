@@ -1,0 +1,1743 @@
+/*
+-cast: (May be used only with the -c++ command line option.) Specifies what casting operator is used in the generate C++ code. The default is dynamic_cast. If runtime type identification (RTTI) is not used then use this option to specify another.
+-d: Specifies where SMC should place generated files. If not specified, then generated files are placed in the same directory as the .sm file.
+-headerd: (May be used only with the -c, -c++ and -objc command line options.) Specifies where SMC should place .h generated files. If not specified but -d is specified, then .h files is placed in the -d directory. If neither -headerd nor -d is specified, then .h files are placed in the same directory as the .sm file.
+-nostreams: (May be used only with the -c++ and -g command line options.) The generated C++ code will not use IOStreams for debug output. Instead the application must provide the following subroutine/macro:
+-serial: Generate unique integer IDs for each state. These IDs can be used when persisting an FSM.
+-g, -g0, -g1: Adds debug output messages to the generated code. -g0 produces output messages which signal when the FSM has exited a state, entered a state, entered and exited a transition. -g1 includes the -g0 output and addition output for entering and exiting state Exit and Entry actions. -g is the same as -g0. 
+*/
+
+%start		SSAP::STA01
+%header		als/ssap/prov/Provider.h
+%fsmclass	FSM
+%fsmfile	FSM
+%package	ALS::SSAP::PROV
+%class		Provider
+%include	"als/ssap/ResyncOption.h", "als/ssap/spdu/AC.h", "als/ssap/spdu/MAP.h"
+/*
+Recommendation ITU-T X.225
+CONNECTION-ORIENTED PROTOCOL SPECIFICATION
+SESSION PROTOCOL
+
+
+Incoming events
+------------------------------------------------------------------
+SACTDreq, 		// SS-user		S-ACTIVITY-DISCARD request primitive 
+SACTDrsp, 		// SS-user		S-ACTIVITY-DISCARD response primitive 
+SACTEreq, 		// SS-user		S-ACTIVITY-END request primitive 
+SACTErsp, 		// SS-user		S-ACTIVITY-END response primitive 
+SACTIreq, 		// SS-user		S-ACTIVITY-INTERRUPT request primitive 
+SACTIrsp, 		// SS-user		S-ACTIVITY-INTERRUPT response primitive 
+SACTRreq, 		// SS-user		S-ACTIVITY-RESUME request primitive 
+SACTSreq, 		// SS-user		S-ACTIVITY-START request primitive 
+SCDreq, 		// SS-user		S-CAPABILITY-DATA request primitive 
+SCDrsp, 		// SS-user		S-CAPABILITY-DATA response primitive 
+SCGreq, 		// SS-user		S-CONTROL-GIVE request primitive 
+SCONreq, 		// SS-user		S-CONNECT request primitive 
+SCONrsp+, 		// SS-user		S-CONNECT (accept) response primitive 
+SCONrsp-, 		// SS-user		S-CONNECT (reject) response primitive 
+SDTreq, 		// SS-user		S-DATA request primitive 
+SEXreq, 		// SS-user		S-EXPEDITED-DATA request primitive 
+SGTreq, 		// SS-user		S-TOKEN-GIVE request primitive 
+SPTreq, 		// SS-user		S-TOKEN-PLEASE request primitive 
+SRELreq, 		// SS-user		S-RELEASE request primitive 
+SRELrsp+, 		// SS-user		S-RELEASE (accept) response primitive 
+SRELrsp-, 		// SS-user		S-RELEASE (reject) response primitive 
+SRSYNreq(a) 	// SS-user		S-RESYNCHRONIZE (abandon) request primitive 
+SRSYNreq(r) 	// SS-user		S-RESYNCHRONIZE (restart) request primitive 
+SRSYNreq(s) 	// SS-user		S-RESYNCHRONIZE (set) request primitive 
+SRSYNrsp, 		// SS-user		S-RESYNCHRONIZE response primitive 
+SSYNMreq, 		// SS-user		S-SYNC-MAJOR request primitive 
+SSYNMrsp, 		// SS-user		S-SYNC-MAJOR response primitive 
+SSYNmreq, 		// SS-user		S-SYNC-MINOR request primitive 
+SSYNmdreq, 		// SS-user		S-SYNC-MINOR (data separation) request primitive 
+SSYNmrsp, 		// SS-user		S-SYNC-MINOR response primitive 
+STDreq, 		// SS-user		S-TYPED-DATA request primitive 
+SUABreq, 		// SS-user		S-U-ABORT request primitive 
+SUERreq, 		// SS-user		S-U-EXCEPTION-REPORT request primitive 
+
+TCONind, 		// TS-provider T-CONNECT indication primitive 
+TCONcnf, 		// TS-provider T-CONNECT confirm primitive 
+TDISind, 		// TS-provider T-DISCONNECT indication primitive 
+
+TIM, 			// Timer Time out 
+
+AA, 			// ABORT ACCEPT SPDU 
+AB-nr, 			// ABORT (not reuse) SPDU 
+AB-r, 			// ABORT (reuse) SPDU 
+AC, 			// ACCEPT SPDU (Note 1) 
+AD, 			// ACTIVITY DISCARD SPDU 
+ADA, 			// ACTIVITY DISCARD ACK SPDU 
+AE, 			// ACTIVITY END SPDU 
+AEA, 			// ACTIVITY END ACK SPDU 
+AI, 			// ACTIVITY INTERRUPT SPDU 
+AIA, 			// ACTIVITY INTERRUPT ACK SPDU 
+AR, 			// ACTIVITY RESUME SPDU 
+AS, 			// ACTIVITY START SPDU 
+CD, 			// CAPABILITY DATA SPDU 
+CDA, 			// CAPABILITY DATA ACK SPDU 
+CDO, 			// CONNECT DATA OVERFLOW SPDU 
+CN, 			// CONNECT SPDU 
+DN, 			// DISCONNECT SPDU 
+DT, 			// DATA TRANSFER SPDU 
+ED, 			// EXCEPTION DATA SPDU 
+ER, 			// EXCEPTION REPORT SPDU 
+EX, 			// EXPEDITED DATA SPDU 
+FN-nr, 			// FINISH (not reuse) SPDU 
+FN-r, 			// FINISH (reuse) SPDU 
+GT, 			// GIVE TOKENS SPDU with Token Item parameter (Note 2) 
+GTA, 			// GIVE TOKENS ACK SPDU 
+GTC, 			// GIVE TOKENS CONFIRM SPDU 
+MAA, 			// MAJOR SYNC ACK SPDU 
+MAP, 			// MAJOR SYNC POINT SPDU 
+MIA, 			// MINOR SYNC ACK SPDU 
+MIP, 			// MINOR SYNC POINT SPDU 
+MIP-d, 			// MINOR SYNC POINT (data separation) SPDU 
+NF, 			// NOT FINISHED SPDU 
+OA, 			// OVERFLOW ACCEPT SPDU 
+PR-AB, 			// PREPARE (ABORT) SPDU 
+PR-MAA, 		// PREPARE (MAJOR SYNC ACK) SPDU 
+PR-RA, 			// PREPARE (RESYNCHRONIZE ACK) SPDU 
+PR-RS, 			// PREPARE (RESYNCHRONIZE) SPDU 
+PT, 			// PLEASE TOKENS SPDU with Token Item parameter (Notes 1 and 2) 
+RA, 			// RESYNCHRONIZE ACK SPDU 
+RF-nr, 			// REFUSE (not reuse) SPDU 
+RF-r, 			// REFUSE (reuse) SPDU 
+RS-a, 			// RESYNCHRONIZE (abandon) SPDU 
+RS-r, 			// RESYNCHRONIZE (restart) SPDU 
+RS-s, 			// RESYNCHRONIZE (set) SPDU 
+TD, 			// TYPED DATA SPDU 
+
+State
+------------------------------------------------------------------
+STA 01 		// Idle, no transport connection
+STA 01A 	// Wait for the ABORT ACCEPT SPDU
+STA 01B 	// Wait for T-CONNECT confirm
+STA 01C 	// Idle, transport connected
+STA 01D 	// Wait for the CONNECT DATA OVERFLOW SPDU
+STA 02A 	// Wait for the ACCEPT SPDU
+STA 02B 	// Wait for the OVERFLOW ACCEPT SPDU
+STA 03 		// Wait for the DISCONNECT SPDU
+STA 04A 	// Wait for the MAJOR SYNC ACK SPDU or the PREPARE (MAJOR SYNC ACK) SPDU
+STA 04B 	// Wait for the ACTIVITY END ACK SPDU or the PREPARE (MAJOR SYNC ACK) SPDU
+STA 05A 	// Wait for the RESYNCHRONIZE ACK SPDU or the PREPARE (RESYNCHRONIZE ACK) SPDU
+STA 05B 	// Wait for the ACTIVITY INTERRUPT ACK SPDU or the PREPARE (RESYNCHRONIZE ACK) SPDU
+STA 05C 	// Wait for the ACTIVITY DISCARD ACK SPDU or the PREPARE (RESYNCHRONIZE ACK) SPDU
+STA 06 		// Wait for the RESYNCHRONIZE SPDU (resynchronization collision after receiving PREPARE (RESYNCHRONIZE) SPDU
+STA 08 		// Wait for S-CONNECT response
+STA 09 		// Wait for S-RELEASE response
+STA 10A 	// Wait for S-SYNC-MAJOR response
+STA 10B 	// Wait for S-ACTIVITY-END response
+STA 11A 	// Wait for S-RESYNCHRONIZE response
+STA 11B 	// Wait for S-ACTIVITY-INTERRUPT response
+STA 11C 	// Wait for S-ACTIVITY-DISCARD response
+STA 15A 	// After PREPARE, wait for the MAJOR SYNC ACK SPDU or the ACTIVITY END ACK SPDU
+STA 15B 	// After PREPARE, wait for the RESYNCHRONIZE SPDU or the ACTIVITY INTERRUPT SPDU or the ACTIVITY DISCARD SPDU
+STA 15C 	// After PREPARE, wait for the RESYNCHRONIZE ACK SPDU or the ACTIVITY INTERRUPT ACK SPDU or the ACTIVITY DISCARD ACK SPDU
+STA 15D 	// After PREPARE, wait for the ABORT SPDU
+STA 16 		// Wait for T-DISCONNECT indication
+STA 18 		// Wait for the GIVE TOKENS ACK SPDU
+STA 19 		// Wait for a recovery request or SPDU (initiator of EXCEPTION DATA SPDU)
+STA 20 		// Wait for a recovery SPDU or request
+STA 21 		// Wait for the CAPABILITY DATA ACK SPDU
+STA 22 		// Wait for S-CAPABILITY-DATA response
+STA 713 	// Data transfer state
+NOTES
+1 If the ACCEPT SPDU contains the Token Item Parameter [see 7.4.1 c)], this shall be regarded by the SPM as if an
+ACCEPT SPDU had been received, followed by a PLEASE TOKENS SPDU. Therefore, both the AC event and the
+PT event occur.
+2 GIVE TOKENS SPDU without Token Item parameter and PLEASE TOKENS SPDU without Token Item parameter
+are used to herald a concatenated sequence of SPDUs. Concatenation of SPDUs and separation of TSDUs are not handled
+by the state tables.
+
+
+
+Outgoing events
+------------------------------------------------------------------
+SACTDind	// SS-provider S-ACTIVITY-DISCARD indication primitive
+SACTDcnf	// SS-provider S-ACTIVITY-DISCARD confirm primitive
+SACTEind	// SS-provider S-ACTIVITY-END indication primitive
+SACTEcnf	// SS-provider S-ACTIVITY-END confirm primitive
+SACTIind	// SS-provider S-ACTIVITY-INTERRUPT indication primitive
+SACTIcnf	// SS-provider S-ACTIVITY-INTERRUPT confirm primitive
+SACTRind	// SS-provider S-ACTIVITY-RESUME indication primitive
+SACTSind	// SS-provider S-ACTIVITY-START indication primitive
+SCDind		// SS-provider S-ACTIVITY-DATA indication primitive
+SCDcnf		// SS-provider S-CAPABILITY-DATA confirm primitive
+SCGind		// SS-provider S-CONTROL-GIVE indication primitive
+SCONind		// SS-provider S-CONNECT indication primitive
+SCONcnf+	// SS-provider S-CONNECT (accept) confirm primitive
+SCONcnf-	// SS-provider S-CONNECT (reject) confirm primitive
+SDTind		// SS-provider S-DATA indication primitive
+SEXind		// SS-provider S-EXPEDITED-DATA indication primitive
+SPABind		// SS-provider S-P-ABORT indication primitive
+SPERind		// SS-provider S-P-EXCEPTION-REPORT indication primitive
+SGTind		// SS-provider S-TOKEN-GIVE indication primitive
+SPTind		// SS-provider S-TOKEN-PLEASE indication primitive
+SRELind		// SS-provider S-RELEASE indication primitive
+SRELcnf+	// SS-provider S-RELEASE (accept) confirm primitive
+SRELcnf-	// SS-provider S-RELEASE (reject) confirm primitive
+SRSYNind	// SS-provider S-RESYNCHRONIZE indication primitive
+SRSYNcnf	// SS-provider S-RESYNCHRONIZE confirm primitive
+SSYNMind	// SS-provider S-SYNC-MAJOR indication
+SSYNMcnf	// SS-provider S-SYNC-MAJOR confirm
+SSYNmind	// SS-provider S-SYNC-MINOR indication primitive
+SSYNmdind	// SS-provider S-SYNC-MINOR (data separation) indication primitive
+SSYNmcnf	// SS-provider S-SYNC-MINOR confirm primitive
+STDind		// SS-provider S-TYPED-DATA indication primitive
+SUABind		// SS-provider S-U-ABORT indication primitive
+SUERind		// SS-provider S-U-EXCEPTION-REPORT indication primitive
+TCONreq 	// TS-user T-CONNECT request primitive
+TCONrsp 	// TS-user T-CONNECT response primitive
+TDISreq 	// TS-user T-DISCONNECT request primitive
+AA			// ABORT ACCEPT SPDU
+AB-nr		// ABORT (not reuse) SPDU
+AB-r		// ABORT (reuse) SPDU
+AC			// ACCEPT SPDU
+AD			// ACTIVITY DISCARD SPDU
+ADA			// ACTIVITY DISCARD ACK SPDU
+AE			// ACTIVITY END SPDU
+AEA			// ACTIVITY END ACK SPDU
+AI			// ACTIVITY INTERRUPT SPDU
+AIA			// ACTIVITY INTERRUPT ACK SPDU
+AR			// ACTIVITY RESUME SPDU
+AS			// ACTIVITY START SPDU
+CD			// CAPABILITY DATA SPDU
+CDA			// CAPABILITY DATA ACK SPDU
+CDO			// CONNECT DATA OVERFLOW SPDU
+CN			// CONNECT SPDU
+DN			// DISCONNECT SPDU
+DT			// DATA TRANSFER SPDU
+ED			// EXCEPTION DATA SPDU
+EX			// EXPEDITED DATA SPDU
+FN-nr		// FINISH (not reuse) SPDU
+FN-r		// FINISH (reuse) SPDU
+GT			// GIVE TOKENS SPDU
+GTA			// GIVE TOKENS ACK SPDU
+GTC			// GIVE TOKENS CONFIRM SPDU
+MAA			// MAJOR SYNC ACK SPDU
+MAP			// MAJOR SYNC POINT SPDU
+MIA			// MINOR SYNC ACK SPDU
+MIP			// MINOR SYNC POINT SPDU
+MIP-d		// MINOR SYNC (data separation) POINT SPDU
+NF			// NOT FINISHED SPDU
+OA			// OVERFLOW ACCEPT SPDU
+PR-AB		// PREPARE (ABORT) SPDU
+PR-MAA		// PREPARE (MAJOR SYNC ACK) SPDU
+PR-RA		// PREPARE (RESYNCHRONIZE ACK) SPDU
+PR-RS		// PREPARE (RESYNCHRONIZE) SPDU
+PT			// PLEASE TOKENS SPDU
+RA			// RESYNCHRONIZE ACK SPDU
+RF-nr		// REFUSE (not reuse) SPDU
+RF-r		// REFUSE (reuse) SPDU
+RS-a		// RESYNCHRONIZE (abandon) SPDU
+RS-r		// RESYNCHRONIZE (restart) SPDU
+RS-s		// RESYNCHRONIZE (set) SPDU
+TD			// TYPED DATA SPDU
+
+Predicates
+------------------------------------------------------------------
+p01 ¬Vtca
+p02 local choice & ¬TEXP
+p03 I(dk)
+p04 FU(FD) & ¬Vcoll
+p05 A(dk)
+p06 FU(TD)
+p07 FU(TD) & ¬Vcoll
+p08 FU(EX)
+p09 FU(EX) & ¬Vcoll
+p10 ¬Vcoll
+p11 II(ma)
+p12 FU(MA) & [¬FU(ACT) OR Vact] & A(dk) & A(mi) & AA(ma)
+p13 FU(MA) & [¬FU(ACT) OR Vact] & I(dk) & I(mi) & II(ma)
+p14 [¬FU(ACT) OR Vact] & A(dk) & AA(mi)
+p15 [¬FU(ACT) OR Vact] & I(dk) & II(mi)
+p16 ¬TEXP
+p17 [¬FU(ACT) OR Vact] & [FU(SS) OR FU(SY)] & [FU(SS) OR ¬Vsc]
+p18 [¬FU(ACT) OR Vact] & [FU(SS) OR FU(SY)] & [FU(SS) OR Vsc]
+p19 ¬FU(SS) & [serial number = V(M)]
+p20 ¬FU(SS) & [serial number = V(M) - 1]
+p21 ¬FU(SS) & [V(M) > serial number >= V(A)]
+p22 Unused
+p23 FU(ACT) & ¬Vnextact
+p24 ¬SPMwinner
+p25 [FU(SY) OR FU(SS) OR FU(MA)] & FU(RESYN)
+p26 [¬FU(ACT) OR Vact]
+p27 Vrsp = no
+p28 FU(RESYN)
+p29 [¬FU(ACT) OR Vact] & FU(RESYN)
+p30 ¬FU(ACT) OR Vnextact
+p31 FU(ACT) & Vnextact
+p32 [¬FU(SS) & [[type ¹ r] OR [serial number ³ V(R)]]] OR [FU(SS) & [[rcv flow type ¹ r] OR [rcv flow serial number ³ V(Rr)]]& [[snd flow type ¹ r] OR [snd flow serial number ³ V(Rs)]]]
+p33 V(M) ³ serial number ³ V(R)
+p34 FU(ACT)
+p35 FU(RESYN) & [¬TEXP OR FU(DS)]
+p36 FU(RESYN) & TEXP
+p37 FU(ACT) & TEXP
+p38 FU(ACT) & ¬TEXP
+p39 Vact & II(ma)
+p40 AA(ma)
+p41 Vrsp = dsc
+p42 Vrsp = int
+p43 ¬FU(SS) & [ [[Vrsp = r] & [serial number = Vrspnb]] OR [[Vrsp = a] & [serial number = V(M)]]OR [Vrsp = s]]
+p44 [FU(ACT) & ¬Vact] & A(dk) & A(mi) & A(ma)
+p45 [FU(ACT) & ¬Vact] & I(dk) & I(mi) & I(ma)
+p46 FU(CD) & [FU(ACT) & ¬Vact] & A(dk) & A(mi) & ¬OWNED(ma)
+p47 FU(CD) & [FU(ACT) & ¬Vact] & I(dk) & I(mi) & OWNED(ma)
+p48 FU(EXCEP) & FU(HD)
+p49 [[Vrsp = r] & [serial number = Vrspnb]] OR [[Vrsp = a] & [serial number ³ V(M)]] OR [Vrsp = s]
+p50 FU(EXCEP) & [¬FU(ACT) OR Vact] & AA(dk)
+p51 FU(EXCEP) & [¬FU(ACT) OR Vact] & II(dk)
+p52 FU(EXCEP) & ¬FU(ACT) & II(dk)
+p53 ALL(AV, RT)
+p54 ALL(II, GT)
+p55 [FU(ACT) & ¬Vact] & ALL(I, tk-dom)
+p57 ALL(II, GT) & (dk not in GT)
+p58 ALL(II, GT) & (dk in GT)
+p59 ALL(AA, GT)
+p60 ALL(AA, GT) & (dk not in GT)
+p61 ALL(AA, GT) & (dk in GT)
+p62 [FU(ACT) & ¬Vact] & ALL(A, tk-dom)
+p63 ALL(I, tk-dom) & [¬FU(ACT) OR ¬Vact]
+p64 local choice & ¬Vtca & ¬TEXP
+p65 ANY(AV, tk-dom)
+p66 Vtrr
+p67 FU(NR)
+p68 ALL(A, tk-dom) & [¬FU(ACT) OR ¬Vact]
+p69 Vcoll
+p70 FU(FD)
+p71 FU(ACT) & Vact & I(dk) & I(mi) & II(ma)
+p72 FU(ACT) & Vact & A(dk) & A(mi) & AA(ma)
+p75 (Vcoll & Vdnr) OR ¬Vcoll
+p76 CN SPDU is not acceptable to the SPM for transient or persistent reason (see 8.3.5.10)
+p80 ¬FU(DS) OR [¬FU(SS) & V(Adi) < V(A) ] OR [FU(SS) & V(Adi) < V(Ar) ] p81 [¬FU(SS) & V(Ado) ³ V(A) ] OR [FU(SS) & V(Ado) ³ V(As) ]
+p82 FU(DS)
+p173 FU(SS) & [serial numbers = V(Ms) - 1, V(Mr)]
+p174 FU(SS) & [serial numbers = V(Ms), V(Mr) - 1]
+p175 FU(SS) & [serial number = V(Mr) - 1]
+p176 FU(SS) & [V(Ms) > serial number ³ V(As)]
+p177 FU(SS) & [serial number = V(Mr)]
+p178 FU(SS)
+p179 FU(SS) & [V(Mr) > serial number ³ V(Ar)]
+p180 [¬FU(SS) & [type ¹ r]] OR [FU(SS) & [[rcv flow type = a] OR [rcv flow type = s]] & [[snd flow type = a] OR [snd flow type = s]]]
+p184 FU(SS) & Vrsps = no
+p185 Discard-rcv-flow & ¬p81
+p186 Discard-snd-flow
+p187 FU(SS) & [[Vrspr ¹ r] OR [rcv flow serial number = Vrspnbr]] & [[Vrsps ¹ r] OR [snd flow serial number = Vrspnbs]]
+p201 More user data to send
+p202 End of user data
+p204 More than 10 240 octets of SS-user data to be transferred
+
+
+Special actions named SAXX in the FSM
+[1] Set Vtca = true
+[2] Set Vtca = false
+[3] Stop timer TIM
+[4] Start timer TIM
+[5] Set V(A) = V(M) = serial number in ACCEPT SPDU; Set V(R) = 0;Set Vcoll = false;Set Vrsp = no;Set Vsc = false;Set V(Ado) = -1;Set V(Adi) = -1;Set TEXP;Set FU(f) for f in fu-dom according to the intersection of Session User Requirements;in the CONNECT SPDU and Session User Requirements in the ACCEPT SPDU;If FU(ACT) = true, then set Vact = false;Set Vdnr = false
+[6] Recall the queued events until the queue is empty
+[7] Set Vtrr = true
+[8] Set Vtrr = false
+[9] Set Vtrr according to the Transport Disconnect PV field in the SPDUAs a local decision, Vtrr may always be set false
+[10] Store the event in the queue
+[11] Update the position of the tokens
+[12] Set Vact = true
+[13] Set Vnextact
+[14] Set Vact = Vnextact
+[15] Not used
+[16] If ¬FU(SS), then:Update Vrsp If RS-r, update Vrspnb Set Discard-rcv-flow = true Set Discard-snd-flow = true If FU(SS), then: Update Vrsps If Vrsps = r, update Vrspnbs If Vrsps ¹ no, set Discard-snd-flow = true If FU(SS), then: Update Vrspr If Vrspr = r, update Vrspnbr If Vrspr ¹ no, set Discard-rcv-flow = true
+[17] Not used
+[18] Set Vcoll = true
+[19] If ¬FU(SS), then: V(M) = maximum [V(M), received serial number]If FU(SS), then: V(Mr) = maximum [V(Mr), received first serial number]V(Ms) = maximum [V(Ms), received second serial number]
+[20] Set Vsc = false
+[21] Set V(M) = V(M) + 1
+[22] Set V(R) = V(A) = V(M)
+[23] If Vsc = false, then set V(A) = V(M) Set Vsc = true Set V(M) = V(M) + 1
+[24] If Vsc = true, then set V(A) = V(M) Set Vsc = false Set V(M) = V(M) + 1
+[25] Set V(A) = serial number + 1
+[26] Set V(A) = V(M) = V(R) = 1
+[27] Set V(A) = V(M) = serial number + 1 Set V(R) = 1
+[28] Set V(A) = V(M) = serial number If Vrsp = a, then set V(R) = 0 If Vrsp = s, then set V(R) = 0 Set Vrsp = no Set V(Ado) = -1 Set V(Adi) = -1 Set Discard-rcv-flow = false Set Discard-snd-flow = false
+[29] Set the position of the tokens such that all available tokens are owned Set Vact = false Set Vrsp = no
+[30] Set the position of the tokens such that all available tokens are not owned Set Vact = false Set Vrsp = no
+[31] If Vsc = false, then set V(A) = V(M) Set V(M) = V(M) + 1
+[32] Set Vdnr = true
+[41] Set V(Ado) = V(M)
+[42] Set V(Ado) = V(Ms)
+[43] Set V(Ado) = -1 Set V(Adi) = -1
+[44] Set V(Adi) = V(M)
+[45] Set V(Adi) = V(Mr)
+[50] Preserve user data for subsequent SCONind
+[51] If p201 send subsequent CDO SPDUs until ¬p201
+[62] Set V(Mr) = V(Mr) + 1
+[63] Set V(Ms) = V(Ms) + 1
+[64] Set V(Rs) = V(As) = V(Ms) Set V(Rr) = V(Ar) = V(Mr)
+[65] Set V(As) = serial number + 1
+[66] Set V(Ar) = serial number + 1
+[67] If neither Resync Type is present, then: Set Discard-rcv-flow = true Set Discard-snd-flow = true If Resync Type is present for sending flow, then: Set Discard-snd-flow = true If Resync Type is present for receiving flow, then: Set Discard-rcv-flow = true
+[68] Set V(As) = V(Ms) = sending flow serial number, if present If Vrsps = a, then set V(Rs) = 0 If Vrsps = s, then set V(Rs) = 0 Set Vrsps = no Set Discard-snd-flow = false Set V(Ar) = V(Mr) = receiving flow serial number, if present If Vrspr = a, then set V(Rr) = 0 If Vrspr = s, then set V(Rr) = 0 Set Vrspr = no Set Discard-rcv-flow = false Set V(Ado) = -1 Set V(Adi) = -1
+[69] Set V(As) = V(Ms) = sending flow serial number + 1 Set V(Rs) = 1 Set V(Ar) = V(Mr) = receiving flow serial number + 1 Set V(Rr) = 1
+[70] Set V(As) = V(Ms) = V(Rs) = 1 Set V(Ar) = V(Mr) = V(Rr) = 1
+[71] Set V(As) = V(Ms) = sending flow serial number in ACCEPT SPDU Set V(Rs) = 0 Set Vrsps = no Set Discard-snd-flow = false Set V(Ar) = V(Mr) = receiving flow serial number in ACCEPT SPDU Set V(Rr) = 0 Set Vrspr = no Set Discard-rcv-flow = false Set Vcoll = false Set V(Ado) = -1 Set V(Adi) = -1
+[72] If FU(SS), then update Vrspr, Vrsps, Vrspnbr, and Vrspnbs as in A.5.4.5
+*/
+
+
+%map SSAP
+%%
+/*
+State	
+	Transition					Guard								End State	Action(s)
+*/
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA01 	// Idle, no transport connection
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	SCONreq																STA01B	{SA2();TCONreq();}
+	TCONind																STA01C	{SA1();TCONrsp();}
+
+//	Abort ------------------------------------------------------------------------------------------
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA01A 	// Wait for the ABORT ACCEPT SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	AC																	STA01A	{}
+	CN																	STA01	{SA3();TDISreq();}
+	RF(reuse: bool)														STA01A	{}
+
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT																	STA01A	{}
+	EX																	STA01A	{}
+	TD																	STA01A	{}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA01A	{}
+	AEA																	STA01A	{}
+	MAP																	STA01A	{}
+	PR-MAA																STA01A	{}
+	AE(map: const SPDU::MAP&)											STA01A	{}
+	MIA(ssn:int)														STA01A	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds]							STA01A	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds]							STA01A	{}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RA																STA01A	{}
+	PR-RS																STA01A	{}
+	RA																	STA01A	{}
+	RS(t: ResyncOption)													STA01A	{}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD																	STA01A	{}
+	ADA																	STA01A	{}
+	AI																	STA01A	{}
+	AIA																	STA01A	{}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	AR																	STA01A	{}
+	AS																	STA01A	{}
+	CD																	STA01A	{}
+	CDA																	STA01A	{}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED																	STA01A	{}
+	ER																	STA01A	{}
+	GT(tokens: int)														STA01A	{}
+	GTA																	STA01A	{}
+	GTC(tokens: int)													STA01A	{}
+	PT(tokens: int)														STA01A	{}
+
+//	Connection release -----------------------------------------------------------------------------
+	DN																	STA01A	{}
+	FN(release: bool)													STA01A	{}
+	NF																	STA01A	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AA																	STA01C	{SA3();}
+	AB(release: bool)				[!release]							STA01	{SA3();TDISreq();}
+	AB(release: bool)				[release]							STA01C	{SA3();}
+	TDISind																STA01	{SA3();}
+	TIM																	STA01	{TDISreq();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA01B 	// Wait for T-CONNECT confirm
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	TCONcnf							[p204()]							STA02B	{CN();}
+	TCONcnf							[!p204()]							STA02A	{CN();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	SUABreq																STA01	{TDISreq();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA01C 	// Idle, transport connected
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	AC																	STA01	{TDISreq();}
+	CDO																	STA01	{TDISreq();}
+	CN								[!p01()&&!p76()&&p204()]			STA01D	{SA50();OA();}
+	CN								[!p01()&&!p76()&&!p204()]			STA08	{SCONind();}
+	CN								[!p01()&&p76()&&!p02()]				STA16	{SA4();RF(false);}
+	CN								[!p01()&&p76()&&p02()]				STA01C	{RF(true);}
+	CN								[p01()]								STA01	{TDISreq();}
+	OA																	STA01	{TDISreq();}
+	RF(reuse: bool)														STA01	{TDISreq();}
+	SCONreq							[p01()&&p204()]						STA02B	{CN();}
+	SCONreq							[p01()&&!p204()]					STA02A	{CN();}
+
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT																	STA01	{TDISreq();}
+	EX																	STA01	{TDISreq();}
+	TD																	STA01	{TDISreq();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA01	{TDISreq();}
+	AEA																	STA01	{TDISreq();}
+	MAP																	STA01	{TDISreq();}
+	PR-MAA																STA01	{TDISreq();}
+	AE(map: const SPDU::MAP&)											STA01	{TDISreq();}
+	MIA(ssn:int)														STA01	{TDISreq();}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds]							STA01	{TDISreq();}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds]							STA01	{TDISreq();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RA																STA01	{TDISreq();}
+	PR-RS																STA01	{TDISreq();}
+	RA																	STA01	{TDISreq();}
+	RS(t: ResyncOption)													STA01	{TDISreq();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD																	STA01	{TDISreq();}
+	ADA																	STA01	{TDISreq();}
+	AI																	STA01	{TDISreq();}
+	AIA																	STA01	{TDISreq();}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	AR																	STA01	{TDISreq();}
+	AS																	STA01	{TDISreq();}
+	CD																	STA01	{TDISreq();}
+	CDA																	STA01	{TDISreq();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED																	STA01	{TDISreq();}
+	ER																	STA01	{TDISreq();}
+	GT(tokens: int)														STA01	{TDISreq();}
+	GTA																	STA01	{TDISreq();}
+	GTC(tokens: int)													STA01	{TDISreq();}
+	PT(tokens: int)														STA01	{TDISreq();}
+
+//	Connection release -----------------------------------------------------------------------------
+	DN																	STA01	{TDISreq();}
+	FN(release: bool)													STA01	{TDISreq();}
+	NF																	STA01	{TDISreq();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AA																	STA01	{TDISreq();}
+	AB(release: bool)				[!release]							STA01	{TDISreq();}
+	AB(release: bool)				[release&&!p02()]					STA01	{TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{AA();}
+	PR-AB																STA01	{TDISreq();}
+	TDISind																STA01	{}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA01D 	// Wait for the CONNECT DATA OVERFLOW SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	CDO								[!p202()]							STA01D	{SA50();}
+	CDO								[p202()]							STA08	{SCONind();}
+
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT																	STA01	{TDISreq();}
+	EX																	STA01	{TDISreq();}
+	TD																	STA01	{TDISreq();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA01	{TDISreq();}
+	AEA																	STA01	{TDISreq();}
+	MAP																	STA01	{TDISreq();}
+	PR-MAA																STA01	{TDISreq();}
+	AE(map: const SPDU::MAP&)											STA01	{TDISreq();}
+	MIA(ssn:int)														STA01	{TDISreq();}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds]							STA01	{TDISreq();}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds]							STA01	{TDISreq();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RA																STA01	{TDISreq();}
+	PR-RS																STA01	{TDISreq();}
+	RA																	STA01	{TDISreq();}
+	RS(t: ResyncOption)													STA01	{TDISreq();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD																	STA01	{TDISreq();}
+	ADA																	STA01	{TDISreq();}
+	AI																	STA01	{TDISreq();}
+	AIA																	STA01	{TDISreq();}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	AR																	STA01	{TDISreq();}
+	AS																	STA01	{TDISreq();}
+	CD																	STA01	{TDISreq();}
+	CDA																	STA01	{TDISreq();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED																	STA01	{TDISreq();}
+	ER																	STA01	{TDISreq();}
+	GT(tokens: int)														STA01	{TDISreq();}
+	GTA																	STA01	{TDISreq();}
+	GTC(tokens: int)													STA01	{TDISreq();}
+	PT(tokens: int)														STA01	{TDISreq();}
+
+//	Connection release -----------------------------------------------------------------------------
+	DN																	STA01	{TDISreq();}
+	FN(release: bool)													STA01	{TDISreq();}
+	NF																	STA01	{TDISreq();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AA																	STA01	{TDISreq();}
+	AB(release: bool)				[!release]							STA01	{TDISreq();}
+	AB(release: bool)				[release&&!p02()]					STA01	{TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{AA();}
+	TDISind																STA01	{}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA02A 	// Wait for the ACCEPT SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	AC(ac: SPDU::AC&)													STA713	{SA5(ac.isn());SA11(ac.token());SCONcnf(true);}
+	RF(reuse: bool)					[!reuse]							STA01	{SCONcnf(false);TDISreq();}
+	RF(reuse: bool)					[reuse && !p02()]					STA01	{SCONcnf(false);TDISreq();}
+	RF(reuse: bool)					[reuse && p02()]					STA01C	{SCONcnf(false);TDISreq();}
+
+//	Data Transfert ---------------------------------------------------------------------------------
+	EX																	STA02A	{SA10();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS																STA02A	{SA10();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA02B 	// Wait for the OVERFLOW ACCEPT SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	OA																	STA02A	{CDO();SA51();}
+	RF(reuse: bool)					[!reuse]							STA01	{SCONcnf(false);TDISreq();}
+	RF(reuse: bool)					[reuse && !p02()]					STA01	{SCONcnf(false);TDISreq();}
+	RF(reuse: bool)					[reuse && p02()]					STA01C	{SCONcnf(false);TDISreq();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release]							STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA03 	// Wait for the DISCONNECT SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()&&p10()]						STA03	{SDTind();}
+	EX								[p09()]								STA03	{SEXind();}
+	TD								[p06()&&p10()]						STA03	{STDind();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MIA(ssn:int)					[p17()&&p21()]						STA03	{SSYNmcnf();SA25(ssn);}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS							[p10()&&p80()]						STA15B	{}
+	RS(t: ResyncOption)				[t==a&&p10()&&!p34()&&p35()]		STA11A	{SA19();SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==r&&p10()&&!p34()&&p35()&&p32(t)]STA11A	{SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==s&&p10()&&!p34()&&p35()]		STA11A	{SRSYNind();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p52()]								STA20	{SUERind();}
+	ER								[p52()]								STA20	{SPERind();}
+	PT(tokens: int)					[p53(tokens)]						STA03	{SPTind(tokens);}
+
+//	Connection release -----------------------------------------------------------------------------
+	DN								[!p66()]							STA01	{SRELcnf(true);TDISreq();}
+	DN								[ p66()]							STA01C	{SRELcnf(true);}
+	FN(release: bool)				[!release&&!p65()]					STA09	{SRELind();SA8();SA18();}
+	FN(release: bool)				[ release&&!p65()&&!p01()&&p16()]	STA09	{SRELind();SA8();SA18();}
+	NF								[p67()]								STA713	{SRELcnf(false);}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA04A 	// Wait for the MAJOR SYNC ACK SPDU or the PREPARE (MAJOR SYNC ACK) SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()]								STA04A	{SDTind();}
+	EX								[p08()]								STA04A	{SEXind();}
+	TD								[p06()]								STA04A	{STDind();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA(ssn:int)					[p16()&&p20(ssn)]					STA713	{SA14();SA22();SSYNMcnf();} // was {SSYNMcnf();SA14();SA22();}
+	AEA(ssn:int)					[p16()&&p20(ssn)]					STA713	{SA14();SA22();SSYNMcnf();} // was {SSYNMcnf();SA14();SA22();}
+	PR-MAA																STA15A	{}
+	MIA(ssn:int)					[p17()&&!p20(ssn)&&p21()]			STA04A	{SSYNmcnf();SA25(ssn);}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS							[p80()]								STA15B	{}
+	RS(t: ResyncOption)				[t==a&&p35()]						STA11A	{SA19();SRSYNind();SA16();}	
+	RS(t: ResyncOption)				[t==r&&p32(t)&&p35()]				STA11A	{SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==s&&p35()]						STA11A	{SRSYNind();SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==a&&p28()]			STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==s&&p28()]			STA05A	{PR-RS();RS(t, ssn);SA16();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	SACTDreq						[p34()&&p39()]						STA05C	{PR-RS();AD();SA16();}
+	SACTIreq						[p34()&&p39()]						STA05B	{PR-RS();AI();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p48()&&p03()]						STA20	{SUERind();}
+	ED								[p48()&&!p03()]						STA713	{SUERind();}
+	ER								[p48()&&p03()]						STA20	{SPERind();}
+	ER								[p48()&&!p03()]						STA713	{SPERind();}
+	GT(tokens: int)					[p59(tokens)]						STA04A	{SA11(tokens);SGTind(tokens);}
+	PT(tokens: int)					[p53(tokens)]						STA04A	{SPTind(tokens);}
+	SGTreq(tokens: int)				[p54(tokens)]						STA04A	{GT(tokens);SA15(tokens);}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA04B 	// Wait for the ACTIVITY END ACK SPDU or the PREPARE (MAJOR SYNC ACK) SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()]								STA04B	{SDTind();}
+	EX								[p08()]								STA04B	{SEXind();}
+	TD								[p06()]								STA04B	{STDind();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA(ssn:int)					[p16()&&p20(ssn)]					STA713	{SA14();SA22();SACTEcnf();} // was {SACTEcnf();SA14();SA22();}
+	AEA(ssn:int)					[p16()&&p20(ssn)]					STA713	{SA14();SA22();SACTEcnf();} // was {SACTEcnf();SA14();SA22();}
+	PR-MAA																STA15A	{}
+	MIA(ssn:int)					[p17()&&!p20(ssn)&&p21()]			STA04B	{SSYNmcnf();SA25(ssn);}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	SACTDreq						[p39()]								STA05C	{PR-RS();AD();SA16();}
+	SACTIreq						[p39()]								STA05B	{PR-RS();AI();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p48()&&p03()]						STA20	{SUERind();}
+	ED								[p48()&&!p03()]						STA713	{SUERind();}
+	ER								[p48()&&p03()]						STA20	{SPERind();}
+	ER								[p48()&&!p03()]						STA713	{SPERind();}
+	GT(tokens: int)					[p59(tokens)]						STA04B	{SA11(tokens);SGTind(tokens);}
+	PT(tokens: int)					[p53(tokens)]						STA04B	{SPTind(tokens);}
+	SGTreq(tokens: int)				[p54(tokens)]						STA04B	{GT(tokens);SA15(tokens);}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA05A 	// Wait for the RESYNCHRONIZE ACK SPDU or the PREPARE (RESYNCHRONIZE ACK) SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()&&p185()]						STA05A	{}
+	DT								[p05()&&!p185()]					STA05A	{SDTind();}
+	EX								[p08()&&p185()]						STA05A	{}
+	EX								[p08()&&!p185()]					STA05A	{SEXind();}
+	TD								[p06()&&p185()]						STA05A	{}
+	TD								[p06()&&!p185()]					STA05A	{STDind();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																			STA05A	{SA43();}
+	AEA																			STA05A	{SA43();}
+	MAP(map: const SPDU::MAP&)				[p12()&&p185()]						STA05A	{}
+	MAP(map: const SPDU::MAP&)				[p12()&&!p178()&&!p185()]			STA05A	{SA23();SSYNMind(map);} //was SSYNMind(map);SA23();
+	PR-MAA																		STA05A	{}
+	AE(map: const SPDU::MAP&)				[p72()]								STA05A	{}
+	MIA(ssn:int)							[p17()&&!p81()]						STA05A	{}
+	MIA(ssn:int)							[p17()&&p21()&&p81()]				STA05A	{SSYNmcnf();SA25(ssn);}
+	MIP(ds: bool, mip: const SPDU::MIP&)	[!ds&&p14()&&!p178()&&p185()]		STA05A	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)	[!ds&&!p178()&&!p185()&&p26()]		STA05A	{SSYNmind();SA23();}
+	MIP(ds: bool, mip: const SPDU::MIP&)	[ds&&p14()&&p82()]					STA05A	{SA44();}
+	MIP(ds: bool, mip: const SPDU::MIP&)	[ds&&p82()&&!p178()&&!p185()&&p26()]STA05A	{SSYNmind();SA44();SA23();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RA																STA15C	{}
+	PR-RS							[p80()]								STA06	{}
+	RS(t: ResyncOption)				[t==a&&!p34()&&p35()]				STA05A	{}
+	RA(ssn: nat4, tokens:int)		[p35()&&p49()]						STA713	{SRSYNcnf();SA28(ssn);SA11(tokens);}
+	RS(t: ResyncOption)				[t==a&&p34()&&p35()]				STA11A	{SA19();SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==r&&!p34()&&p35()&&p32(t)]		STA05A	{}
+	RS(t: ResyncOption)				[t==r&&p34()&&p35()&&p32(t)]		STA11A	{SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==s&&!p34()&&p35()]				STA05A	{}
+	RS(t: ResyncOption)				[t==s&&p34()&&p35()]				STA11A	{SRSYNind();SA16();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD								[p38()&&p40()]						STA11C	{SACTDind();SA16();}
+	AI								[p38()&&p40()]						STA11B	{SACTIind();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p48()]								STA05A	{}
+	ER								[p48()]								STA05A	{}
+	GT(tokens: int)					[p59(tokens)&&p185()]				STA05A	{SA11(tokens);SGTind(tokens);}
+	PT(tokens: int)					[p53(tokens)&&p185()]				STA05A	{}
+	PT(tokens: int)					[p53(tokens)&&!p185()]				STA05A	{SPTind(tokens);}
+
+//	Connection release -----------------------------------------------------------------------------
+	FN(release: bool)				[!release&&p68()]					STA05A	{}
+	FN(release: bool)				[ release&&p68()&&!p01()&&p16()]	STA05A	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[ release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[ release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[ p02()]							STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA05B 	// Wait for the ACTIVITY INTERRUPT ACK SPDU or the PREPARE (RESYNCHRONIZE ACK) SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()]								STA05B	{}
+	EX								[p08()]								STA05B	{}
+	TD								[p06()]								STA05B	{}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA05B	{SA43();}
+	AEA																	STA05B	{SA43();}
+	PR-MAA																STA05B	{}
+	MIA(ssn:int)					[p17()]								STA05B	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds&&p14()]					STA05B	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds&&p14()&&p82()]				STA05B	{SA44();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RA																STA15C	{}
+	PR-RS							[p80()]								STA05B	{}
+	RS(t: ResyncOption)				[p28()]								STA05B	{}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AIA								[p38()]								STA713	{SACTIcnf();SA29();}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	CDA								[p26()]								STA05B	{}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p48()]								STA05B	{}
+	ER								[p48()]								STA05B	{}
+	GT(tokens: int)					[p59(tokens)]						STA05B	{}
+	PT(tokens: int)					[p53(tokens)]						STA05B	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA05C 	// Wait for the ACTIVITY DISCARD ACK SPDU or the PREPARE (RESYNCHRONIZE ACK) SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()]								STA05C	{}
+	EX								[p08()]								STA05C	{}
+	TD								[p06()]								STA05C	{}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA05C	{SA43();}
+	AEA																	STA05C	{SA43();}
+	PR-MAA																STA05C	{}
+	MIA								[p17()]								STA05C	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds&&p14()]					STA05C	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds&&p14()&&p82()]				STA05C	{SA44();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RA																STA15C	{}
+	PR-RS							[p80()]								STA05C	{}
+	RS(t: ResyncOption)				[p28()]								STA05C	{}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	ADA								[p38()]								STA713	{SACTDcnf();SA29();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p48()]								STA05B	{}
+	ER								[p48()]								STA05B	{}
+	GT(tokens: int)					[p59(tokens)]						STA05B	{}
+	PT(tokens: int)					[p53(tokens)]						STA05B	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA06 	// Wait for the RESYNCHRONIZE SPDU (resynchronization collision after receiving PREPARE (RESYNCHRONIZE) SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()&&p185()]						STA06	{}
+	DT								[p05()&&!p15()]						STA06	{SDTind();}
+	EX								[p08()]								STA06	{SA10();}
+	TD								[p06()&&p185()]						STA06	{}
+	TD								[p06()&&!p185()]					STA06	{STDind();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA06	{SA43();}
+	AEA																	STA06	{SA43();}
+	MAP								[p12()&&p185()]						STA06	{}
+	MAP(map: const SPDU::MAP&)		[p12()&&!p178()&&!p185()]			STA06	{SA23();SSYNMind(map);} // was {SSYNMind(map);SA23();}
+	AE(map: const SPDU::MAP&)		[p72()]								STA06	{}
+	MIA(ssn: nat4)					[p17()&&!p81()]						STA06	{}
+	MIA(ssn: nat4)					[p17()&&p21()&&p81()]				STA06	{SSYNmcnf();SA25(ssn);}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds&&p14()]					STA06	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds&&!p178()&&!p185()&&p26()]	STA06	{SSYNmind();SA23();}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds&&p14()&&p82()]				STA06	{SA44();}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds&&p82()&&!p178()&&!p185()&&p26()]STA06	{SSYNmind();SA44();SA23();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RA																STA06	{SA10();}
+	PR-RS							[p80()]								STA06	{SA10();}
+	RS(t: ResyncOption)				[t==a&&!p24()]						STA05A	{SA6();}
+	RS(t: ResyncOption)				[t==a&&p24()]						STA11A	{SA19();SRSYNind();SA16();SA6();}
+	RS(t: ResyncOption)				[t==r&&!p24()&&p32(t)]				STA05A	{SA6();}
+	RS(t: ResyncOption)				[t==r&&p24()&&p32(t)]				STA11A	{SRSYNind();SA16();SA6();}
+	RS(t: ResyncOption)				[t==s&&!p24()]						STA05A	{SA6();}
+	RS(t: ResyncOption)				[t==s&&p24()]						STA11A	{SRSYNind();SA16();SA6();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD								[p37()&&p40()]						STA11C	{SACTDind();SA16();}
+	AI								[p37()&&p40()]						STA11B	{SACTIind();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p48()]								STA06	{}
+	ER								[p48()]								STA06	{}
+	GT(tokens: int)					[p59(tokens)&&p185()]				STA06	{}
+	GT(tokens: int)					[p59(tokens)&&!p185()]				STA06	{SA11(tokens);SGTind(tokens);}
+	GT(tokens: int)					[p53(tokens)&&p185()]				STA06	{}
+	GT(tokens: int)					[p54(tokens)&&!p185()]				STA06	{SPTind(tokens);}
+
+//	Connection release -----------------------------------------------------------------------------
+	FN(release: bool)				[!release&&p68()]					STA06	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release]							STA01	{SxABind();TDISreq();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA08 	// Wait for S-CONNECT response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	SCONrsp(accepted: bool, ac: SPDU::AC&)	[accepted]					STA713	{SA5(ac.isn());SA11();AC(ac);}	// was AC(ac);SA5(ac);SA11();
+	SCONrsp(accepted: bool, ac: SPDU::AC&)	[!accepted&&!p02()]			STA16	{SA4();RF(false);}			// was RF(false);SA4()
+	SCONrsp(accepted: bool, ac: SPDU::AC&)	[!accepted&&p02()]			STA01C	{RF(true);}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA09 	// Wait for S-RELEASE response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	SDTreq							[p04()]								STA09	{DT();}
+	SEXreq							[p09()]								STA09	{EX();}
+	STDreq							[p07()]								STA09	{TD();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	SSYNmrsp(ssn: nat4)				[p18()&&p21()]						STA09	{MIA();SA25(ssn);}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==a&&p10()&&p28()&&!p34()]		STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==r&&p10()&&p25()&&!p34()&&p33()]	STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==s&&p10()&&p25()&&!p34()]		STA05A	{PR-RS();RS(t, ssn);SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	SPTreq(tokens: int)				[p53(tokens)]						STA09	{PT(tokens);}
+	SUERreq							[p50()]								STA19	{ED();}
+
+//	Connection release -----------------------------------------------------------------------------
+	DN								[p69()&&!p01()]						STA09	{SRELcnf(true);SA32();}
+	SRELreq							[!p65()]							STA09	{FN(false);SA8();SA18();}
+	SRELrsp(accept: bool)			[ accept&&!p66()&&p75()]			STA16	{DN();SA4();}
+	SRELrsp(accept: bool)			[ accept&&p66()]					STA01C	{DN();}
+	SRELrsp(accept: bool)			[ accept&&p66()&&p01()]				STA03	{DN();}
+	SRELrsp(accept: bool)			[!accept&&p67()]					STA713	{NF();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA10A 	// Wait for S-SYNC-MAJOR response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	SDTreq							[p03()]								STA10A	{DT();}
+	SEXreq							[p08()]								STA10A	{EX();}
+	STDreq							[p06()]								STA10A	{TD();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	SSYNMrsp															STA713	{PR-MAA();MAA();SA14();SA22();}
+	SSYNmrsp(ssn:int)				[p18()&&!p20(ssn)&&p21()]			STA10A	{MIA();SA25(ssn);}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS							[p80()]								STA15B	{}
+	RS(t: ResyncOption)				[t==a&&p35()]						STA11A	{SA19();SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==s&&p35()]						STA11A	{SRSYNind();SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==a&&p28()]						STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==r&&p25()&&p33()]				STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==s&&p25()]						STA05A	{PR-RS();RS(t, ssn);SA16();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD								[p38()&&p40()]						STA11C	{SACTDind();SA16();}
+	AI								[p38()&&p40()]						STA11B	{SACTIind();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	GT(tokens: int)					[p59(tokens)]						STA10A	{SA11(tokens);SGTind(tokens);}
+	SGTreq(tokens: int)				[p54(tokens)]						STA10A	{GT(tokens);SA15(tokens);}
+	SPTreq(tokens: int)				[p53(tokens)]						STA10A	{PT(tokens);}
+	SUERreq							[p50()]								STA19	{ED();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA10B 	// Wait for S-ACTIVITY-END response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	SDTreq							[p03()]								STA10B	{DT();}
+	SEXreq							[p08()]								STA10B	{EX();}
+	STDreq							[p06()]								STA10B	{TD();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	SACTErsp															STA713	{PR-MAA();AEA();SA14();SA22();}
+	SSYNmrsp(ssn:int)				[p18()&&!p20(ssn)&&p21()]			STA10B	{MIA();SA25(ssn);}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD								[p38()&&p40()]						STA11C	{SACTDind();SA16();}
+	AI								[p38()&&p40()]						STA11B	{SACTIind();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	GT(tokens: int)					[p59(tokens)]						STA10B	{SA11(tokens);SGTind(tokens);}
+	SGTreq(tokens: int)				[p54(tokens)]						STA10B	{GT(tokens);SA15(tokens);}
+	SPTreq(tokens: int)				[p53(tokens)]						STA10B	{PT(tokens);}
+	SUERreq							[p50()]								STA19	{ED();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA11A 	// Wait for S-RESYNCHRONIZE response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()&&!p185()]					STA11A	{SDTind();}
+	EX								[p08()&&!p185()]					STA11A	{SEXind();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==a&&p24()]						STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==r&&p24()&&p33()]				STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==s&&p24()]						STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNrsp(ssn:int)				[p43()]								STA713	{PR-RA();RA();SA28(ssn);SA11();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	SACTDreq						[p34()&&p39()]						STA05C	{PR-RS();AD();SA16();}
+	SACTIreq						[p34()&&p39()]						STA05B	{PR-RS();AI();SA16();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA11B 	// Wait for S-ACTIVITY-INTERRUPT response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Activity interrupt & discard -------------------------------------------------------------------
+	SACTIrsp															STA713	{PR-RA();AIA();SA30();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA11C 	// Wait for S-ACTIVITY-DISCARD response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Activity interrupt & discard -------------------------------------------------------------------
+	SACTDrsp															STA713	{PR-RA();ADA();SA30();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();SA4();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA15A 	// After PREPARE, wait for the MAJOR SYNC ACK SPDU or the ACTIVITY END ACK SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()]								STA15A	{SDTind();}
+	EX								[p08()]								STA15A	{SA10();}
+	TD								[p06()]								STA15A	{STDind();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA(ssn:int)					[p20(ssn)&&!p23()]					STA713	{SSYNMcnf();SA14();SA22();SA6();}
+	AEA(ssn:int)					[p20(ssn)&&!p23()]					STA713	{SSYNMcnf();SA14();SA22();SA6();}
+	MAA(ssn:int)					[p20(ssn)&&p23()]					STA713	{SACTEcnf();SA14();SA22();SA6();}
+	AEA(ssn:int)					[p20(ssn)&&p23()]					STA713	{SACTEcnf();SA14();SA22();SA6();}
+	MIA(ssn:int)					[p17()&&!p20(ssn)&&p21()]			STA15A	{SSYNmcnf();SA25(ssn);}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS							[p10()]								STA15A	{}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==a&&p28()&&p30()]				STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==s&&p28()&&p30()]				STA05A	{PR-RS();RS(t, ssn);SA16();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	SACTDreq						[p34()&&p39()]						STA05C	{PR-RS();AD();SA16();SA6();}
+	SACTIreq						[p34()&&p39()]						STA05B	{PR-RS();AI();SA16();SA6();}
+
+//	Token management & exception -------------------------------------------------------------------
+	GT(tokens: int)					[p59(tokens)]						STA15A	{SA11(tokens);SGTind(tokens);}
+	PT(tokens: int)					[p53(tokens)]						STA15A	{SPTind(tokens);}
+	SGTreq(tokens: int)				[p54(tokens)]						STA15A	{GT(tokens);SA15(tokens);}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release]							STA01	{SxABind();TDISreq();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA15B 	// After PREPARE, wait for the RESYNCHRONIZE SPDU or the ACTIVITY INTERRUPT SPDU or the ACTIVITY DISCARD SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()&&p185()]						STA15B	{}
+	DT								[p05()&&!p185()]					STA15B	{SDTind();}
+	TD								[p06()&&p185()]						STA15B	{}
+	TD								[p06()&&!p185()]					STA15B	{STDind();}
+	SDTreq							[p03()]								STA15B	{}
+	SEXreq							[p08()]								STA15B	{}
+	STDreq							[p06()]								STA15B	{}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA15B	{SA43();}
+	AEA																	STA15B	{SA43();}
+	MAP								[p12()]								STA15B	{}
+	SSYNMreq						[p13()]								STA15B	{}
+	SSYNMrsp															STA15B	{}
+	AE(map: const SPDU::MAP&)		[p72()]								STA15B	{}
+	MIA(ssn:int)					[p17()&&!p81()]						STA15B	{}
+	MIA(ssn:int)					[p17()&&p21()&&p81()]				STA15B	{SSYNmcnf();SA25(ssn);}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds&&p14()&&!p178()&&p185()]	STA15B	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds&&p14()&&!p178()&&!p185()]	STA15B	{SSYNmind();SA23();}
+	SACTEreq						[p71()]								STA15B	{}
+	SSYNmreq(ds: bool)				[ ds&&p15()&&p82()]					STA15B	{}
+	SSYNmreq(ds: bool)				[!ds&&p15()]						STA15B	{}
+	SSYNmrsp						[p18()&&p21()]						STA15B	{}
+
+
+//	Resynchronization ------------------------------------------------------------------------------
+	RS(t: ResyncOption)				[t==a&&p29()]						STA11A	{SA19();SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==r&&p32(t)&&p29()]				STA11A	{SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==s&&p29()]						STA11A	{SRSYNind();SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==a&&p27()&&p28()]				STA06	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==r&&p25()&&p27()&&p33()]			STA06	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==s&&p25()&&p27()]				STA06	{PR-RS();RS(t, ssn);SA16();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD								[p37()&&p40()]						STA11C	{SACTDind();SA16();}
+	AI								[p37()&&p40()]						STA11B	{SACTIind();SA16();}
+	SACTDreq						[p27()&&p34()&&p39()]				STA05C	{PR-RS();AD();SA16();}
+	SACTIreq						[p27()&&p34()&&p39()]				STA05B	{PR-RS();AI();SA16();}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	AR(ssn: nat4)					[p44()]								STA15B	{SACTRind();SA12();SA27(ssn);}
+	AS								[p44()]								STA15B	{SACTSind();SA12();SA26();}
+
+//	Token management & exception -------------------------------------------------------------------
+	GT(tokens: int)					[p59(tokens)&&p185()]				STA15B	{}
+	GT(tokens: int)					[p59(tokens)&&!p185()]				STA15B	{SA11(tokens);SGTind(tokens);}
+	PT(tokens: int)					[p53(tokens)&&p185()]				STA15B	{}
+	PT(tokens: int)					[p53(tokens)&&!p185()]				STA15B	{SPTind(tokens);}
+	SGTreq(tokens: int)				[p54(tokens)]						STA15B	{}
+	SPTreq(tokens: int)				[p53(tokens)]						STA15B	{}
+	SUERreq							[p50()]								STA15B	{}
+
+//	Connection release -----------------------------------------------------------------------------
+	NF								[p67()]								STA15B	{SRELcnf(false);}
+	SRELreq							[p63()]								STA15B	{}
+
+	//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release]							STA01	{SxABind();TDISreq();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA15C 	// After PREPARE, wait for the RESYNCHRONIZE ACK SPDU or the ACTIVITY INTERRUPT ACK SPDU or the ACTIVITY DISCARD ACK SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()&&p185()]						STA15C	{}
+	DT								[p05()&&!p185()]					STA15C	{SDTind();}
+	EX								[p08()]								STA15C	{SA10();}
+	TD								[p06()&&p185()]						STA15C	{}
+	TD								[p06()&&!p185()]					STA15C	{STDind();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA15C	{SA43();}
+	AEA																	STA15C	{SA43();}
+	MAP								[p12()&&p185()]						STA15C	{}		
+	MAP(map: const SPDU::MAP&)		[p12()&&!p178()&&!p185()]			STA15C	{SA23();SSYNMind(map);} //was SSYNMind(map);SA23();
+	AE(map: const SPDU::MAP&)		[p72()]								STA15C	{}
+	MIA(ssn:int)					[p17()&&!p81()]						STA15C	{}
+	MIA(ssn:int)					[p17()&&p21()&&p81()]				STA15C	{SSYNmcnf();SA25(ssn);}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds&&p14()&&!p178()&&p185()]	STA15C	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds&&p14()&&!p178()&&!p185()]	STA15C	{SSYNmind();SA23();}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds&&p14()&&p82()&&!p178()&&p185()]STA15C	{SA44();}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds&&p14()&&p82()&&!p178()&&!p185()]STA15C	{SSYNmind();SA44();SA23();}
+	SACTEreq						[p71()]								STA15C	{}
+	SSYNmreq(ds: bool)				[ ds&&p15()&&p82()]					STA15C	{}
+	SSYNmreq(ds: bool)				[!ds&&p15()]						STA15C	{}
+	SSYNmrsp						[p18()&&p21()]						STA15C	{}
+
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS																STA15C	{SA10();}
+	RA(ssn: nat4, tokens:int)		[p36()&&p49()]						STA713	{SRSYNcnf();SA28(ssn);SA11(tokens);}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	ADA								[p37()&&p41()]						STA713	{SACTDcnf();SA29();SA6();}
+	AIA								[p37()&&p42()]						STA713	{SACTIcnf();SA29();SA6();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p48()]								STA15C	{}
+	ER								[p48()]								STA15C	{}
+	GT(tokens: int)					[p59(tokens)&&p185()]				STA15C	{}
+	GT(tokens: int)					[p59(tokens)&&!p185()]				STA15C	{SA11(tokens);SGTind(tokens);}
+	PT(tokens: int)					[p53(tokens)&&p185()]				STA15C	{}
+	PT(tokens: int)					[p53(tokens)&&!p185()]				STA15C	{SPTind(tokens);}
+
+//	Connection release -----------------------------------------------------------------------------
+	FN(release: bool)				[!release&&p68()]					STA15C	{}
+	FN(release: bool)				[ release&&p68()&&!p01()&&p16()]	STA15C	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release]							STA01	{SxABind();TDISreq();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA15D 	// After PREPARE, wait for the ABORT SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	AC																	STA15D	{}
+	CDO																	STA15D	{}
+	OA																	STA15D	{}
+	SCONrsp(accepted: bool)			[accepted]							STA15D	{}
+	SCONrsp(accepted: bool)			[!accepted]							STA16	{SA4();}
+
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT																	STA15D	{}
+	TD																	STA15D	{}
+	SDTreq																STA15D	{}
+	SEXreq																STA15D	{}
+	STDreq																STA15D	{}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA15D	{}
+	AEA																	STA15D	{}
+	MAP																	STA15D	{}
+	AE(map: const SPDU::MAP&)											STA15D	{}
+	MIA																	STA15D	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds]							STA15D	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds&&p82()]					STA15D	{SA44();}
+	SACTEreq															STA15D	{}
+	SACTErsp															STA15D	{}
+	SSYNmreq(ds: bool)													STA15D	{}
+	SSYNmrsp															STA15D	{}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	RA																	STA15D	{}
+	RS(t: ResyncOption)													STA15D	{}
+	SRSYNreq															STA15D	{}
+	SRSYNrsp															STA15D	{}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD																	STA15D	{}
+	ADA																	STA15D	{}
+	AI																	STA15D	{}
+	AIA																	STA15D	{}
+	SACTDreq															STA15D	{}
+	SACTDrsp															STA15D	{}
+	SACTIreq															STA15D	{}
+	SACTIrsp															STA15D	{}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	AR																	STA15D	{}
+	AS																	STA15D	{}
+	CD																	STA15D	{}
+	CDA																	STA15D	{}
+	SACTRreq															STA15D	{}
+	SCDreq																STA15D	{}
+	SCDrsp																STA15D	{}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED																	STA15D	{}
+	ER																	STA15D	{}
+	GT(tokens: int)														STA15D	{}
+	GTA																	STA15D	{}
+	GTC(tokens: int)													STA15D	{}
+	PT(tokens: int)														STA15D	{}
+	SCGreq																STA15D	{}
+	SGTreq(tokens: int)													STA15D	{}
+	SPTreq(tokens: int)													STA15D	{}
+	SUERreq																STA15D	{}
+
+//	Connection release -----------------------------------------------------------------------------
+	FN(release: bool)				[!release]							STA15D	{}
+	NF																	STA15D	{}
+	SRELreq																STA15D	{}
+	SRELrsp(accept: bool)			[ accept]							STA16	{SA4();}
+	SRELrsp(accept: bool)			[!accept]							STA15D	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release]							STA01	{SxABind();TDISreq();}
+	SUABreq							[!p02()]							STA16	{SA4();}
+	TDISind																STA01	{SPABind();}
+	TIM																	STA01	{TDISreq();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA16 	// Wait for T-DISCONNECT indication
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Connection establishment -----------------------------------------------------------------------
+	AC																	STA16	{}
+	CN																	STA01	{SA3();TDISreq();}
+	RF(reuse: bool)					[!reuse]							STA16	{}
+	RF(reuse: bool)					[reuse]								STA16	{}
+
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT																	STA16	{}
+	EX																	STA16	{}
+	TD																	STA16	{}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA																	STA16	{}
+	AEA																	STA16	{}
+	MAP																	STA16	{}
+	PR-MAA																STA16	{}
+	AE(map: const SPDU::MAP&)											STA16	{}
+	MIA																	STA16	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[!ds]							STA16	{}
+	MIP(ds: bool, mip: const SPDU::MIP&)[ ds&&p82()]					STA16	{SA44();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RA																STA16	{}
+	PR-RS																STA16	{}
+	RA																	STA16	{}
+	RS(t: ResyncOption)													STA16	{}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD																	STA16	{}
+	ADA																	STA16	{}
+	AI																	STA16	{}
+	AIA																	STA16	{}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	AR																	STA16	{}
+	AS																	STA16	{}
+	CD																	STA16	{}
+	CDA																	STA16	{}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED																	STA16	{}
+	ER																	STA16	{}
+	GT(tokens: int)														STA16	{}
+	GTA																	STA16	{}
+	GTC(tokens: int)													STA16	{}
+	PT(tokens: int)														STA16	{}
+
+//	Connection release -----------------------------------------------------------------------------
+	DN																	STA16	{}
+	FN(release: bool)													STA16	{}
+	NF																	STA16	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AA																	STA01	{SA3();TDISreq();}
+	AB																	STA01	{SA3();TDISreq();}
+	PR-AB																STA01	{SA3();TDISreq();}
+	TDISind																STA01	{SA3();TDISreq();}
+	TIM																	STA01	{TDISreq();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA18 	// Wait for the GIVE TOKENS ACK SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p70()]								STA18	{SDTind();}
+	EX								[p08()]								STA18	{SEXind();}
+	TD								[p06()]								STA18	{STDind();}
+	SDTreq							[p70()]								STA18	{DT();}
+	SEXreq							[p08()]								STA18	{EX();}
+	STDreq							[p06()]								STA18	{TD();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS																STA18	{SA10();}
+
+//	Token management & exception -------------------------------------------------------------------
+	GTA																	STA713	{SA6();}
+	PT(tokens: int)					[p53(tokens)]						STA18	{SPTind(tokens);}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA19 	// Wait for a recovery request or SPDU (initiator of EXCEPTION DATA SPDU)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT																	STA19	{}
+	EX								[p08()]								STA19	{}
+	TD								[p06()]								STA19	{}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAP(ssn: nat4)					[p12()&&p19(ssn)]					STA19	{SA31();}
+	AE(ssn: nat4)					[p72()&&p19(ssn)]					STA19	{SA31();}
+	MIA(ssn: nat4)					[p17()&&p21()]						STA19	{SA25(ssn);}
+	MIP(ds: bool, ssn: nat4)		[!ds&&p14()&&p19(ssn)]				STA19	{SA23();}
+	MIP(ds: bool, ssn: nat4)		[ ds&&p14()&&p19(ssn)&&p82()]		STA19	{SA44();SA23();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS							[p80()]								STA15B	{}
+	RS(t: ResyncOption)				[t==a&&p35()]						STA11A	{SA19();SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==r&&p32(t)&&p35()]				STA11A	{SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==s&&p35()]						STA11A	{SRSYNind();SA16();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD								[p38()&&p40()]						STA11C	{SACTDind();SA16();}
+	AI								[p38()&&p40()]						STA11B	{SACTIind();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p50()]								STA19	{SUERind();}
+	ER								[p50()]								STA19	{SPERind();}
+	GT(tokens: int)					[p60(tokens)]						STA19	{SA11(tokens);SGTind(tokens);}
+	GT(tokens: int)					[p61(tokens)]						STA713	{SA11(tokens);SGTind(tokens);}
+	PT(tokens: int)					[p53(tokens)]						STA19	{}
+
+//	Connection release -----------------------------------------------------------------------------
+	FN(release: bool)				[!release&&p68()]					STA19	{}
+	FN(release: bool)				[ release&&p68()&&!p01()&&p16()]	STA19	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA20 	// Wait for a recovery SPDU or request
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()]								STA20	{}
+	EX								[p08()]								STA20	{}
+	TD								[p06()]								STA20	{}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAA(ssn:int)					[p20(ssn)]							STA20	{}
+	AEA(ssn:int)					[p20(ssn)]							STA20	{}
+	MAP(ssn: nat4)					[p12()&&p19(ssn)]					STA20	{SA31();}
+	AE(ssn: nat4)					[p72()&&p19(ssn)]					STA20	{SA31();}
+	MIA								[p17()&&p21()]						STA20	{}
+	MIP(ds: bool, ssn: nat4)		[!ds&&p14()&&p19(ssn)]			STA20	{SA23();}
+	MIP(ds: bool, ssn: nat4)		[ ds&&p14()&&p19(ssn)&&p82()]	STA20	{SA44();SA23();}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS							[p80()]								STA15B	{}
+	RS(t: ResyncOption)				[t==a&&p35()]						STA11A	{SA19();SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==r&&p32(t)&&p35()]				STA11A	{SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==s&&p35()]						STA11A	{SRSYNind();SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==a&&p28()]						STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==r&&p25()&&p33()]				STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)		[t==s&&p25()]						STA05A	{PR-RS();RS(t, ssn);SA16();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD								[p38()&&p40()]						STA11C	{SACTDind();SA16();}
+	AI								[p38()&&p40()]						STA11B	{SACTIind();SA16();}
+	SACTDreq						[p34()&&p11()]						STA05C	{PR-RS();AD();SA16();}
+	SACTIreq						[p34()&&p11()]						STA05C	{PR-RS();AI();SA16();}
+
+//	Token management & exception -------------------------------------------------------------------
+	GT(tokens: int)					[p60(tokens)]						STA20	{SA11(tokens);SGTind(tokens);}
+	GT(tokens: int)					[p61(tokens)]						STA713	{SA11(tokens);SGTind(tokens);}
+	PT(tokens: int)					[p53(tokens)]						STA20	{}
+
+//	Connection release -----------------------------------------------------------------------------
+	FN(release: bool)				[!release&&p68()]					STA20	{}
+	FN(release: bool)				[ release&&p68()&&!p01()&&p16()]	STA20	{}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA21 	// Wait for the CAPABILITY DATA ACK SPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p70()]								STA21	{SDTind();}
+	EX								[p08()]								STA21	{SEXind();}
+	TD								[p06()]								STA21	{STDind();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	SACTIreq						[p16()]								STA05B	{AI();SA16();}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	CDA																	STA713	{SCDcnf();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ER								[p48()]								STA20	{SPERind();}
+	GT(tokens: int)					[p59(tokens)]						STA21	{SA11(tokens);SGTind(tokens);}
+	GT(tokens: int)					[p53(tokens)]						STA21	{SGTind(tokens);}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA22 	// Wait for S-CAPABILITY-DATA response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AI								[p16()]								STA11B	{SACTIind();SA16();}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	SCDrsp																STA713	{CDA();}
+
+//	Token management & exception -------------------------------------------------------------------
+	SPTreq(tokens: int)				[p53(tokens)]						STA22	{PT(tokens);}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&&p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[release&&p02()]					STA01C	{SxABind();AA();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[p02()]								STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA713 	// Data transfer state
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+//	Data Transfert ---------------------------------------------------------------------------------
+	DT								[p05()]								STA713	{SDTind();}
+	EX								[p08()]								STA713	{SEXind();}
+	TD								[p06()]								STA713	{STDind();}
+	SDTreq							[p03()]								STA713	{DT();}
+	SEXreq							[p08()]								STA713	{EX();}
+	STDreq							[p06()]								STA713	{TD();}
+
+//	Synchronization --------------------------------------------------------------------------------
+	MAP(map: const SPDU::MAP&)		[p12()&&p19(map.ssn())]				STA10A	{SA13();SA31();SSYNMind(map);} // was {SSYNMind(map);SA13();SA31();}
+	SSYNMreq						[p13()]								STA04A	{MAP();SA13();SA24();}
+	AE(ssn: nat4)					[p72()&&p19(ssn)]					STA10B	{SA17();SA31();SACTEind();} // was {SACTEind();SA17();SA31();}
+	MIA(ssn: nat4)					[p17()&&p21()]						STA713	{SSYNmcnf();SA25(ssn);}
+	MIP(ds: bool, ssn: nat4)		[!ds&&p14()&&p19(ssn)]				STA713	{SSYNmind();SA23();}
+	MIP(ds: bool, ssn: nat4)		[ds&&p14()&&p19(ssn)&&p82()]		STA713	{SSYNmind();SA44();SA23();}
+	SACTEreq(ssn: nat4)				[p71()]								STA04B	{AE(ssn);SA17();SA24();}
+	SSYNmreq(ds: bool)				[ds&&p15()&&p82()]					STA713	{MIP();SA41();SA24();}
+	SSYNmreq(ds: bool)				[!ds&&p15()]						STA713	{MIP();SA24();}
+	SSYNmrsp(ssn: nat4)				[p18()&&p21()]						STA713	{MIA();SA25(ssn);}
+
+//	Resynchronization ------------------------------------------------------------------------------
+	PR-RS							[p26()]								STA15B	{}
+	PR-RS							[!p26()]							STA713	{SA10();}
+	RS(t: ResyncOption)				[t==a&&p26()&&p35()]				STA11A	{SA19();SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==r&&p32(t)&&p26()&&p35()]		STA11A	{SRSYNind();SA16();}
+	RS(t: ResyncOption)				[t==s&&p26()&&p35()]				STA11A	{SRSYNind();SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)[t==a&&p29()]					STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)	[t==r&&p25()&&p26()&&p33()]	STA05A	{PR-RS();RS(t, ssn);SA16();}
+	SRSYNreq(t: ResyncOption, ssn: nat4)	[t==s&&p25()&&p26()]		STA05A	{PR-RS();RS(t, ssn);SA16();}
+
+//	Activity interrupt & discard -------------------------------------------------------------------
+	AD								[p38()&&p40()]						STA11C	{SACTDind();SA16();}
+	AI								[p38()&&p40()]						STA11B	{SACTIind();SA16();}
+	SACTDreq						[p34()&&p39()]						STA05C	{PR-RS();AD();SA16();}
+	SACTIreq						[p34()&&p39()]						STA05B	{PR-RS();AI();SA16();}
+
+//	Activity start, resume and capability data -----------------------------------------------------
+	AR(ssn: nat4)					[p44()]								STA713	{SACTRind();SA12();SA27(ssn);SA6();}
+	AS								[p44()]								STA713	{SACTSind();SA12();SA26();SA6();}
+	CD								[p64()]								STA22	{SCDind();}
+	SACTRreq(ssn: nat4)				[p45()]								STA713	{AR();SA12();SA27(ssn);}
+	SACTSreq(id:const ActivityId&, cc: int, data:  const void*)
+			 						[p45()]								STA713	{AS(id, cc, data);SA12();SA26();}
+	SCDreq							[p47()]								STA21	{CD();}
+
+//	Token management & exception -------------------------------------------------------------------
+	ED								[p50()]								STA713	{SUERind();}
+	ED								[p51()]								STA20	{SUERind();}
+	ER								[p50()]								STA713	{SPERind();}
+	ER								[p51()]								STA20	{SPERind();}
+	GT(tokens: int)					[p59(tokens)]						STA713	{SA11(tokens);SGTind(tokens);}
+	GTC(tokens: int)				[p62()]								STA713	{GTA();SA11(tokens);SCGind();} // was {SCGind();GTA();SA11();}
+	PT(tokens: int)					[p53(tokens)]						STA713	{SPTind(tokens);}
+	SCGreq							[p55()]								STA18	{GTC();SA11();}
+	SGTreq(tokens: int)				[p54(tokens)]						STA713	{GT(tokens);SA15(tokens);}
+	SPTreq(tokens: int)				[p53(tokens)]						STA713	{PT(tokens);}
+	SUERreq							[p50()]								STA19	{ED();}
+
+//	Connection release -----------------------------------------------------------------------------
+	FN(release: bool)				[!release&&p68()]					STA09	{SRELind();SA8();}
+	FN(release: bool)				[ release&&p68()&&!p01()&&p16()]	STA09	{SRELind();SA9();}
+	SRELreq							[p63()&&!p64()]						STA03	{FN(false);SA8();}
+	SRELreq							[p63()&& p64()]						STA03	{FN(true);SA7();}
+
+//	Abort ------------------------------------------------------------------------------------------
+	AB(release: bool)				[!release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[!release&& p02()]					STA16	{SxABind();AA();SA4();}
+	AB(release: bool)				[ release&&!p02()]					STA01	{SxABind();TDISreq();}
+	AB(release: bool)				[ release&& p02()]					STA01C	{SxABind();AA();}
+	PR-AB																STA15D	{}
+	SUABreq							[!p02()]							STA16	{PR-AB();AB(false);SA4();}
+	SUABreq							[ p02()]							STA01A	{        AB(true);SA4();}
+	TDISind																STA01	{SPABind();}
+}
+/*
+Default 	// The default SMC state
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+	MAP(map: const SPDU::MAP&)										nil		{ dump(context); }
+	Default															nil		{ dump(context); }
+}
+*/
+%%

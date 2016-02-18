@@ -1,0 +1,193 @@
+BankAccount
+DEFINITIONS ::=
+BEGIN
+IMPORTS
+  Code, CONNECTION-PACKAGE, CONTRACT, ERROR, OPERATION, OPERATION-PACKAGE,
+    ROS-OBJECT-CLASS
+    FROM Remote-Operations-Information-Objects {joint-iso-itu-t remote-operations(4) informationObjects(5) version1(0)}
+  Bind{}, InvokeId, ROS{}, Unbind{}
+    FROM Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t remote-operations(4) generic-ROS-PDUs(6) version1(0)}
+  -- from ITU-T Rec. X.881 | ISO/IEC 13712-2
+  APPLICATION-CONTEXT
+    FROM Remote-Operations-Information-Objects-extensions {joint-iso-itu-t remote-operations(4) informationObjects-extensions(8) version1(0)}
+  -- from ITU-T Rec. X.882 | ISO/IEC 13712-3
+  acse, pData
+    FROM Remote-Operations-Realizations {joint-iso-itu-t remote-operations(4) realizations(9) version1(0)}
+  acse-abstract-syntax
+    FROM Remote-Operations-Abstract-Syntaxes {joint-iso-itu-t  remote-operations(4) remote-operations-abstract-syntaxes(12) version1(0)}
+  emptyUnbind
+    FROM Remote-Operations-Useful-Definitions {joint-iso-itu-t remote-operations(4) useful-definitions(7) version1(0)}
+    ;
+    
+bankAccountAC APPLICATION-CONTEXT ::= {
+  CONTRACT                  bankAccountContract
+  ESTABLISHED BY            acse
+  INFORMATION TRANSFER BY   pData
+  ABSTRACT SYNTAXES
+    {acse-abstract-syntax | bankAccountAbstractSyntax}
+  APPLICATION CONTEXT NAME  id-ac-bankAccountAC
+}
+-- ROS objects 
+ba ROS-OBJECT-CLASS ::= {INITIATES  {bankAccountContract}
+                          ID         id-rosObject-ba
+}
+
+-- contracts 
+bankAccountContract CONTRACT ::= {
+  CONNECTION             bankAccountConnectionPackage
+  INITIATOR CONSUMER OF  {createPackage | openPackage | modifyPackage}
+  ID                     id-contract-dap
+}
+      
+-- connection package 
+bankAccountConnectionPackage CONNECTION-PACKAGE ::= {
+  BIND    bankAccountBind
+  UNBIND  bankAccountUnbind
+  ID      id-package-baConnection
+}
+
+bankAccountBind OPERATION ::= {
+  ARGUMENT  AccountBindArgument
+  RESULT    AccountBindResult
+  ERRORS    {daccountBindError}
+}
+
+AccountBindArgument ::= INTEGER
+AccountBindResult ::= Bank
+
+bankAccountUnbind OPERATION ::= emptyUnbind
+
+--  create package 
+createPackage OPERATION-PACKAGE ::= {
+  CONSUMER INVOKES  {create | delete}
+  ID                id-package-create
+}
+
+--  open package 
+openPackage OPERATION-PACKAGE ::= {
+  CONSUMER INVOKES  {open | close}
+  ID                id-package-open
+}
+
+--  modify Package 
+modifyPackage OPERATION-PACKAGE ::= {
+  CONSUMER INVOKES  {deposit | withdraw}
+  ID                id-package-modify
+}
+
+-- abstract syntaxes 
+bankAccountAbstractSyntax ABSTRACT-SYNTAX ::= {
+  BA-PDUs
+  IDENTIFIED BY  id-as-bankAccountAS
+}
+
+BA-PDUs ::= CHOICE {
+  basicRos  ROS{{BA-InvokeIDSet}, {BA-Invokable}, {BA-Returnable}},
+  bind      Bind{bankAccountBind},
+  unbind    Unbind{bankAccountUnbind}
+}
+
+BA-InvokeIDSet ::= InvokeId(ALL EXCEPT absent:NULL)
+
+BA-Invokable OPERATION ::=
+	{create | delete | open | close | deposit | withdraw }
+
+BA-Returnable OPERATION ::=
+	{create | delete | open | close | deposit | withdraw }
+
+
+create OPERATION ::= {
+	ARGUMENT  AccountId OPTIONAL TRUE
+	RESULT    Account OPTIONAL TRUE
+	ERRORS    { securityError }
+	SYNCHRONOUS TRUE
+	ALWAYS RESPONDS FALSE
+	CODE      id-opcode-create
+}
+delete OPERATION ::= {
+  	ARGUMENT  AccountId
+  	ERRORS    { securityError }
+  	CODE      id-opcode-delete
+}
+open OPERATION ::= {
+  	ARGUMENT  AccountId
+  	RESULT    Account
+  	ERRORS    { securityError }
+  	CODE      id-opcode-open
+}
+close OPERATION ::= {
+  ARGUMENT  AccountId
+  ERRORS    { securityError }
+  CODE      id-opcode-close
+}
+deposit OPERATION ::= {
+  ARGUMENT  Deposit
+  RESULT    Result
+  ERRORS    { securityError }
+  CODE      id-opcode-deposit
+}
+withdraw OPERATION ::= {
+  ARGUMENT  Withdraw
+  RESULT    Result
+  ERRORS    { securityError }
+  CODE      id-opcode-withdraw
+}
+Bank 				::= SEQUENCE {
+   name  PrintableString,
+   code  INTEGER
+}
+Teller 				::=INTEGER
+
+AccountId			::= INTEGER
+Account 			::= INTEGER
+Amount 				::= INTEGER
+Result 				::= INTEGER
+OperationArgument 	::= SEQUENCE { account Account, amount Amount }
+Deposit 			::= OperationArgument
+Withdraw 			::= OperationArgument
+
+Decimal				::= SEQUENCE {
+	mantisse		INTEGER,
+	decimal			INTEGER
+}
+
+securityError ERROR ::= {
+  PARAMETER OPTIONALLY-PROTECTED
+    {SET {problem   [0]  SecurityProblem  }}
+  CODE    id-errcode-securityError
+}
+
+SecurityProblem ::= INTEGER {
+  inappropriateAuthentication(1), invalidCredentials(2),
+  insufficientAccessRights(3), invalidSignature(4), protectionRequired(5),
+  noInformation(6), blockedCredentials(7), invalidQOPMatch(8), spkmError(9)
+}
+
+id-opcode-deposit Code ::= local:1
+id-opcode-withdraw Code ::= local:2
+id-opcode-open Code ::= local:3
+id-opcode-close Code ::= local:4
+id-opcode-create Code ::= local:5
+id-opcode-delete Code ::= local:6
+
+id-errcode-securityError Code ::= local:7
+
+-- remote error codes 
+id-errcode-attributeError Code ::= local:1
+id-errcode-nameError Code ::= local:2
+id-errcode-serviceError Code ::= local:3
+id-errcode-referral Code ::= local:4
+id-errcode-abandoned Code ::= local:5
+id-errcode-abandonFailed Code ::= local:7
+id-errcode-updateError Code ::= local:8
+-- remote error code for DSP 
+id-errcode-dsaReferral Code ::= local:9
+id-rosObject-ba  OBJECT IDENTIFIER ::= {joint-iso-itu-t 3 4 5 1}
+id-contract-dap OBJECT IDENTIFIER ::= {joint-iso-itu-t 3 4 5 2}
+id-ac-bankAccountAC OBJECT IDENTIFIER ::= {joint-iso-itu-t 3 4 5 3}
+id-package-baConnection OBJECT IDENTIFIER ::= {joint-iso-itu-t 3 4 5 4}
+id-package-create OBJECT IDENTIFIER ::= {joint-iso-itu-t 3 4 5 4}
+id-package-open OBJECT IDENTIFIER ::= {joint-iso-itu-t 3 4 5 5}
+id-package-modify OBJECT IDENTIFIER ::= {joint-iso-itu-t 3 4 5 6}
+id-as-bankAccountAS OBJECT IDENTIFIER ::= {joint-iso-itu-t 3 4 5 7}
+END

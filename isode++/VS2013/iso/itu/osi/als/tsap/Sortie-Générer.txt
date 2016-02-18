@@ -1,0 +1,7 @@
+﻿1>------ Début de la génération : Projet : tsap-testsuite, Configuration : Debug Win32 ------
+1>  ProviderTest.cpp
+1>z:\git\iso.itu.osi\cpp\unit\iso\itu\osi\als\tsap\prov\providertest.cpp(6): fatal error C1083: Impossible d'ouvrir le fichier include : 'als/nsap/addr/Provider.h' : No such file or directory
+1>  TsapTestSuite.cpp
+1>z:\git\iso.itu.osi\cpp\unit\iso\itu\osi\als\tsap\tsaptestsuite.cpp(2): fatal error C1083: Impossible d'ouvrir le fichier include : 'prov/ProvTestSuite.h' : No such file or directory
+1>  Génération de code en cours...
+========== Génération : 0 a réussi, 1 a échoué, 0 mis à jour, 0 a été ignoré ==========

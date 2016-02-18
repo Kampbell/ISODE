@@ -1,0 +1,1440 @@
+
+--<OSS.INCLUDES "Z:/git/ISO.ITU.OSI/cpp/src/iso/itu/osi/asn1/csn\CMIP.gen">--
+CMIP-1 {joint-iso-itu-t(2) ms(9) cmip(1) modules(0) protocol(3)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	ERROR, OPERATION
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)}
+	
+	ROS{}, InvokeId, noInvokeId
+	FROM Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t(2)
+	    remote-operations(4) generic-ROS-PDUs(6) version1(0)};
+	
+    CMIP-Operations OPERATION ::= {
+	m-Action | m-Action-Confirmed | m-CancelGet | m-Create | m-Delete |
+	    m-EventReport | m-EventReport-Confirmed | m-Get | m-Linked-Reply |
+	    m-Set | m-Set-Confirmed
+    }
+    
+    CMIP-Confirmed-Operations OPERATION ::= {
+	m-Action-Confirmed | m-CancelGet | m-Create | m-Delete |
+	    m-EventReport-Confirmed | m-Get | m-Set-Confirmed
+    }
+    
+    accessDenied ERROR ::= {PRIORITY  {0}
+                        CODE      local:2
+}
+    
+    classInstanceConflict ERROR ::= {
+  PARAMETER  BaseManagedObjectId
+  PRIORITY   {1}
+  CODE       local:19
+}
+    
+    complexityLimitation ERROR ::= {
+  PARAMETER  ComplexityLimitation
+  OPTIONAL   TRUE
+  PRIORITY   {1}
+  CODE       local:20
+}
+    
+    duplicateManagedObjectInstance ERROR ::= {
+  PARAMETER  ObjectInstance
+  PRIORITY   {1}
+  CODE       local:11
+}
+    
+    getListError ERROR ::= {
+  PARAMETER  GetListError
+  PRIORITY   {1}
+  CODE       local:7
+}
+    
+    invalidArgumentValue ERROR ::= {
+  PARAMETER  InvalidArgumentValue
+  PRIORITY   {1}
+  CODE       local:15
+}
+    
+    invalidAttributeValue ERROR ::= {
+  PARAMETER  Attribute
+  PRIORITY   {1}
+  CODE       local:6
+}
+    
+    invalidFilter ERROR ::= {
+  PARAMETER  CMISFilter
+  PRIORITY   {1}
+  CODE       local:4
+}
+    
+    invalidObjectInstance ERROR ::= {
+  PARAMETER  ObjectInstance
+  PRIORITY   {1}
+  CODE       local:17
+}
+    
+    invalidScope ERROR ::= {PARAMETER  Scope
+                        PRIORITY   {1}
+                        CODE       local:16
+}
+    
+    missingAttributeValue ERROR ::= {
+  PARAMETER  SET OF AttributeId
+  PRIORITY   {1}
+  CODE       local:18
+}
+    
+    mistypedOperation ERROR ::= {PRIORITY  {1}
+                             CODE      local:21
+}
+    
+    noSuchAction ERROR ::= {
+  PARAMETER  NoSuchAction
+  PRIORITY   {1}
+  CODE       local:9
+}
+    
+    noSuchArgument ERROR ::= {
+  PARAMETER  NoSuchArgument
+  PRIORITY   {1}
+  CODE       local:14
+}
+    
+    noSuchAttribute ERROR ::= {
+  PARAMETER  AttributeId
+  PRIORITY   {1}
+  CODE       local:5
+}
+    
+    noSuchEventType ERROR ::= {
+  PARAMETER  NoSuchEventType
+  PRIORITY   {1}
+  CODE       local:13
+}
+    
+    noSuchInvokeId ERROR ::= {
+  PARAMETER  InvokeIDType
+  PRIORITY   {1}
+  CODE       local:22
+}
+    
+    noSuchObjectClass ERROR ::= {
+  PARAMETER  ObjectClass
+  PRIORITY   {1}
+  CODE       local:0
+}
+    
+    noSuchObjectInstance ERROR ::= {
+  PARAMETER  ObjectInstance
+  PRIORITY   {1}
+  CODE       local:1
+}
+    
+    noSuchReferenceObject ERROR ::= {
+  PARAMETER  ObjectInstance
+  PRIORITY   {1}
+  CODE       local:12
+}
+    
+    operationCancelled ERROR ::= {PRIORITY  {1}
+                              CODE      local:23
+}
+    
+    processingFailure ERROR ::= {
+  PARAMETER  ProcessingFailure
+  OPTIONAL   TRUE
+  PRIORITY   {1}
+  CODE       local:10
+}
+    
+    setListError ERROR ::= {
+  PARAMETER  SetListError
+  PRIORITY   {1}
+  CODE       local:8
+}
+    
+    syncNotSupported ERROR ::= {
+  PARAMETER  CMISSync
+  PRIORITY   {1}
+  CODE       local:3
+}
+    
+    m-Action OPERATION ::= {
+  ARGUMENT         ActionArgument
+  RETURN RESULT    FALSE
+  ALWAYS RESPONDS  FALSE
+  CODE             local:6
+}
+    
+    m-Action-Confirmed OPERATION ::= {
+  ARGUMENT  ActionArgument
+  RESULT    ActionResult
+  OPTIONAL  TRUE -- this result is conditional;
+  -- for conditions see 8.3.3.2.9 of ITU-T Rec. X.710
+  ERRORS
+    {accessDenied | classInstanceConflict | complexityLimitation | invalidScope
+      | invalidArgumentValue | invalidFilter | noSuchAction | noSuchArgument |
+      noSuchObjectClass | noSuchObjectInstance | processingFailure |
+      syncNotSupported}
+  LINKED    {m-Linked-Reply}
+  CODE      local:7
+}
+    
+    m-CancelGet OPERATION ::= {
+  ARGUMENT       InvokeIDType
+  RETURN RESULT  TRUE
+  ERRORS         {mistypedOperation | noSuchInvokeId | processingFailure}
+  CODE           local:10
+}
+    
+    m-Create OPERATION ::= {
+  ARGUMENT  CreateArgument
+  RESULT    CreateResult
+  OPTIONAL  TRUE -- this result is conditional;
+  -- for conditions see 8.3.4.1.3 of ITU-T Rec. X.710
+  ERRORS
+    {accessDenied | classInstanceConflict | duplicateManagedObjectInstance |
+      invalidAttributeValue | invalidObjectInstance | missingAttributeValue |
+      noSuchAttribute | noSuchObjectClass | noSuchObjectInstance |
+      noSuchReferenceObject | processingFailure}
+  CODE      local:8
+}
+    
+    m-Delete OPERATION ::= {
+  ARGUMENT  DeleteArgument
+  RESULT    DeleteResult
+  OPTIONAL  TRUE -- this result is conditional;
+  -- for conditions see 8.3.5.2.8 of ITU-T Rec. X.710
+  ERRORS
+    {accessDenied | classInstanceConflict | complexityLimitation |
+      invalidFilter | invalidScope | noSuchObjectClass | noSuchObjectInstance |
+      processingFailure | syncNotSupported}
+  LINKED    {m-Linked-Reply}
+  CODE      local:9
+}
+    
+    m-EventReport OPERATION ::= {
+  ARGUMENT         EventReportArgument
+  RETURN RESULT    FALSE
+  ALWAYS RESPONDS  FALSE
+  CODE             local:0
+}
+    
+    m-EventReport-Confirmed OPERATION ::= {
+  ARGUMENT  EventReportArgument
+  RESULT    EventReportResult
+  OPTIONAL  TRUE
+  ERRORS
+    {invalidArgumentValue | noSuchArgument | noSuchEventType |
+      noSuchObjectClass | noSuchObjectInstance | processingFailure}
+  CODE      local:1
+}
+    
+    m-Get OPERATION ::= {
+  ARGUMENT  GetArgument
+  RESULT    GetResult
+  OPTIONAL  TRUE -- this result is conditional;
+  -- for conditions see 8.3.1.2.8 of ITU-T Rec. X.710
+  ERRORS
+    {accessDenied | classInstanceConflict | complexityLimitation | getListError
+      | invalidFilter | invalidScope | noSuchObjectClass | noSuchObjectInstance
+      | operationCancelled | processingFailure | syncNotSupported}
+  LINKED    {m-Linked-Reply}
+  CODE      local:3
+}
+    
+    m-Linked-Reply OPERATION ::= {ARGUMENT  LinkedReplyArgument
+                              CODE      local:2
+}
+    
+    m-Set OPERATION ::= {
+  ARGUMENT         SetArgument
+  RETURN RESULT    FALSE
+  ALWAYS RESPONDS  FALSE
+  CODE             local:4
+}
+    
+    m-Set-Confirmed OPERATION ::= {
+  ARGUMENT  SetArgument
+  RESULT    SetResult
+  OPTIONAL  TRUE -- this result is conditional;
+  -- for conditions see 8.3.2.2.9 of ITU-T Rec. X.710
+  ERRORS
+    {accessDenied | classInstanceConflict | complexityLimitation |
+      invalidFilter | invalidScope | noSuchObjectClass | noSuchObjectInstance |
+      processingFailure | setListError | syncNotSupported}
+  LINKED    {m-Linked-Reply}
+  CODE      local:5
+}
+    
+    CMIP-ACTION ::= CLASS {
+	&id    ActionTypeId UNIQUE,
+	&Value 
+    } WITH SYNTAX {
+	TYPE &Value 
+	ID &id 
+    }
+    
+    CMIP-ATTRIBUTE ::= CLASS {
+	&id    AttributeId UNIQUE,
+	&Value 
+    } WITH SYNTAX {
+	TYPE &Value 
+	ID &id 
+    }
+    
+    CMIP-AVA ::= CLASS {
+	&id    OBJECT IDENTIFIER UNIQUE,
+	&Value 
+    }
+    
+    CMIP-EVENT ::= CLASS {
+	&id    EventTypeId UNIQUE,
+	&Value 
+    } WITH SYNTAX {
+	TYPE &Value 
+	ID &id 
+    }
+    
+    CMIP-SPECIFICERROR ::= CLASS {
+	&id    OBJECT IDENTIFIER UNIQUE,
+	&Value 
+    } WITH SYNTAX {
+	TYPE &Value 
+	ID &id 
+    }
+    
+    AccessControl ::= EXTERNAL
+    
+    ActionArgument ::= SEQUENCE {
+	                              COMPONENTS OF BaseManagedObjectId,
+	accessControl             [5] AccessControl OPTIONAL,
+	synchronization  [6] IMPLICIT CMISSync DEFAULT bestEffort,
+	scope                     [7] Scope DEFAULT namedNumbers : baseObject,
+	filter                        CMISFilter DEFAULT and : {},
+	actionInfo      [12] IMPLICIT ActionInfo,
+	                              ...
+    }
+    
+    ActionError ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	actionErrorInfo                [6] ActionErrorInfo,
+	                                   ...
+    }
+    
+    ActionErrorInfo ::= SEQUENCE {
+	errorStatus ENUMERATED {
+	    accessDenied(2),
+	    noSuchAction(9),
+	    noSuchArgument(14),
+	    invalidArgumentValue(15),
+	    ...
+	},
+	errorInfo   CHOICE {
+	    actionType         CMIP-ACTION.&id ({ActionSet}),
+	    actionArgument [0] NoSuchArgument,
+	    argumentValue  [1] InvalidArgumentValue
+	},
+	            ...
+    }
+    
+    ActionInfo ::= SEQUENCE {
+	actionType        CMIP-ACTION.&id ({ActionSet}),
+	actionInfoArg [4] CMIP-ACTION.&Value
+	    ({ActionSet}{@.actionType}) OPTIONAL
+    }
+    
+    ActionReply ::= SEQUENCE {
+	actionType          CMIP-ACTION.&id ({ActionSet}),
+	actionReplyInfo [4] CMIP-ACTION.&Value ({ActionSet}{@.actionType})
+    }
+    
+    ActionResult ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	actionReply           [6] IMPLICIT ActionReply OPTIONAL,
+	                                   ...
+    }
+    
+    ActionSet CMIP-ACTION ::= {
+	...
+    }
+    
+    ActionTypeId ::= CHOICE {
+	globalForm [2] IMPLICIT OBJECT IDENTIFIER,
+	localForm  [3] IMPLICIT INTEGER
+    }
+    
+    Attribute ::= SEQUENCE {
+	id    CMIP-ATTRIBUTE.&id ({AttributeSet}),
+	value CMIP-ATTRIBUTE.&Value ({AttributeSet}{@.id})
+    }
+    
+    AttributeError ::= SEQUENCE {
+	errorStatus                 ENUMERATED {
+	    accessDenied(2),
+	    noSuchAttribute(5),
+	    invalidAttributeValue(6),
+	    invalidOperation(24),
+	    invalidOperator(25),
+	    ...
+	},
+	modifyOperator [2] IMPLICIT ModifyOperator OPTIONAL,
+	attributeId                 CMIP-ATTRIBUTE.&id ({AttributeSet}),
+	attributeValue              CMIP-ATTRIBUTE.&Value
+	    ({AttributeSet}{@.attributeId}) OPTIONAL
+    }
+    
+    AttributeId ::= CHOICE {
+	globalForm [0] IMPLICIT OBJECT IDENTIFIER,
+	localForm  [1] IMPLICIT INTEGER
+    }
+    
+    AttributeIdError ::= SEQUENCE {
+	errorStatus ENUMERATED {
+	    accessDenied(2),
+	    noSuchAttribute(5),
+	    ...
+	},
+	attributeId AttributeId,
+	            ...
+    }
+    
+    AttributeSet CMIP-ATTRIBUTE ::= {
+	...
+    }
+    
+    AttributeValueAssertion ::= SEQUENCE {
+	id    CMIP-AVA.&id ({AvaSet}),
+	value CMIP-AVA.&Value ({AvaSet}{@.id})
+    }
+    
+    AvaSet CMIP-AVA ::= {
+	...
+    }
+    
+    BaseManagedObjectId ::= SEQUENCE {
+	baseManagedObjectClass    ObjectClass,
+	baseManagedObjectInstance ObjectInstance
+    }
+    
+    CMISFilter ::= CHOICE {
+	item           [8] FilterItem,
+	and   [9] IMPLICIT SET OF CMISFilter,
+	or   [10] IMPLICIT SET OF CMISFilter,
+	not           [11] CMISFilter
+    }
+    
+    CMISSync ::= ENUMERATED {
+	bestEffort(0),
+	atomic(1)
+    }
+    
+    ComplexityLimitation ::= SET {
+	scope  [0] Scope OPTIONAL,
+	filter [1] CMISFilter OPTIONAL,
+	sync   [2] CMISSync OPTIONAL,
+	           ...
+    }
+    
+    CreateArgument ::= SEQUENCE {
+	managedObjectClass                           ObjectClass,
+	managedOrSuperiorObjectInstance              CHOICE {
+	    managedObjectInstance      ObjectInstance,
+	    superiorObjectInstance [8] ObjectInstance
+	} OPTIONAL,
+	accessControl                            [5] AccessControl OPTIONAL,
+	referenceObjectInstance                  [6] ObjectInstance OPTIONAL,
+	attributeList                   [7] IMPLICIT SET OF Attribute OPTIONAL,
+	                                             ...
+    }
+    
+    CreateResult ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	attributeList         [6] IMPLICIT SET OF Attribute OPTIONAL,
+	                                   ...
+    }
+    
+    DeleteArgument ::= SEQUENCE {
+	                             COMPONENTS OF BaseManagedObjectId,
+	accessControl            [5] AccessControl OPTIONAL,
+	synchronization [6] IMPLICIT CMISSync DEFAULT bestEffort,
+	scope                    [7] Scope DEFAULT namedNumbers : baseObject,
+	filter                       CMISFilter DEFAULT and : {},
+	                             ...
+    }
+    
+    DeleteError ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	deleteErrorInfo                [6] ENUMERATED {
+	    accessDenied(2),
+	    ...
+	},
+	                                   ...
+    }
+    
+    DeleteResult ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	                                   ...
+    }
+    
+    DistinguishedName ::= RDNSequence
+    
+    EventReply ::= SEQUENCE {
+	eventType          CMIP-EVENT.&id ({EventSet}),
+	eventReplyInfo [8] CMIP-EVENT.&Value ({EventSet}{@.eventType}) OPTIONAL
+    }
+    
+    EventReportArgument ::= SEQUENCE {
+	managedObjectClass                 ObjectClass,
+	managedObjectInstance              ObjectInstance,
+	eventTime             [5] IMPLICIT GeneralizedTime OPTIONAL,
+	eventType                          CMIP-EVENT.&id ({EventSet}),
+	eventInfo                      [8] CMIP-EVENT.&Value
+	    ({EventSet}{@.eventType}) OPTIONAL,
+	                                   ...
+    }
+    
+    EventReportResult ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	eventReply                         EventReply OPTIONAL,
+	                                   ...
+    }
+    
+    EventSet CMIP-EVENT ::= {
+	...
+    }
+    
+    EventTypeId ::= CHOICE {
+	globalForm [6] IMPLICIT OBJECT IDENTIFIER,
+	localForm  [7] IMPLICIT INTEGER
+    }
+    
+    FilterItem ::= CHOICE {
+	equality               [0] IMPLICIT Attribute,
+	substrings             [1] IMPLICIT SEQUENCE OF CHOICE {
+	    initialString [0] IMPLICIT Attribute,
+	    anyString     [1] IMPLICIT Attribute,
+	    finalString   [2] IMPLICIT Attribute
+	},
+	greaterOrEqual         [2] IMPLICIT Attribute,
+	lessOrEqual            [3] IMPLICIT Attribute,
+	present                         [4] AttributeId,
+	subsetOf               [5] IMPLICIT Attribute,
+	supersetOf             [6] IMPLICIT Attribute,
+	nonNullSetIntersection [7] IMPLICIT Attribute
+    }
+    
+    GetArgument ::= SEQUENCE {
+	                              COMPONENTS OF BaseManagedObjectId,
+	accessControl             [5] AccessControl OPTIONAL,
+	synchronization  [6] IMPLICIT CMISSync DEFAULT bestEffort,
+	scope                     [7] Scope DEFAULT namedNumbers : baseObject,
+	filter                        CMISFilter DEFAULT and : {},
+	attributeIdList [12] IMPLICIT SET OF AttributeId OPTIONAL,
+	                              ...
+    }
+    
+    GetInfoStatus ::= CHOICE {
+	attributeIdError [0] IMPLICIT AttributeIdError,
+	attribute        [1] IMPLICIT Attribute
+    }
+    
+    GetListError ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	getInfoList           [6] IMPLICIT SET OF GetInfoStatus,
+	                                   ...
+    }
+    
+    GetResult ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	attributeList         [6] IMPLICIT SET OF Attribute OPTIONAL,
+	                                   ...
+    }
+    
+    InvalidArgumentValue ::= CHOICE {
+	actionValue [0] IMPLICIT ActionInfo,
+	eventValue  [1] IMPLICIT SEQUENCE {
+	    eventType     CMIP-EVENT.&id ({EventSet}),
+	    eventInfo [8] CMIP-EVENT.&Value ({EventSet}{@.eventType}) OPTIONAL
+	}
+    }
+    
+    InvokeIDType ::= InvokeId (ALL EXCEPT absent: NULL)
+    
+    LinkedReplyArgument ::= CHOICE {
+	getResult         [0] IMPLICIT GetResult,
+	getListError      [1] IMPLICIT GetListError,
+	setResult         [2] IMPLICIT SetResult,
+	setListError      [3] IMPLICIT SetListError,
+	actionResult      [4] IMPLICIT ActionResult,
+	processingFailure [5] IMPLICIT ProcessingFailure,
+	deleteResult      [6] IMPLICIT DeleteResult,
+	actionError       [7] IMPLICIT ActionError,
+	deleteError       [8] IMPLICIT DeleteError
+    }
+    
+    ModifyOperator ::= INTEGER {
+	replace(0),
+	addValues(1),
+	removeValues(2),
+	setToDefault(3)
+    }
+    
+    NoSuchAction ::= SEQUENCE {
+	managedObjectClass ObjectClass,
+	actionType         CMIP-ACTION.&id ({ActionSet}),
+	                   ...
+    }
+    
+    NoSuchArgument ::= CHOICE {
+	actionId [0] IMPLICIT SEQUENCE {
+	    managedObjectClass ObjectClass OPTIONAL,
+	    actionType         CMIP-ACTION.&id ({ActionSet})
+	},
+	eventId  [1] IMPLICIT SEQUENCE {
+	    managedObjectClass ObjectClass OPTIONAL,
+	    eventType          CMIP-EVENT.&id ({EventSet})
+	}
+    }
+    
+    NoSuchEventType ::= SEQUENCE {
+	managedObjectClass ObjectClass,
+	eventType          CMIP-EVENT.&id ({EventSet}),
+	                   ...
+    }
+    
+    ObjectClass ::= CHOICE {
+	globalForm [0] IMPLICIT OBJECT IDENTIFIER,
+	localForm  [1] IMPLICIT INTEGER
+    }
+    
+    ObjectInstance ::= CHOICE {
+	distinguishedName      [2] IMPLICIT DistinguishedName,
+	nonSpecificForm        [3] IMPLICIT OCTET STRING,
+	localDistinguishedName [4] IMPLICIT RDNSequence
+    }
+    
+    ProcessingFailure ::= SEQUENCE {
+	managedObjectClass        ObjectClass,
+	managedObjectInstance     ObjectInstance OPTIONAL,
+	specificErrorInfo     [5] SpecificErrorInfo,
+	                          ...
+    }
+    
+    RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
+    
+    RelativeDistinguishedName ::= SET OF AttributeValueAssertion
+    
+    Scope ::= CHOICE {
+	namedNumbers                  INTEGER {
+	    baseObject(0),
+	    firstLevelOnly(1),
+	    wholeSubtree(2)
+	},
+	individualLevels [1] IMPLICIT INTEGER,
+	baseToNthLevel   [2] IMPLICIT INTEGER
+    }
+    
+    SetArgument ::= SEQUENCE {
+	                               COMPONENTS OF BaseManagedObjectId,
+	accessControl              [5] AccessControl OPTIONAL,
+	synchronization   [6] IMPLICIT CMISSync DEFAULT bestEffort,
+	scope                      [7] Scope DEFAULT namedNumbers : baseObject,
+	filter                         CMISFilter DEFAULT and : {},
+	modificationList [12] IMPLICIT SET OF SEQUENCE {
+	    modifyOperator [2] IMPLICIT ModifyOperator DEFAULT replace,
+	    attributeId                 CMIP-ATTRIBUTE.&id ({AttributeSet}),
+	    attributeValue              CMIP-ATTRIBUTE.&Value
+		({AttributeSet}{@.attributeId}) OPTIONAL
+	},
+	                               ...
+    }
+    
+    SetInfoStatus ::= CHOICE {
+	attributeError [0] IMPLICIT AttributeError,
+	attribute      [1] IMPLICIT Attribute
+    }
+    
+    SetListError ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	setInfoList           [6] IMPLICIT SET OF SetInfoStatus,
+	                                   ...
+    }
+    
+    SetResult ::= SEQUENCE {
+	managedObjectClass                 ObjectClass OPTIONAL,
+	managedObjectInstance              ObjectInstance OPTIONAL,
+	currentTime           [5] IMPLICIT GeneralizedTime OPTIONAL,
+	attributeList         [6] IMPLICIT SET OF Attribute OPTIONAL,
+	                                   ...
+    }
+    
+    SpecificErrorInfo ::= SEQUENCE {
+	errorId   CMIP-SPECIFICERROR.&id ({SpecificErrorSet}),
+	errorInfo CMIP-SPECIFICERROR.&Value ({SpecificErrorSet}{@.errorId})
+    }
+    
+    SpecificErrorSet CMIP-SPECIFICERROR ::= {
+	...
+    }
+    
+    ROSEapdus ::= ROS{{InvokeIDType}, {CMIP-Operations},
+	{CMIP-Confirmed-Operations}}
+    
+END
+
+CMIP-A-ABORT-Information {joint-iso-itu-t(2) ms(9) cmip(1) modules(0)
+    aAbortUserInfo(2)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    CMIPAbortInfo ::= SEQUENCE {
+	abortSource [0] IMPLICIT CMIPAbortSource,
+	userInfo             [1] EXTERNAL OPTIONAL
+    }
+    
+    CMIPAbortSource ::= ENUMERATED {
+	cmiseServiceUser(0),
+	cmiseServiceProvider(1)
+    }
+    
+END
+
+CMIP-A-ASSOCIATE-Information {joint-iso-itu-t(2) ms(9) cmip(1) modules(0)
+    aAssociateUserInfo(1)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    FunctionalUnits ::= BIT STRING {
+	multipleObjectSelection(0),
+	filter(1),
+	multipleReply(2),
+	extendedService(3),
+	cancelGet(4)
+    }
+    
+    CMIPUserInfo ::= SEQUENCE {
+	protocolVersion [0] IMPLICIT ProtocolVersion DEFAULT {version1},
+	functionalUnits [1] IMPLICIT FunctionalUnits DEFAULT {},
+	accessControl            [2] EXTERNAL OPTIONAL,
+	userInfo                 [3] EXTERNAL OPTIONAL
+    }
+    
+    ProtocolVersion ::= BIT STRING {
+	version1(0),
+	version2(1)
+    }
+    
+END
+
+CMISE-ROSE-SMASE-ASN1Module {joint-iso-itu-t(2) ms(9) smi(3) part9(9)
+    asn1Module(2) 0}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	FunctionalUnitPackage
+	FROM SMASE-A-ASSOCIATE-Information {joint-iso-itu-t(2) ms(9) smo(0)
+	    asn1Modules(2) negotiationDefinitions(0) version1(1)}
+	
+	ObjectInstance
+	FROM CMIP-1 {joint-iso-itu-t(2) ms(9) cmip(1) modules(0) protocol(3)}
+	
+	FunctionalUnits, ProtocolVersion
+	FROM CMIP-A-ASSOCIATE-Information {joint-iso-itu-t(2) ms(9) cmip(1)
+	    modules(0) aAssociateUserInfo(1)};
+	
+    crsMObjectClass OBJECT IDENTIFIER ::= {joint-iso-ccitt(2) ms(9) smi(3)
+	part9(9) managedObjectClass(3)}
+    
+    crsMPackage OBJECT IDENTIFIER ::= {joint-iso-ccitt(2) ms(9) smi(3) part9(9)
+	package(4)}
+    
+    crsMNameBinding OBJECT IDENTIFIER ::= {joint-iso-ccitt(2) ms(9) smi(3)
+	part9(9) nameBinding(6)}
+    
+    crsAttribute OBJECT IDENTIFIER ::= {joint-iso-ccitt(2) ms(9) smi(3)
+	part9(9) attribute(7)}
+    
+    CmipPduReceivingSupport ::= CmipPduType
+    
+    CmipPduSendingSupport ::= CmipPduType
+    
+    CmipPduType ::= BIT STRING {
+	m-get-invoke(1),
+	m-get-rors(2),
+	m-get-linked-reply(3),
+	m-set-invoke(4),
+	m-setconf-invoke(5),
+	m-setconf-rors(6),
+	m-setconf-linked-reply(7),
+	m-action-invoke(8),
+	m-actionconf-invoke(9),
+	m-actionconf-rors(10),
+	m-actionconf-linked-reply(11),
+	m-delete-invoke(12),
+	m-delete-rors(13),
+	m-delete-linked-reply(14),
+	m-create-invoke(15),
+	m-create-rors(16),
+	m-eventReport-invoke(17),
+	m-eventReportConf-invoke(18),
+	m-eventReportConf-rors(19),
+	m-cancelGet-invoke(20),
+	m-cancelGet-rors(21),
+	noSuchObjectClass-roer(22),
+	noSuchObjectlnstance-roer(23),
+	accessDenied-roer(24),
+	syncNotSupported-roer(25),
+	invalidFilter-roer(26),
+	noSuchAttribute-roer(27),
+	invalidAttributeValue-roer(28),
+	getListError-roer(29),
+	setListError-roer(30),
+	noSuchAction-roer(31),
+	processingfailure-roer(32),
+	duplicateManagedObjectlnstance-roer(33),
+	noSuchReferenceObject-roer(34),
+	noSuchEventType-roer(35),
+	noSuchArgument-roer(36),
+	invalidArgumentValue-roer(37),
+	invalidscope-roer(38),
+	invalidObjectInstance-roer(39),
+	missingAttributeValue-roer(40),
+	classlnstanceConflict-roer(41),
+	complexityLimitation-roer(42),
+	misstypedOperation-roer(43),
+	noSuchlnvokeID-roer(44),
+	operationCanceled-roer(45),
+	rosReject(46)
+    }
+    
+    CmiseFunctionalUnitsSelected ::= FunctionalUnits
+    
+    CmiseFunctionalUnitsSupported ::= FunctionalUnits
+    
+    InvokeldsOutstanding ::= SET OF INTEGER
+    
+    InvokeIdsPerforming ::= SET OF INTEGER
+    
+    MaxEncodedCmipPduReceiveSize ::= INTEGER (0..MAX)
+    
+    ProtocolVersionSupported ::= ProtocolVersion
+    
+    SmaseFunctionalUnits ::= SET OF FunctionalUnitPackage
+    
+    SmUserInfoSent ::= CHOICE {
+	nothingSent     NULL,
+	informationSent GraphicString
+    }
+    
+    SmUserInfoReceived ::= CHOICE {
+	nothingReceived     NULL,
+	informationReceived GraphicString
+    }
+    
+END
+
+Remote-Operations-Abstract-Syntaxes {joint-iso-itu-t(2) remote-operations(4)
+    remote-operations-abstract-syntaxes(12) version1(0)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	OPERATION-PACKAGE
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)}
+	
+	InvokeId, noInvokeId, ROS{}, Bind{}, Unbind{}
+	FROM Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t(2)
+	    remote-operations(4) generic-ROS-PDUs(6) version1(0)}
+	
+	ACSE-apdu
+	FROM ACSE-1 {joint-iso-itu-t(2) association-control(2) modules(0)
+	    apdus(0) version1(1)}
+	
+	RTORQapdu, RTOACapdu, RTORJapdu
+	FROM Reliable-Transfer-APDU {joint-iso-itu-t(2) reliable-transfer(3)
+	    apdus(0)}
+	
+	combine{}, AllOperations{}, ConsumerPerforms{}, SupplierPerforms{}
+	FROM Remote-Operations-Useful-Definitions {joint-iso-itu-t(2)
+	    remote-operations(4) useful-definitions(7) version1(0)}
+	
+	APPLICATION-CONTEXT
+	FROM Remote-Operations-Information-Objects-extensions
+	    {joint-iso-itu-t(2) remote-operations(4)
+	    informationObjects-extensions(8) version1(0)};
+	
+    RTSE-apdus ::= CHOICE {
+	rtorq-apdu [16] IMPLICIT RTORQapdu,
+	rtoac-apdu [17] IMPLICIT RTOACapdu,
+	rtorj-apdu [18] IMPLICIT RTORJapdu,
+	rttp-apdu                RTTPapdu,
+	rttr-apdu                RTTRapdu,
+	rtab-apdu  [22] IMPLICIT RTABapdu
+    }
+    
+    RTTPapdu ::= INTEGER
+    
+    RTTRapdu ::= OCTET STRING
+    
+    RTABapdu ::= SET {
+	abortReason        [0] IMPLICIT AbortReason OPTIONAL,
+	reflectedParameter [1] IMPLICIT BIT STRING OPTIONAL,
+	userdataAB                  [2] TYPE-IDENTIFIER.&Type OPTIONAL
+    }
+    
+    AbortReason ::= INTEGER {
+	localSystemProblem(0),
+	invalidParameter(1),
+	unrecognizedActivity(2),
+	temporaryProblem(3),
+	protocolError(4),
+	permanentProblem(5),
+	userError(6),
+	transferCompleted(7)
+    }
+    
+    acse-abstract-syntax ABSTRACT-SYNTAX ::= {
+	ACSE-apdu IDENTIFIED BY {joint-iso-itu-t(2) association-control(2)
+	    abstract-syntax(1) apdus(0) version1(1)} 
+    }
+    
+    rtse-abstract-syntax ABSTRACT-SYNTAX ::= {
+	RTSE-apdus IDENTIFIED BY {joint-iso-itu-t(2) reliable-transfer(3)
+	    apdus(0)} 
+    }
+    
+    AllValues {APPLICATION-CONTEXT : ac}  ::= CHOICE {
+	bind         Bind{ac.&associationContract.&connection.&bind},
+	unbind       Unbind{ac.&associationContract.&connection.&unbind},
+	ros-singleAS ROS-SingleAS{{ROSEInvokeIds}, combine{{ac.&associationContract.&OperationsOf |
+                       ac.&associationContract.&InitiatorConsumerOf |
+                       ac.&associationContract.&ResponderConsumerOf},
+		    {
+                       ...}, {-- Information Object of class OPERATION-PACKAGE to be defined -- }}}
+    }
+    
+    ROS-SingleAS {InvokeId : ROSEInvokeIds,
+	    OPERATION-PACKAGE : package}  ::= ROS{{ROSEInvokeIds},
+	    {AllOperations  {package}}, {AllOperations  {package}}}
+    
+    ROS-ConsumerAS {InvokeId : ROSEInvokeIds,
+	    OPERATION-PACKAGE : package}  ::= ROS{{ROSEInvokeIds},
+	    {ConsumerPerforms  {package}}, {SupplierPerforms  {package}}}
+    
+    ROS-SupplierAS {InvokeId : ROSEInvokeIds,
+	    OPERATION-PACKAGE : package}  ::= ROS{{ROSEInvokeIds},
+	    {SupplierPerforms  {package}}, {ConsumerPerforms  {package}}}
+    
+    ROSEInvokeIds InvokeId ::= {
+	ALL EXCEPT noInvokeId
+    }
+    
+END
+
+Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t(2) remote-operations(4)
+    generic-ROS-PDUs(6) version1(0)}
+DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	OPERATION, ERROR
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)};
+	
+    ROS {InvokeId : InvokeIdSet, OPERATION : Invokable,
+	    OPERATION : Returnable}  ::= CHOICE {
+	invoke       [1] Invoke{{InvokeIdSet}, {Invokable}},
+	returnResult [2] ReturnResult{{Returnable}},
+	returnError  [3] ReturnError{{Errors{{Returnable}}}},
+	reject       [4] Reject
+    } (CONSTRAINED BY {} ! RejectProblem : general-unrecognizedPDU)
+    
+    Invoke {InvokeId : InvokeIdSet, OPERATION : Operations}  ::= SEQUENCE {
+	invokeId InvokeId (InvokeIdSet) (CONSTRAINED BY
+	    {} ! RejectProblem : invoke-duplicateInvocation),
+	linkedId CHOICE {
+	    present [0] present < InvokeId,
+	    absent  [1] NULL
+	} (CONSTRAINED BY {} ! RejectProblem : invoke-unrecognizedLinkedId)
+	    (CONSTRAINED BY
+	    {} ! RejectProblem : invoke-linkedResponseUnexpected) OPTIONAL,
+	opcode   OPERATION.&operationCode
+	    ({Operations} ! RejectProblem : invoke-unrecognizedOperation),
+	argument OPERATION.&ArgumentType ({Operations}{@.opcode} ! RejectProblem : invoke-mistypedArgument) OPTIONAL
+    } (CONSTRAINED BY {} ! RejectProblem : general-mistypedPDU)
+	    (WITH COMPONENTS { ... ,
+	linkedId   ABSENT
+    } | WITH COMPONENTS { ... ,
+	linkedId   PRESENT,
+	opcode    (CONSTRAINED BY
+	{} ! RejectProblem : invoke-unexpectedLinkedOperation)
+    })
+    
+    ReturnResult {OPERATION : Operations}  ::= SEQUENCE {
+	invokeId InvokeId (CONSTRAINED BY
+	    {} ! RejectProblem : returnResult-unrecognizedInvocation)
+	    (CONSTRAINED BY
+	    {} ! RejectProblem : returnResult-resultResponseUnexpected),
+	result   SEQUENCE {
+	    opcode OPERATION.&operationCode ({Operations}) (CONSTRAINED BY
+		{} ! RejectProblem : returnResult-unrecognizedInvocation),
+	    result OPERATION.&ResultType ({Operations}{@.opcode} ! RejectProblem : returnResult-mistypedResult)
+	} OPTIONAL
+    } (CONSTRAINED BY {} ! RejectProblem : general-mistypedPDU)
+    
+    ReturnError {ERROR : Errors}  ::= SEQUENCE {
+	invokeId  InvokeId (CONSTRAINED BY
+	    {} ! RejectProblem : returnError-unrecognizedInvocation)
+	    (CONSTRAINED BY
+	    {} ! RejectProblem : returnError-errorResponseUnexpected),
+	errcode   ERROR.&errorCode
+	    ({Errors} ! RejectProblem : returnError-unrecognizedError)
+	    (CONSTRAINED BY {} ! RejectProblem : returnError-unexpectedError),
+	parameter ERROR.&ParameterType ({Errors}{@.errcode} ! RejectProblem : returnError-mistypedParameter) OPTIONAL
+    } (CONSTRAINED BY {} ! RejectProblem : general-mistypedPDU)
+    
+    Reject ::= SEQUENCE {
+	invokeId InvokeId,
+	problem  CHOICE {
+	    general      [0] GeneralProblem,
+	    invoke       [1] InvokeProblem,
+	    returnResult [2] ReturnResultProblem,
+	    returnError  [3] ReturnErrorProblem
+	}
+    } (CONSTRAINED BY {} ! RejectProblem : general-mistypedPDU)
+    
+    GeneralProblem ::= INTEGER {
+	unrecognizedPDU(0),
+	mistypedPDU(1),
+	badlyStructuredPDU(2)
+    }
+    
+    InvokeProblem ::= INTEGER {
+	duplicateInvocation(0),
+	unrecognizedOperation(1),
+	mistypedArgument(2),
+	resourceLimitation(3),
+	releaseInProgress(4),
+	unrecognizedLinkedId(5),
+	linkedResponseUnexpected(6),
+	unexpectedLinkedOperation(7)
+    }
+    
+    ReturnResultProblem ::= INTEGER {
+	unrecognizedInvocation(0),
+	resultResponseUnexpected(1),
+	mistypedResult(2)
+    }
+    
+    ReturnErrorProblem ::= INTEGER {
+	unrecognizedInvocation(0),
+	errorResponseUnexpected(1),
+	unrecognizedError(2),
+	unexpectedError(3),
+	mistypedParameter(4)
+    }
+    
+    RejectProblem ::= INTEGER {
+	general-unrecognizedPDU(0),
+	general-mistypedPDU(1),
+	general-badlyStructuredPDU(2),
+	invoke-duplicateInvocation(10),
+	invoke-unrecognizedOperation(11),
+	invoke-mistypedArgument(12),
+	invoke-resourceLimitation(13),
+	invoke-releaseInProgress(14),
+	invoke-unrecognizedLinkedId(15),
+	invoke-linkedResponseUnexpected(16),
+	invoke-unexpectedLinkedOperation(17),
+	returnResult-unrecognizedInvocation(20),
+	returnResult-resultResponseUnexpected(21),
+	returnResult-mistypedResult(22),
+	returnError-unrecognizedInvocation(30),
+	returnError-errorResponseUnexpected(31),
+	returnError-unrecognizedError(32),
+	returnError-unexpectedError(33),
+	returnError-mistypedParameter(34)
+    }
+    
+    InvokeId ::= CHOICE {
+	present INTEGER,
+	absent  NULL
+    }
+    
+    noInvokeId InvokeId ::= absent : NULL
+    
+    NoInvokeId InvokeId ::= {
+	noInvokeId
+    }
+    
+    Errors {OPERATION : Operations} ERROR ::= {Operations.&Errors}
+    
+    Bind {OPERATION : operation}  ::= CHOICE {
+	bind-invoke [16] OPERATION.&ArgumentType ({operation}),
+	bind-result [17] OPERATION.&ResultType ({operation}),
+	bind-error  [18] OPERATION.&Errors.&ParameterType ({operation})
+    }
+    
+    Unbind {OPERATION : operation}  ::= CHOICE {
+	unbind-invoke [19] OPERATION.&ArgumentType ({operation}),
+	unbind-result [20] OPERATION.&ResultType ({operation}),
+	unbind-error  [21] OPERATION.&Errors.&ParameterType ({operation})
+    }
+    
+END
+
+Remote-Operations-Information-Objects {joint-iso-itu-t(2) remote-operations(4)
+    informationObjects(5) version1(0)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	emptyBind, emptyUnbind
+	FROM Remote-Operations-Useful-Definitions {joint-iso-itu-t(2)
+	    remote-operations(4) useful-definitions(7) version1(0)};
+	
+    OPERATION ::= CLASS {
+	&ArgumentType          OPTIONAL,
+	&argumentTypeOptional BOOLEAN OPTIONAL,
+	&returnResult         BOOLEAN DEFAULT TRUE,
+	&ResultType            OPTIONAL,
+	&resultTypeOptional   BOOLEAN OPTIONAL,
+	&Errors               ERROR OPTIONAL,
+	&Linked               OPERATION OPTIONAL,
+	&synchronous          BOOLEAN DEFAULT FALSE,
+	&alwaysReturns        BOOLEAN DEFAULT TRUE,
+	&InvokePriority       Priority OPTIONAL,
+	&ResultPriority       Priority OPTIONAL,
+	&operationCode        Code UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ ARGUMENT &ArgumentType 
+	    [ OPTIONAL &argumentTypeOptional ]]
+	[ RESULT &ResultType 
+	    [ OPTIONAL &resultTypeOptional ]]
+	[ RETURN RESULT &returnResult ]
+	[ ERRORS &Errors ]
+	[ LINKED &Linked ]
+	[ SYNCHRONOUS &synchronous ]
+	[ ALWAYS RESPONDS &alwaysReturns ]
+	[ INVOKE PRIORITY &InvokePriority ]
+	[ RESULT-PRIORITY &ResultPriority ]
+	[ CODE &operationCode ]
+    }
+    
+    ERROR ::= CLASS {
+	&ParameterType          OPTIONAL,
+	&parameterTypeOptional BOOLEAN OPTIONAL,
+	&ErrorPriority         Priority OPTIONAL,
+	&errorCode             Code UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ PARAMETER &ParameterType 
+	    [ OPTIONAL &parameterTypeOptional ]]
+	[ PRIORITY &ErrorPriority ]
+	[ CODE &errorCode ]
+    }
+    
+    OPERATION-PACKAGE ::= CLASS {
+	&Both     OPERATION OPTIONAL,
+	&Consumer OPERATION OPTIONAL,
+	&Supplier OPERATION OPTIONAL,
+	&id       OBJECT IDENTIFIER UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ OPERATIONS &Both ]
+	[ CONSUMER INVOKES &Supplier ]
+	[ SUPPLIER INVOKES &Consumer ]
+	[ ID &id ]
+    }
+    
+    CONNECTION-PACKAGE ::= CLASS {
+	&bind               OPERATION DEFAULT emptyBind,
+	&unbind             OPERATION DEFAULT emptyUnbind,
+	&responderCanUnbind BOOLEAN DEFAULT FALSE,
+	&unbindCanFail      BOOLEAN DEFAULT FALSE,
+	&id                 OBJECT IDENTIFIER UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ BIND &bind ]
+	[ UNBIND &unbind ]
+	[ RESPONDER UNBIND &responderCanUnbind ]
+	[ FAILURE TO UNBIND &unbindCanFail ]
+	[ ID &id ]
+    }
+    
+    CONTRACT ::= CLASS {
+	&connection          CONNECTION-PACKAGE OPTIONAL,
+	&OperationsOf        OPERATION-PACKAGE OPTIONAL,
+	&InitiatorConsumerOf OPERATION-PACKAGE OPTIONAL,
+	&InitiatorSupplierOf OPERATION-PACKAGE OPTIONAL,
+	&id                  OBJECT IDENTIFIER UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ CONNECTION &connection ]
+	[ OPERATIONS OF &OperationsOf ]
+	[ INITIATOR CONSUMER OF &InitiatorConsumerOf ]
+	[ RESPONDER CONSUMER OF &InitiatorSupplierOf ]
+	[ ID &id ]
+    }
+    
+    ROS-OBJECT-CLASS ::= CLASS {
+	&Is                   ROS-OBJECT-CLASS OPTIONAL,
+	&Initiates            CONTRACT OPTIONAL,
+	&Responds             CONTRACT OPTIONAL,
+	&InitiatesAndResponds CONTRACT OPTIONAL,
+	&id                   OBJECT IDENTIFIER UNIQUE
+    } WITH SYNTAX {
+	[ IS &Is ]
+	[ BOTH &InitiatesAndResponds ]
+	[ INITIATES &Initiates ]
+	[ RESPONDS &Responds ]
+	ID &id 
+    }
+    
+    Code ::= CHOICE {
+	local  INTEGER,
+	global OBJECT IDENTIFIER
+    }
+    
+    Priority ::= INTEGER (0..MAX)
+    
+END
+
+Remote-Operations-Information-Objects-extensions {joint-iso-itu-t(2)
+    remote-operations(4) informationObjects-extensions(8) version1(0)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	CONTRACT
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)};
+	
+    APPLICATION-CONTEXT ::= CLASS {
+	&associationContract    CONTRACT,
+	&associationRealization REALIZATION OPTIONAL,
+	&transferRealization    REALIZATION,
+	&AbstractSyntaxes       ABSTRACT-SYNTAX,
+	&applicationContextName OBJECT IDENTIFIER UNIQUE
+    } WITH SYNTAX {
+	CONTRACT &associationContract 
+	[ ESTABLISHED BY &associationRealization ]
+	INFORMATION TRANSFER BY &transferRealization 
+	ABSTRACT SYNTAXES &AbstractSyntaxes 
+	APPLICATION CONTEXT NAME &applicationContextName 
+    }
+    
+    REALIZATION ::= TYPE-IDENTIFIER
+    
+END
+
+Remote-Operations-Realizations {joint-iso-itu-t(2) remote-operations(4)
+    realizations(9) version1(0)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	REALIZATION
+	FROM Remote-Operations-Information-Objects-extensions
+	    {joint-iso-itu-t(2) remote-operations(4)
+	    informationObjects-extensions(8) version1(0)};
+	
+    RealizationParameter ::= SEQUENCE {
+	realization-type ENUMERATED {
+	    association-service(0),
+	    transfer-service(1)
+	},
+	concatenation    BOOLEAN DEFAULT FALSE
+    }
+    
+    acse REALIZATION ::= {
+	RealizationParameter (WITH COMPONENTS {
+	    realization-type  (association-service)
+	}) IDENTIFIED BY {joint-iso-itu-t(2) remote-operations(4)
+	    association-realizations(10) acse-without-concatenation(0)} 
+    }
+    
+    acse-with-concatenation REALIZATION ::= {
+	RealizationParameter (WITH COMPONENTS {
+	    realization-type  (association-service),
+	    concatenation     (TRUE)
+	}) IDENTIFIED BY {joint-iso-itu-t(2) remote-operations(4)
+	    association-realizations(10) acse-with-concatenation(1)} 
+    }
+    
+    association-by-RTSE REALIZATION ::= {
+	RealizationParameter (WITH COMPONENTS {
+	    realization-type  (association-service)
+	}) IDENTIFIED BY {joint-iso-itu-t(2) remote-operations(4)
+	    association-realizations(10) association-by-rtse(2)} 
+    }
+    
+    pData REALIZATION ::= {
+	RealizationParameter (WITH COMPONENTS {
+	    realization-type  (transfer-service)
+	}) IDENTIFIED BY {joint-iso-itu-t(2) remote-operations(4)
+	    transfer-realizations(11) pData-without-concatenation(0)} 
+    }
+    
+    pData-with-concatenation REALIZATION ::= {
+	RealizationParameter (WITH COMPONENTS {
+	    realization-type  (transfer-service),
+	    concatenation     (TRUE)
+	}) IDENTIFIED BY {joint-iso-itu-t(2) remote-operations(4)
+	    transfer-realizations(11) pData-with-concatenation(1)} 
+    }
+    
+    transfer-by-RTSE REALIZATION ::= {
+	RealizationParameter (WITH COMPONENTS {
+	    realization-type  (transfer-service)
+	}) IDENTIFIED BY {joint-iso-itu-t(2) remote-operations(4)
+	    transfer-realizations(11) rTSE-transfer(2)} 
+    }
+    
+END
+
+Remote-Operations-Useful-Definitions {joint-iso-itu-t(2) remote-operations(4)
+    useful-definitions(7) version1(0)}
+DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	OPERATION, ERROR, OPERATION-PACKAGE, Code
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)}
+	
+	InvokeId, ROS{}
+	FROM Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t(2)
+	    remote-operations(4) generic-ROS-PDUs(6) version1(0)};
+	
+    emptyBind OPERATION ::= {
+	ERRORS {refuse} 
+	SYNCHRONOUS TRUE 
+	}
+    
+    emptyUnbind OPERATION ::= {
+	SYNCHRONOUS TRUE 
+	}
+    
+    refuse ERROR ::= {
+	CODE local : -1 
+    }
+    
+    no-op OPERATION ::= {
+	ALWAYS RESPONDS FALSE 
+	CODE local : -1 
+    }
+    
+    Forward {OPERATION : OperationSet} OPERATION ::= {OperationSet |
+	OperationSet.&Linked.&Linked |
+	OperationSet.&Linked.&Linked.&Linked.&Linked}
+    
+    Reverse {OPERATION : OperationSet} OPERATION ::= {Forward{{OperationSet.&Linked}}}
+    
+    ConsumerPerforms {OPERATION-PACKAGE : package} OPERATION ::= {Forward{{package.&Consumer}} |
+	Forward{{package.&Both}} | Reverse{{package.&Supplier}} |
+	Reverse{{package.&Both}}}
+    
+    SupplierPerforms {OPERATION-PACKAGE : package} OPERATION ::= {Forward{{package.&Supplier}} |
+	Forward{{package.&Both}} | Reverse{{package.&Consumer}} |
+	Reverse{{package.&Both}}}
+    
+    AllOperations {OPERATION-PACKAGE : package} OPERATION ::= {ConsumerPerforms{package} |
+	SupplierPerforms{package}}
+    
+    recode {OPERATION : operation, Code : code} OPERATION ::= {
+	ARGUMENT operation.&ArgumentType OPTIONAL
+	    operation.&argumentTypeOptional 
+	RESULT operation.&ResultType OPTIONAL operation.&resultTypeOptional 
+	RETURN RESULT operation.&returnResult 
+	ERRORS {operation.&Errors} 
+	LINKED {operation.&Linked} 
+	SYNCHRONOUS operation.&synchronous 
+	ALWAYS RESPONDS operation.&alwaysReturns 
+	INVOKE PRIORITY {operation.&InvokePriority} 
+	RESULT-PRIORITY {operation.&ResultPriority} 
+	CODE code 
+    }
+    
+    switch {OPERATION-PACKAGE : package,
+	    OBJECT IDENTIFIER : id} OPERATION-PACKAGE ::= {
+	OPERATIONS {package.&Both} 
+	CONSUMER INVOKES {package.&Consumer} 
+	SUPPLIER INVOKES {package.&Supplier} 
+	ID id 
+    }
+    
+    combine {OPERATION-PACKAGE : ConsumerConsumes,
+	    OPERATION-PACKAGE : ConsumerSupplies,
+	    OPERATION-PACKAGE : base} OPERATION-PACKAGE ::= {
+	OPERATIONS {ConsumerConsumes.&Both | ConsumerSupplies.&Both} 
+	CONSUMER INVOKES {ConsumerConsumes.&Consumer |
+	    ConsumerSupplies.&Supplier} 
+	SUPPLIER INVOKES {ConsumerConsumes.&Supplier |
+	    ConsumerSupplies.&Consumer} 
+	ID base.&id 
+    }
+    
+    ROS-SingleAS {InvokeId : InvokeIdSet,
+	    OPERATION-PACKAGE : package}  ::= ROS{{InvokeIdSet},
+	    {AllOperations{package}}, {AllOperations{package}}}
+    
+    ROS-ConsumerAS {InvokeId : InvokeIdSet,
+	    OPERATION-PACKAGE : package}  ::= ROS{{InvokeIdSet},
+	    {ConsumerPerforms{package}}, {SupplierPerforms{package}}}
+    
+    ROS-SupplierAS {InvokeId : InvokeIdSet,
+	    OPERATION-PACKAGE : package}  ::= ROS{{InvokeIdSet},
+	    {SupplierPerforms{package}}, {ConsumerPerforms{package}}}
+    
+END
+
+SMASE-A-ASSOCIATE-Information {joint-iso-itu-t(2) ms(9) smo(0) asn1Modules(2)
+    negotiationDefinitions(0) version1(1)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    SMASEUserData ::= SEQUENCE {
+	smfuPackages                     SET OF FunctionalUnitPackage OPTIONAL,
+	reason                           Reason OPTIONAL,
+	systemsManagementUserInformation GraphicString OPTIONAL
+    }
+    
+    Reason ::= INTEGER {
+	smfusNotSupported(0),
+	smfuCombinationNotSupported(1),
+	smfusRequiredNotAvailable(2),
+	smfuNegotiationRefused(3)
+    }
+    
+    FunctionalUnitPackage ::= SEQUENCE {
+	functionalUnitPackageId                FunctionalUnitPackageId,
+	managerRoleFunctionalUnit [0] IMPLICIT BIT STRING DEFAULT {},
+	agentRoleFunctionalUnit   [1] IMPLICIT BIT STRING DEFAULT {}
+    }
+    
+    FunctionalUnitPackageId ::= OBJECT IDENTIFIER
+    
+END
+

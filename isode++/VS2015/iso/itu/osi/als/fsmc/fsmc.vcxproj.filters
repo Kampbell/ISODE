@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="smc">
+      <UniqueIdentifier>{7dfbba00-74bc-4139-8a5f-73511454b600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parser">
+      <UniqueIdentifier>{be6cebaf-4117-40f2-8e3f-0db032f1f9b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Action.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Element.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\FSM.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Guard.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Map.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Parameter.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\State.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Transition.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\fsmc.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Parser.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\SMCToken.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Keyword.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Character.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Comment.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Identifier.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Number.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Operator.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\String.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Tokenizer.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Action.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Element.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\FSM.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Guard.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Map.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Parameter.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\State.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Transition.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\fsmc.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Parser.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\SMCToken.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Keyword.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Character.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Comment.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Identifier.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Number.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Operator.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\String.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\Tokenizer.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\BNF.txt" />
+  </ItemGroup>
+</Project>

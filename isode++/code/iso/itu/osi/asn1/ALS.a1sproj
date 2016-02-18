@@ -1,0 +1,162 @@
+<OssGuiProject compiler="ASN.1/C++" version="2.0" productVersion="7.0" product="ASN.1 Studio" compilerVersionLastUsed="6.0 T" compilerSettingsChangeTime="2014-12-16T11:03:51">
+ <Asn1Files>
+  <File>asn/ACSE-1.asn</File>
+  <File>asn/ASN1-Object-Identifier-Module.asn</File>
+  <File>asn/AttributeCertificateDefinitions.asn</File>
+  <File>asn/AuthenticationFramework.asn</File>
+  <File>asn/BasicAccessControl.asn</File>
+  <File>asn/CCR.asn</File>
+  <File>asn/CertificateExtensions.asn</File>
+  <File>asn/Character-Coding-Attributes.asn</File>
+  <File>asn/Character-Presentation-Attributes.asn</File>
+  <File>asn/Character-Profile-Attributes.asn</File>
+  <File>asn/CMIP-1.asn</File>
+  <File>asn/CMIP-A-ABORT-Information.asn</File>
+  <File>asn/CMIP-A-ASSOCIATE-Information.asn</File>
+  <File>asn/CMISE-ROSE-SMASE-ASN1Module.asn</File>
+  <File>asn/CnmAsn1Module.asn</File>
+  <File>asn/Colour-Attributes.asn</File>
+  <File>asn/CommonMgt.asn</File>
+  <File>asn/CommonProtocolSpecification.asn</File>
+  <File>asn/Default-Value-Lists.asn</File>
+  <File>asn/DirectoryAbstractService.asn</File>
+  <File>asn/DirectoryAccessProtocol.asn</File>
+  <File>asn/DirectoryIDMProtocols.asn</File>
+  <File>asn/DirectoryInformationShadowProtocol.asn</File>
+  <File>asn/DirectoryManagement.asn</File>
+  <File>asn/DirectoryOperationalBindingManagementProtocol.asn</File>
+  <File>asn/DirectoryOperationalBindingTypes.asn</File>
+  <File>asn/DirectoryOSIProtocols.asn</File>
+  <File>asn/DirectoryProtectionMappings.asn</File>
+  <File>asn/DirectoryShadowAbstractService.asn</File>
+  <File>asn/DirectorySystemProtocol.asn</File>
+  <File>asn/DistributedOperations.asn</File>
+  <File>asn/Document-Profile-Descriptor.asn</File>
+  <File>asn/DOR-definition.asn</File>
+  <File>asn/DSAOperationalAttributeTypes.asn</File>
+  <File>asn/EnhancedSecurity.asn</File>
+  <File>asn/External-References.asn</File>
+  <File>asn/GenericProtectingTransferSyntax.asn</File>
+  <File>asn/Geo-Gr-Coding-Attributes.asn</File>
+  <File>asn/Geo-Gr-Presentation-Attributes.asn</File>
+  <File>asn/Geo-Gr-Profile-Attributes.asn</File>
+  <File>asn/GULSProtectionMappings.asn</File>
+  <File>asn/GulsSecurityExchanges.asn</File>
+  <File>asn/GulsSecurityTransformations.asn</File>
+  <File>asn/HierarchicalOperationalBindings.asn</File>
+  <File>asn/Identifiers-and-Expressions.asn</File>
+  <File>asn/IDMProtocolSpecification.asn</File>
+  <File>asn/InformationFramework.asn</File>
+  <File>asn/Interchange-Data-Elements.asn</File>
+  <File>asn/IPMSExtendedBodyPartTypes.asn</File>
+  <File>asn/IPMSExtendedBodyPartTypes2.asn</File>
+  <File>asn/IPMSExtendedVoiceBodyPartType.asn</File>
+  <File>asn/IPMSFileTransferBodyPartType.asn</File>
+  <File>asn/IPMSForwardedContentBodyPartType.asn</File>
+  <File>asn/IPMSForwardedReportBodyPartType.asn</File>
+  <File>asn/IPMSHeadingExtensions.asn</File>
+  <File>asn/IPMSInformationObjects.asn</File>
+  <File>asn/IPMSMessageStoreAttributes.asn</File>
+  <File>asn/IPMSObjectIdentifiers.asn</File>
+  <File>asn/IPMSSecurityExtensions.asn</File>
+  <File>asn/IPMSUpperBounds.asn</File>
+  <File>asn/ISO8571-FTAM.asn</File>
+  <File>asn/ISO8823-PRESENTATION.asn</File>
+  <File>asn/ISO9541-SN.asn</File>
+  <File>asn/ISO-STANDARD-9541-FONT-ATTRIBUTE-SET.asn</File>
+  <File>asn/Layout-Descriptors.asn</File>
+  <File>asn/Lightweight-Directory-Access-Protocol-V3.asn</File>
+  <File>asn/Link-Descriptors.asn</File>
+  <File>asn/Location-Expressions.asn</File>
+  <File>asn/Logical-Descriptors.asn</File>
+  <File>asn/ManagedObjectClassesDefinitions.asn</File>
+  <File>asn/MhsMTAAsn1Module.asn</File>
+  <File>asn/MhsMTAObjectIdentifiers.asn</File>
+  <File>asn/MHSObjectIdentifiers.asn</File>
+  <File>asn/MHSProtocolObjectIdentifiers.asn</File>
+  <File>asn/MSAbstractService.asn</File>
+  <File>asn/MSAccessProtocol.asn</File>
+  <File>asn/MSGeneralAttributeTypes.asn</File>
+  <File>asn/MSGeneralAutoActionTypes.asn</File>
+  <File>asn/MSMatchingRules.asn</File>
+  <File>asn/MSObjectIdentifiers.asn</File>
+  <File>asn/MSUpperBounds.asn</File>
+  <File>asn/MTAAbstractService.asn</File>
+  <File>asn/MTSAbstractService.asn</File>
+  <File>asn/MTSAbstractService88.asn</File>
+  <File>asn/MTSAccessProtocol.asn</File>
+  <File>asn/MTSObjectIdentifiers.asn</File>
+  <File>asn/MTSUpperBounds.asn</File>
+  <File>asn/Notation.asn</File>
+  <File>asn/OACS.asn</File>
+  <File>asn/ObjectIdentifiers.asn</File>
+  <File>asn/OperationalBindingManagement.asn</File>
+  <File>asn/OSIProtocolSpecification.asn</File>
+  <File>asn/PKCS7.asn</File>
+  <File>asn/PKCS7BodyPartType.asn</File>
+  <File>asn/PKIX1Explicit93.asn</File>
+  <File>asn/PKIX1Implicit93.asn</File>
+  <File>asn/PresentationAddress.asn</File>
+  <File>asn/Protected-Part-Descriptors.asn</File>
+  <File>asn/ProtocolObjectIdentifiers.asn</File>
+  <File>asn/Raster-Gr-Coding-Attributes.asn</File>
+  <File>asn/Raster-Gr-Presentation-Attributes.asn</File>
+  <File>asn/Raster-Gr-Profile-Attributes.asn</File>
+  <File>asn/Reliable-Transfer-APDU.asn</File>
+  <File>asn/Remote-Operations-Abstract-Syntaxes.asn</File>
+  <File>asn/Remote-Operations-Generic-ROS-PDUs.asn</File>
+  <File>asn/Remote-Operations-Information-Objects.asn</File>
+  <File>asn/Remote-Operations-Information-Objects-extensions.asn</File>
+  <File>asn/Remote-Operations-Realizations.asn</File>
+  <File>asn/Remote-Operations-Useful-Definitions.asn</File>
+  <File>asn/ROS.asn</File>
+  <File>asn/SchemaAdministration.asn</File>
+  <File>asn/SelectedAttributeTypes.asn</File>
+  <File>asn/ServiceAdministration.asn</File>
+  <File>asn/SeseAPDUs.asn</File>
+  <File>asn/SMASE-A-ASSOCIATE-Information.asn</File>
+  <File>asn/SpkmGssTokens.asn</File>
+  <File>asn/Style-Descriptors.asn</File>
+  <File>asn/Subprofiles.asn</File>
+  <File>asn/SummarizationASN1Productions.asn</File>
+  <File>asn/Temporal-Relationships.asn</File>
+  <File>asn/Text-Units.asn</File>
+  <File>asn/UMFObjId.asn</File>
+  <File>asn/UpperBounds.asn</File>
+  <File>asn/UsefulDefinitions.asn</File>
+  <File>asn/Videotex-Coding-Attributes.asn</File>
+ </Asn1Files>
+ <CompilerSettings>
+  <Setting present="true" name="cppNamespaceCheckBox">ALS::ASN</Setting>
+  <Setting prefix="ALS" name="cppOutputDirLineEdit">csn</Setting>
+  <Setting present="true" name="cppToedRadioButton"/>
+  <Setting present="true" name="disablCAGLMessagesCheckBox"/>
+  <Setting present="false" name="encOnlyRadioButton"/>
+  <Setting present="false" name="modListRadioButton"/>
+  <Setting present="true" name="noDebugCheckBox"/>
+ </CompilerSettings>
+ <EncodingFiles/>
+ <GeneratedFiles>
+  <File>csn/ALS.h</File>
+  <File>csn/ALS.cpp</File>
+ </GeneratedFiles>
+ <Settings>
+  <Setting present="false" name="-noRelaxedMode"/>
+  <Setting name="-root"/>
+  <Setting present="false" name="-relaySafe"/>
+  <Setting name="AUTOMATIC_ENCDEC"/>
+  <Setting name="OSS_AUTO_ENCODE_WITHOUT_CHECKING_CONSTRAINT"/>
+  <Setting name="DEBUGPDU"/>
+  <Setting name="OSS_PRINT_TYPE_INFO"/>
+  <Setting name="OSS_PRINT_OFFSET"/>
+  <Setting name="OSS_PRINT_COMMENTS"/>
+  <Setting name="OSS_HEXBYTES"/>
+  <Setting name="-ber"/>
+  <Setting name="-der"/>
+  <Setting name="-per"/>
+  <Setting name="-uper"/>
+  <Setting name="-cer"/>
+  <Setting name="-oer"/>
+ </Settings>
+ <UserFiles/>
+</OssGuiProject>

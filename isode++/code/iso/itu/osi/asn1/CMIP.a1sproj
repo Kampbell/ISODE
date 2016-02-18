@@ -1,0 +1,49 @@
+<OssGuiProject compiler="ASN.1/C++" version="2.0" productVersion="7.0" product="ASN.1 Studio" compilerVersionLastUsed="6.0 T" compilerSettingsChangeTime="2015-01-02T07:19:04">
+ <Asn1Files>
+  <File>asn/CMIP-1.asn</File>
+  <File>asn/CMIP-A-ABORT-Information.asn</File>
+  <File>asn/CMIP-A-ASSOCIATE-Information.asn</File>
+  <File>asn/CMISE-ROSE-SMASE-ASN1Module.asn</File>
+  <File>asn/Remote-Operations-Abstract-Syntaxes.asn</File>
+  <File>asn/Remote-Operations-Generic-ROS-PDUs.asn</File>
+  <File>asn/Remote-Operations-Information-Objects.asn</File>
+  <File>asn/Remote-Operations-Information-Objects-extensions.asn</File>
+  <File>asn/Remote-Operations-Realizations.asn</File>
+  <File>asn/Remote-Operations-Useful-Definitions.asn</File>
+  <File>asn/SMASE-A-ASSOCIATE-Information.asn</File>
+ </Asn1Files>
+ <CompilerSettings>
+  <Setting present="true" name="cppNamespaceCheckBox">CMIP</Setting>
+  <Setting prefix="CMIP" name="cppOutputDirLineEdit">csn</Setting>
+  <Setting present="true" name="cppToedRadioButton"/>
+  <Setting present="true" name="disablCAGLMessagesCheckBox"/>
+  <Setting present="false" name="encOnlyRadioButton"/>
+  <Setting present="true" name="genDirCheckBox"/>
+  <Setting present="true" name="modListRadioButton"/>
+ </CompilerSettings>
+ <EncodingFiles/>
+ <GeneratedFiles>
+  <File>csn/CMIP.lst</File>
+  <File>csn/CMIP.gen</File>
+  <File>csn/CMIP.h</File>
+  <File>csn/CMIP.cpp</File>
+ </GeneratedFiles>
+ <Settings>
+  <Setting name="-ber"/>
+  <Setting name="-cer"/>
+  <Setting name="-der"/>
+  <Setting present="false" name="-noRelaxedMode"/>
+  <Setting name="-per"/>
+  <Setting present="false" name="-relaySafe"/>
+  <Setting name="-root"/>
+  <Setting name="-uper"/>
+  <Setting name="AUTOMATIC_ENCDEC"/>
+  <Setting name="DEBUGPDU"/>
+  <Setting name="OSS_AUTO_ENCODE_WITHOUT_CHECKING_CONSTRAINT"/>
+  <Setting name="OSS_HEXBYTES"/>
+  <Setting name="OSS_PRINT_COMMENTS"/>
+  <Setting name="OSS_PRINT_OFFSET"/>
+  <Setting name="OSS_PRINT_TYPE_INFO"/>
+ </Settings>
+ <UserFiles/>
+</OssGuiProject>

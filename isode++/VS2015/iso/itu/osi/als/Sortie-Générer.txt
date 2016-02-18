@@ -1,0 +1,120 @@
+﻿1>------ Début de la génération : Projet : ASAPEchoClient, Configuration : Debug Win32 ------
+2>------ Début de la génération : Projet : nsap, Configuration : Debug Win32 ------
+2>  nsap-w32.vcxproj -> Z:\git\ISO.ITU.OSI\cpp\vs120\iso\itu\osi\als\Debug\nsapd.dll
+3>------ Début de la génération : Projet : tsap, Configuration : Debug Win32 ------
+1>  ASAPEchoClient.cpp
+3>  Provider.cpp
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.h(62): error C2059: erreur de syntaxe : ','
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(74): error C2065: 'tb_seq' : identificateur non déclaré
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(79): error C2259: 'ALS::TSAP::PROV::Logger' : impossible d'instancier une classe abstraite
+3>          à cause des membres suivants :
+3>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+3>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(87): error C2259: 'ALS::TSAP::PROV::Logger' : impossible d'instancier une classe abstraite
+3>          à cause des membres suivants :
+3>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+3>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(714): error C2660: 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication' : la fonction ne prend pas 1 arguments
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(721): error C2660: 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication' : la fonction ne prend pas 1 arguments
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(725): error C2660: 'ALS::TSAP::PROV::Logger::TDisconnectIndication' : la fonction ne prend pas 3 arguments
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(726): error C2660: 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication' : la fonction ne prend pas 3 arguments
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(934): error C2660: 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication' : la fonction ne prend pas 3 arguments
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\provider.cpp(945): error C2660: 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication' : la fonction ne prend pas 3 arguments
+3>  Logger.cpp
+1>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+1>          à cause des membres suivants :
+1>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+1>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.h(62): error C2059: erreur de syntaxe : ','
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.cpp(73): error C2511: 'ReturnCode ALS::TSAP::PROV::Logger::TDisconnectIndication(int,const std::string &)' : impossible de trouver la fonction membre surchargée dans 'ALS::TSAP::PROV::Logger'
+3>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.h(38) : voir la déclaration de 'ALS::TSAP::PROV::Logger'
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.cpp(74): error C2065: 'cc' : identificateur non déclaré
+3>  Génération de code en cours...
+3>  Compilation en cours...
+3>  FSM.cpp
+3>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.h(62): error C2059: erreur de syntaxe : ','
+3>  Génération de code en cours...
+4>------ Début de la génération : Projet : ssap, Configuration : Debug Win32 ------
+5>------ Début de la génération : Projet : nsapd, Configuration : Debug Win32 ------
+6>------ Début de la génération : Projet : TSAPEchoClient, Configuration : Debug Win32 ------
+7>------ Début de la génération : Projet : TSAPEchoServer, Configuration : Debug Win32 ------
+5>  nsapd.cpp
+6>  TSAPEchoClient.cpp
+7>  EchoServer.cpp
+4>  FSM.cpp
+7>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\demo\tsapechoserver\echoserver.h(52): error C2259: 'ALS::TSAP::EchoServer' : impossible d'instancier une classe abstraite
+7>          à cause des membres suivants :
+7>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+7>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+7>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.h(62): error C2059: erreur de syntaxe : ','
+5>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.h(62): error C2059: erreur de syntaxe : ','
+4>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+4>          à cause des membres suivants :
+4>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+4>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+6>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.h(62): error C2059: erreur de syntaxe : ','
+4>  Génération de code en cours...
+6>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\demo\tsapechoclient\tsapechoclient.cpp(208): error C2259: 'ALS::TSAP::TSAPEchoClient' : impossible d'instancier une classe abstraite
+6>          à cause des membres suivants :
+4>  Compilation en cours...
+4>  Provider.cpp
+6>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+6>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+4>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+4>          à cause des membres suivants :
+4>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+4>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+4>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\prov\logger.h(62): error C2059: erreur de syntaxe : ','
+4>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.cpp(947): warning C4390: ';' : une instruction contrôlée a été trouvée vide ; est-ce ce que vous souhaitiez ?
+4>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.cpp(1014): warning C4390: ';' : une instruction contrôlée a été trouvée vide ; est-ce ce que vous souhaitiez ?
+4>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.cpp(2580): warning C4390: ';' : une instruction contrôlée a été trouvée vide ; est-ce ce que vous souhaitiez ?
+4>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.cpp(2585): warning C4390: ';' : une instruction contrôlée a été trouvée vide ; est-ce ce que vous souhaitiez ?
+4>  Génération de code en cours...
+8>------ Début de la génération : Projet : psap, Configuration : Debug Win32 ------
+9>------ Début de la génération : Projet : SSAPEchoServer, Configuration : Debug Win32 ------
+10>------ Début de la génération : Projet : SSAPEchoClient, Configuration : Debug Win32 ------
+10>  EchoClient.cpp
+8>  Provider.cpp
+9>  EchoServer.cpp
+9>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+9>          à cause des membres suivants :
+9>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+9>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+9>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\demo\ssapechoserver\echoserver.cpp(503): warning C4305: 'argument' : troncation de 'ALS::SSAP::AbortCode' à 'bool'
+10>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+10>          à cause des membres suivants :
+10>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+10>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+10>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\demo\ssapechoclient\echoclient.cpp(152): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+10>          à cause des membres suivants :
+10>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+10>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+8>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+8>          à cause des membres suivants :
+8>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+8>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+8>  Génération de code en cours...
+8>  Compilation en cours...
+8>  FSM.cpp
+8>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+8>          à cause des membres suivants :
+8>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+8>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+8>  Génération de code en cours...
+11>------ Début de la génération : Projet : asap, Configuration : Debug Win32 ------
+11>  FSM.cpp
+11>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+11>          à cause des membres suivants :
+11>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+11>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+11>  Génération de code en cours...
+11>  Compilation en cours...
+11>  Provider.cpp
+11>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\ssap\prov\provider.h(225): error C2259: 'ALS::SSAP::PROV::Provider' : impossible d'instancier une classe abstraite
+11>          à cause des membres suivants :
+11>          'ReturnCode ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication(int,const std::string &)' : est abstrait
+11>          z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\tsap\user\disconnectindication.h(26) : voir la déclaration de 'ALS::TSAP::USER::DisconnectIndication::TDisconnectIndication'
+11>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\asap\prov\provider.cpp(165): warning C4390: ';' : une instruction contrôlée a été trouvée vide ; est-ce ce que vous souhaitiez ?
+11>z:\git\iso.itu.osi\cpp\code\iso\itu\osi\als\asap\prov\provider.cpp(172): warning C4390: ';' : une instruction contrôlée a été trouvée vide ; est-ce ce que vous souhaitiez ?
+11>  Génération de code en cours...
+========== Génération : 1 a réussi, 10 a échoué, 6 mis à jour, 0 a été ignoré ==========

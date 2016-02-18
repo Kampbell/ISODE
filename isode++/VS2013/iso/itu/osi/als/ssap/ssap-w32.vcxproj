@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Exception.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Literal.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\FSM.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\Logger.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\Provider.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Reference.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AB.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AD.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ADA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AE.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AEA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AI.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AIA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AR.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AS.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CATENE.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CD.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CDA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CDO.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CN_AC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\DN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\DT.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ED.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ER.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\EX.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\FN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GT.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GTA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GTC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\HEADER.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MAA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MAP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MIA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MIP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\NF.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\OA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\AR_LINK.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\CN_ID.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\CN_ITEMS.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\PGI.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\PR.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\PT.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RF.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RS.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\SPDU.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\TD.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\SSN.cpp" />
+    <ClCompile Include="Requirement.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\AbortCode.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\ActivityId.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Exception.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\FunctionalUnit.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Literal.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\FSM.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\Logger.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\Provider.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Reference.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Report.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Requirement.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\ResyncOption.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\AbortRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ActivityRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ActivityResponse.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\DataRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\DataResponse.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\Initiator.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ReleaseRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ReleaseResponse.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ReportRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\Responder.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\Service.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\SynchronizeRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\SynchronizeResponse.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\TokenRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AB.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AD.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ADA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AEA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AI.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AIA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AR.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AS.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\Category.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CATENE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CD.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CDA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CDO.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CN_AC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\DN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\DT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ED.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ER.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\EX.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\FN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GTA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GTC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\HEADER.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MAA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MAP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MIA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MIP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\NF.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\OA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\AR_LINK.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\CN_ID.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\CN_ITEMS.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\PGI.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ACT_ID.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ADD_INFO.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\AR_ADDT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\AR_CALLED.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\AR_CALLING.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\AR_COMMON.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\BUFFER.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\BYTE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\BYTES.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\CALLED_SS.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\CALLING_SS.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\COMMON_REF.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\DTO.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ENCLOSE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\INT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ISN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\L2ISN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\LISN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\LONG.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\MIA_DATA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\PI.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\PREPARE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\PROTOCOL_OPT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\REASON.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\REASONS.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\REFLECT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\RESYNC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SERIAL.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SHORT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SSAP_CALLED.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SSAP_CALLING.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SS_TYPE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SYNC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TABLE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TDISC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TOISN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TOKEN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TOKEN_SET.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TSDU_MAXSIZ.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\UDATA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ULSN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\USER_REQ.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\VERSION.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\XDATA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\PR.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\PT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RF.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RS.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\SPDU.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\TD.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\ssap.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\SSN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\SyncOption.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Token.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\AbortIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ActivityConfirmation.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ActivityIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\DataConfirmation.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\DataIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\Initiator.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\Linker.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ReleaseConfirmation.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ReleaseIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ReportIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\Responder.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\SynchronizeConfirmation.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\SynchronizeIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\TokenIndication.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\SSAP.sm" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7C0B2036-335A-484A-B808-F5F0A0F291DA}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ssap</RootNamespace>
+    <ProjectName>ssap</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <Import Project="$(SolutionDir)solution.props" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)d</TargetName>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(POCO_HOME)/Util\include;$(POCO_HOME)\Net\include;$(POCO_HOME)\Foundation\include;$(IncludePath)</IncludePath>
+    <LibraryPath>Z:\ISO\vs110\iso\itu\osi\als\x64\Debug;$(POCO_HOME)/lib64;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>../..;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SSAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>$(SolutionDir)lib\$(TargetName).lib</ImportLibrary>
+    </Link>
+    <PreBuildEvent>
+      <Command>set PATH=%POCO%\bin;%PATH% &amp; $(SolutionDir)bin\fsmcd /v ..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\SSAP.sm</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SSAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ManifestFile>$(IntDir)$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SSAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>$(SolutionDir)lib\$(TargetName).lib</ImportLibrary>
+    </Link>
+    <PreBuildEvent>
+      <Command>set PATH=%POCO%\bin;%PATH% &amp; $(SolutionDir)bin\fsmc /v ..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\SSAP.sm</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SSAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

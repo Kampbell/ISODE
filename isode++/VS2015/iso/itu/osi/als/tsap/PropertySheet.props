@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <PropertyGroup>
+ 		<IncludePath>Z:\git\ISO.ITU.OSI\poco\Net\include;Z:\git\ISO.ITU.OSI\poco\Util\include;Z:\git\ISO.ITU.OSI\poco\XML\include;Z:\git\ISO.ITU.OSI\poco\Foundation\include;Z:\git\ISO.ITU.OSI\poco\CppUnit\include;$(IncludePath)</IncludePath>
+		<LibraryPath>Z:\git\ISO.ITU.OSI\cpp\vs120\iso\itu\osi\als\Debug;Z:\git\ISO.ITU.OSI\cpp\vs120\iso\itu\osi\als\Release;Z:\git\ISO.ITU.OSI\poco\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup />
+  <ItemGroup />
+</Project>

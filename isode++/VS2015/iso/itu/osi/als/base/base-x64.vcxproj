@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A7E5F432-88A5-4365-8639-EC890A8243FA}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>base</RootNamespace>
+    <ProjectName>base</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>../../../../../../code/iso/itu/osi;$(POCO_HOME)/XML\include;$(POCO_HOME)/Util\include;$(POCO_HOME)\Net\include;$(POCO_HOME)\Foundation\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(POCO_HOME)/lib64;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)d</TargetName>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>../../..;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;BASE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;BASE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ManifestFile>$(IntDir)$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;BASE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;BASE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\AFI.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\DCC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\DSP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\ECMA117Binary.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\ECMA117Decimal.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\ICD.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\ISDN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\LOCAL.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\NSAPAddr.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\PSAPAddr.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\PSTN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\RFC1006.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\Selector.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\SSAPAddr.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\TELEX.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\TSAPAddr.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\X121.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\X2580.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\AEISAXHandler.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\CommentToken.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\IdentifierToken.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\IntLiteralToken.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\Macros.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\OSIService.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\OSIServices.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\PSAPService.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\PSAPServices.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\SSAPService.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\SSAPServices.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\TSAPService.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\TSAPServices.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\Buffer.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\Buffers.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\DynamicCast.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\ProtocolException.h" />
+    <ClInclude Include="..\base.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\AFI.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\DCC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\DSP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\ECMA117Binary.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\ECMA117Decimal.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\ICD.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\ISDN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\LOCAL.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\NSAPAddr.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\PSAPAddr.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\PSTN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\RFC1006.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\Selector.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\SSAPAddr.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\TELEX.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\TSAPAddr.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\X121.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\X2580.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\AEISAXHandler.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\CommentToken.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\IdentifierToken.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\IntLiteralToken.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\Macros.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\OSIService.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\OSIServices.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\PSAPService.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\PSAPServices.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\SSAPService.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\SSAPServices.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\TSAPService.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\TSAPServices.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\Buffer.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\Buffers.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\DynamicCast.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\ProtocolException.cpp" />
+    <ClCompile Include="dllmain.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

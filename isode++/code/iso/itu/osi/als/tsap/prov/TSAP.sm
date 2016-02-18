@@ -1,0 +1,312 @@
+%include	Provider.h
+%fsmclass	FSM
+%fsmfile	FSM
+%package	ALS::TSAP::PROV
+%class		Provider
+//%include <util/logger.h>
+//%header  Provider.h
+//%import  <name>  translated to using namespace <name>;
+/*
+Recommendation ITU-T X.224
+PROTOCOL FOR PROVIDING THE OSI
+CONNECTION-MODE TRANSPORT SERVICE
+
+Since TCP/PI is considered as a class 0 transport, some feature like T-EXPEDITED-DATA.REQUEST
+ans T-EXPEDITED-DATA.INDICATION are not provided in the FSM of the X.224 specification.
+Anyhow, The T-EXPEDITED-DATA functions are useful for the Session layer and thus, they will be
+are added here, considering TCP/IP as a class 4 and not a class 0. In fact, since as TSAp runs above TCP/IP
+the expedited data functions should be allowed as part of class 0. Extension to be requested to the ITU-T SG17 group
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+incoming events
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Abbreviated name 							Category Name
+TCONreq 	TS-user T-CONNECT 				request primitive
+TCONresp 	TS-user T-CONNECT 				response primitive
+TDTreq 		TS-user T-DATA 					request primitive
+TEXreq 		TS-user T-EXPEDITED DATA 		request primitive
+TDISreq 	TS-user T-DISCONNECT 			request primitive
+NDISind 	NS-provider N-DISCONNECT 		indication primitive
+NCONconf 	NS-provider N-CONNECT 			confirm primitive
+NRSTind 	NS-provider N-RESET 			indication primitive
+CR TPDU 	Connection request 				TPDU
+CC TPDU 	Connection confirm 				TPDU
+DR TPDU 	Disconnect request 				TPDU
+DC TPDU 	Disconnect confirm 				TPDU
+AK TPDU 	Data Acknowledgement 			TPDU
+EA TPDU 	Expedited Data Acknowledgement 	TPDU
+DT TPDU 	Data 							TPDU
+ED TPDU 	Expedited Data 					TPDU
+ER TPDU 	TPDU Error 						TPDU
+RJ TPDU 	Reject 							TPDU
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+states
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+Abbreviated name 							Name
+WFNC				Wait for network connection
+WFCC 				Wait for the CC TPDU
+WBCL 				Wait before releasing (wait for CC TPDU before sending the TPDU DR)
+OPEN 				Transport connection is open
+CLOSING 			Release in progress
+WFTRESP 			Wait for T-CONNECT response
+CLOSED 				Transport connection is closed
+WFNC-R 				Wait for network connection and reassignment in progress
+WFCC-R 				Wait for CC TPDU and reassignment in progress
+WBCL-R 				Wait before releasing and reassignment in progress
+OPEN-R 				Open and reassignment in progress
+OPEN-WR 			Open and wait for reassignment
+CLOSING-R 			Release in progress and reassignment in progress
+CLOSING-WR 			Release in progress and wait for reassignment
+WFTRESP-WR 			Wait for T-CONNECT response and wait for reassignment
+WBCL-WR 			Wait before releasing and wait for reassignment
+WBOC 				Wait before open complete (CC is unacknowledged)
+WBOC-WR 			Wait before open complete and wait for reassignment
+CLOSING 			BOC Wait before open complete and release in progress
+CLOSING 			BOC-WR Idem and wait for reassignment
+AKWAIT 				Waiting for acknowledgement of CC TPDU
+REFWAIT 			Waiting for frozen reference time
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+outgoing events
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Abbreviated name 							Category Name
+TCONind 	TS-provider 					T-CONNECT indication primitive
+TCONconf 	TS-provider 					T-CONNECT confirm primitive
+TDTind 		TS-provider 					T-DATA indication primitive
+TEXind 		TS-provider 					T-EXPEDITED DATA indication primitive
+TDISind 	TS-provider 					T-DISCONNECT indication primitive
+NDISreq 	NS-user 						N-DISCONNECT Request primitive
+NRSTresp 	NS-user 						N-RESET Response primitive
+NCONreq 	NS-user 						N-CONNECT Request primitive
+CR TPDU 	Connection Request 				TPDU
+CC TPDU 	Connection confirm 				TPDU
+DR TPDU 	Disconnect Request 				TPDU
+DC TPDU 	Disconnect confirm 				TPDU
+AK TPDU 	Data Acknowledgement 			TPDU
+EA TPDU 	Expedited Data Acknowledgement 	TPDU
+DT TPDU 	Data 							TPDU
+ED TPDU 	Expedited Data 					TPDU
+ER TPDU 	TPDU Error 						TPDU
+RJ TPDU 	Reject 							TPDU
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+predicates 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Name 		Description
+P0 			T-CONNECT request unacceptable
+P1 			Unacceptable CR TPDU
+P2 			No network connection available
+P3 			Network connection available and open
+P4 			Network connection available and open in progress
+P5 			Class in class 0 (class selected in CC)
+P6 			Unacceptable CC
+P7 			Class is class 2
+P8 			Acceptable CC
+P9 			Class 4 CR
+P10 		Local choice
+*/
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+%start		TSAP::CLOSED
+%map TSAP
+%%
+/*
+State	Transition					Guard			End State			Action(s)
+*/
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WFNC			// Wait for network connection
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Entry {Entry("WFNC::Entry");} 
+Exit  {Exit("WFNC::Exit");} 
+{
+		TDISreq										CLOSED				{}
+		NCONconf(tdsu: NetworkBuffer*)				WFCC				{CR(tdsu);}
+		NDISind										CLOSED				{TDISind();}
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WFCC 			// Wait for the CC (Connection Confirm) TPDU
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Entry {Entry("WFCC::Entry");} 
+Exit  {Exit("WFCC::Exit");}
+{
+		TDISreq							[!P7()]			CLOSED				{NDISreq(0);}
+		TDISreq							[P7()]			WBCL				{}
+		NRSTind											CLOSED				{TDISind(Disconnect::DR_NETWORK, "Network reset");}
+		NDISind											CLOSED				{TDISind();}
+		DR												CLOSED				{TDISind();}
+		CC(cc: const TPDU::CC*)			[P8(cc)]		OPEN				{TCONconf();}
+		CC(cc: const TPDU::CC*)			[P6() && P5()]	CLOSED				{TDISind();NDISreq(0);}
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WBCL { 	// Wait before releasing (wait for CC TPDU before sending the TPDU DR)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Class 2 only
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+OPEN  			// Transport connection is open
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Entry {Entry("OPEN::Entry");} 
+Exit  {Exit("OPEN::Exit");} 
+{
+		TDTreq(tsdu: TPDU::DT&)							OPEN				{DT(tsdu);}
+		TDISreq							[P5()]			CLOSED				{NDISreq(0);}
+		TDISreq(tsdu: TPDU::DR&)		[P7()]			CLOSING				{DR(tsdu);}
+		NRSTind											CLOSED				{TDISind(Disconnect::DR_NETWORK);}
+		NDISind											CLOSED				{TDISind();}
+		CR								[P9()]			OPEN				{}
+		DT(tsdu: const SharedNetworkBuffer&)			OPEN				{TDTind(tsdu);}
+		DR								[P5()]			ERROR				{}
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CLOSING 		// Release in progress
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{
+// Class 2 only
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WFTRESP			// Wait for T-CONNECT response
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Entry {Entry("WFTRESP::Entry");} 
+Exit  {Exit("WFTRESP::Exit");} 
+{
+		TCONresp(tsdu: TPDU::CC&)						OPEN				{CC(tsdu);}
+		TDISreq(tsdu: TPDU::DR&)						CLOSED				{DR(tsdu);}
+		NRSTind											CLOSED				{TDISind();}
+		NDISind											CLOSED				{TDISind();}
+		CR								[P9()]			WFTRESP				{}
+		DR								[P10()]			ERROR				{DC();}
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CLOSED 			// Transport connection is closed
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Entry {Entry("CLOSED::Entry");} 
+Exit  {Exit("CLOSED::Exit");} 
+{ 
+		TCONreq							[P0()]			CLOSED				{TDISind();}
+		TCONreq							[P2()]			WFNC				{NCONreq();}
+		TCONreq(tsdu: TPDU::CR&)		[P3()]			WFCC				{CR(tsdu);}
+		TCONreq							[P4()]			WFNC				{}
+		CR(cr: const TPDU::CR*)			[P1(cr)]		CLOSED				{DR();}
+		CR(cr: const TPDU::CR*)			[!P1(cr)]		WFTRESP				{TCONind();}
+		DR												CLOSED				{}
+		DC												CLOSED				{}
+		CC												CLOSED				{DR();}
+		AK												CLOSED				{}
+		EA												CLOSED				{}
+		ED												CLOSED				{}
+		DT												CLOSED				{}
+		ER												CLOSED				{}
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WFNC_R			// Wait for network connection and reassignment in progress
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WFCC_R			// Wait for CC TPDU and reassignment in progress
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WBCL_R			// Wait before releasing and reassignment in progress
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+OPEN_R			// Open and reassignment in progress
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+OPEN_WR			// Open and wait for reassignment
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CLOSING_R		// Release in progress and reassignment in progress
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CLOSING_WR		// Release in progress and wait for reassignment
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WFTRESP_WR		// Wait for T-CONNECT response and wait for reassignment
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WBCL_WR			// Wait before releasing and wait for reassignment
+{ 
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WBOC 			// Wait before open complete (CC is unacknowledged)
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WBOC_WR 		// Wait before open complete and wait for reassignment
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CLOSING_BOC 	// BOC Wait before open complete and release in progress
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CLOSING_BOC_WR	// BOC-WR Idem and wait for reassignment
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+AKWAIT 			// Waiting for acknowledgement of CC TPDU
+{
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+REFWAIT			// Waiting for frozen reference time
+{ 
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ERROR
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Entry {Entry("ERROR::Entry");} 
+Exit  {Exit("ERROR::Exit");} 
+{
+		TCONreq											nil				{Exit("foobar");}
+        TCONresp										nil				{}
+        TDTreq											nil				{}
+        TEXreq											nil				{}
+        TDISreq											nil				{}
+        NDISind											nil				{}
+        NCONconf										nil				{}
+        NRSTind											nil				{}
+        CR												nil				{}
+        CC												nil				{}
+        DR												nil				{}
+        DC												nil				{}
+        AK												nil				{}
+        EA												nil				{}
+        DT												nil				{}
+        ED												nil				{}
+        ER												nil				{}
+        RJ												nil				{}
+}
+%%
+

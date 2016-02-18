@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsapd\Buffer.java" />
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsapd\ByteBuffer.java" />
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsapd\CharBuffer.java" />
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\isod\Buffer.java" />
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\isod\ByteBuffer.java" />
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\isod\CharBuffer.java" />
+    <None Include="..\..\isod.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\..\..\..\..\code\iso\itu\osi\demo\AEI.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\isod\isodd.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\isod\isoddn.cpp" />
+  </ItemGroup>
+</Project>

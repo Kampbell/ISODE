@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="pi">
+      <UniqueIdentifier>{cca8c2aa-712c-4be9-812b-b0a0945c7b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pgi">
+      <UniqueIdentifier>{3a0ce7e5-b2f9-4c3c-b6fd-ffbc2de860cb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pgi\AR_LINK.cpp">
+      <Filter>pgi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pgi\CN_ID.cpp">
+      <Filter>pgi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pgi\CN_ITEMS.cpp">
+      <Filter>pgi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pgi\PGI.cpp">
+      <Filter>pgi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AB.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AD.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\ADA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AE.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AEA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AI.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AIA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AR.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AS.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CATENE.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CD.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CDA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CDO.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CN_AC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\DN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\DT.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\ED.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\ER.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\EX.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\FN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\GT.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\GTA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\GTC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\HEADER.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\MAA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\MAP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\MIA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\MIP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\NF.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\OA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\PR.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\PT.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\RA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\RF.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\RS.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\SPDU.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\TD.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pgi\AR_LINK.h">
+      <Filter>pgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pgi\CN_ID.h">
+      <Filter>pgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pgi\CN_ITEMS.h">
+      <Filter>pgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pgi\PGI.h">
+      <Filter>pgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\ACT_ID.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\ADD_INFO.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\AR_ADDT.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\AR_CALLED.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\AR_CALLING.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\AR_COMMON.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\BUFFER.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\BYTE.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\BYTES.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\CALLED_SS.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\CALLING_SS.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\COMMON_REF.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\DTO.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\ENCLOSE.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\INT.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\ISN.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\L2ISN.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\LISN.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\LONG.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\MIA_DATA.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\PI.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\PREPARE.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\PROTOCOL_OPT.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\REASON.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\REASONS.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\REFLECT.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\RESYNC.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\SERIAL.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\SHORT.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\SS_TYPE.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\SSAP_CALLED.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\SSAP_CALLING.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\SYNC.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\TABLE.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\TDISC.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\TOISN.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\TOKEN.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\TOKEN_SET.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\TSDU_MAXSIZ.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\UDATA.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\ULSN.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\USER_REQ.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\VERSION.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\pi\XDATA.h">
+      <Filter>pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AB.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AD.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\ADA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AEA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AI.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AIA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AR.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\AS.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\Category.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CATENE.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CD.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CDA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CDO.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\CN_AC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\DN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\DT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\ED.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\ER.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\EX.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\FN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\GT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\GTA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\GTC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\HEADER.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\MAA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\MAP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\MIA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\MIP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\NF.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\OA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\PR.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\PT.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\RA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\RF.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\RS.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\SPDU.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\spdu\TD.h" />
+    <ClInclude Include="Exception.h" />
+  </ItemGroup>
+</Project>

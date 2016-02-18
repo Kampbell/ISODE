@@ -1,0 +1,81 @@
+### Eclipse Workspace Patch 1.0
+#P com.pac.osi.java
+Index: asn/OSIProtocolSpecification.asn
+===================================================================
+RCS file: /home/cvsroot/DEV/OSI/com.pac.osi.java/asn/OSIProtocolSpecification.asn,v
+retrieving revision 1.1
+diff -u -r1.1 OSIProtocolSpecification.asn
+--- asn/OSIProtocolSpecification.asn	11 Oct 2008 18:22:54 -0000	1.1
++++ asn/OSIProtocolSpecification.asn	14 Oct 2008 19:15:09 -0000
+@@ -10,10 +10,12 @@
+ -- and modifications needed to maintain or improve the Directory service.
+ IMPORTS
+   -- from ITU-T Rec. X.501 | ISO/IEC 9594-2
+-  commonProtocolSpecification, directoryAbstractService, directoryOSIProtocols,
++--  commonProtocolSpecification,
++    directoryAbstractService,
++--  directoryOSIProtocols,
+     enhancedSecurity, informationFramework
+     FROM UsefulDefinitions {joint-iso-itu-t ds(5) module(1)
+-      usefulDefinitions(0) 5}
++      usefulDefinitions(0) 4}
+   Name, RelativeDistinguishedName
+     FROM InformationFramework informationFramework
+   OPTIONALLY-PROTECTED
+Index: asn/CommonProtocolSpecification.asn
+===================================================================
+RCS file: /home/cvsroot/DEV/OSI/com.pac.osi.java/asn/CommonProtocolSpecification.asn,v
+retrieving revision 1.1
+diff -u -r1.1 CommonProtocolSpecification.asn
+--- asn/CommonProtocolSpecification.asn	11 Oct 2008 18:22:54 -0000	1.1
++++ asn/CommonProtocolSpecification.asn	14 Oct 2008 19:15:09 -0000
+@@ -14,7 +14,8 @@
+   -- from ITU-T Rec. X.501 | ISO/IEC 9594-2
+   opBindingManagement
+     FROM UsefulDefinitions {joint-iso-itu-t ds(5) module(1)
+-      usefulDefinitions(0) 5}
++     usefulDefinitions(0) 4}
++
+   establishOperationalBinding, modifyOperationalBinding,
+     terminateOperationalBinding
+     FROM OperationalBindingManagement opBindingManagement;
+Index: asn/Notation.asn
+===================================================================
+RCS file: /home/cvsroot/DEV/OSI/com.pac.osi.java/asn/Notation.asn,v
+retrieving revision 1.1
+diff -u -r1.1 Notation.asn
+--- asn/Notation.asn	11 Oct 2008 18:22:54 -0000	1.1
++++ asn/Notation.asn	14 Oct 2008 19:15:09 -0000
+@@ -9,7 +9,7 @@
+   -- From Directory Standards: 
+   informationFramework, selectedAttributeTypes, authenticationFramework
+     FROM UsefulDefinitions {joint-iso-itu-t ds(5) module(1)
+-      usefulDefinitions(0) 3}
++      usefulDefinitions(0) 4}
+   Name
+     FROM InformationFramework informationFramework
+   UniqueIdentifier
+Index: asn/DirectoryOSIProtocols.asn
+===================================================================
+RCS file: /home/cvsroot/DEV/OSI/com.pac.osi.java/asn/DirectoryOSIProtocols.asn,v
+retrieving revision 1.1
+diff -u -r1.1 DirectoryOSIProtocols.asn
+--- asn/DirectoryOSIProtocols.asn	11 Oct 2008 18:22:54 -0000	1.1
++++ asn/DirectoryOSIProtocols.asn	14 Oct 2008 19:15:09 -0000
+@@ -10,11 +10,13 @@
+ -- extensions and modifications needed to maintain or improve the Directory service.
+ IMPORTS
+   -- from ITU-T Rec. X.501 | ISO/IEC 9594-2
+-  commonProtocolSpecification, directoryAbstractService, distributedOperations,
++--  commonProtocolSpecification,
++    directoryAbstractService, distributedOperations,
+     directoryShadowAbstractService, id-ac, id-as, id-idm,
+-    iDMProtocolSpecification, opBindingManagement, oSIProtocolSpecification
++    iDMProtocolSpecification, opBindingManagement
++    -- , oSIProtocolSpecification
+     FROM UsefulDefinitions {joint-iso-itu-t ds(5) module(1)
+-      usefulDefinitions(0) 5}
++      usefulDefinitions(0) 4}
+   dSAOperationalBindingManagementBind, establishOperationalBinding,
+     modifyOperationalBinding, terminateOperationalBinding
+     FROM OperationalBindingManagement opBindingManagement

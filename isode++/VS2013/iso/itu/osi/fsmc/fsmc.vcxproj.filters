@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="smc">
+      <UniqueIdentifier>{7dfbba00-74bc-4139-8a5f-73511454b600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp">
+      <UniqueIdentifier>{9459a8de-cf8f-46c6-8e17-0bbdd31b7109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cmp">
+      <UniqueIdentifier>{be6cebaf-4117-40f2-8e3f-0db032f1f9b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Character.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Comment.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Identifier.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\IndentStream.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Keyword.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Number.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Operator.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Parser.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\String.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\TabularStream.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Token.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Tokenizer.h">
+      <Filter>cmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ActionForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ArgumentForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\BinaryOperationForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\CompilableForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\EntryForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ExitForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ExpressionForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FactoryForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FSMForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FunctionForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\GuardForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\LiteralForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\MapForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ParameterForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ReferenceForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\StateForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\TransitionForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\UnaryOperationForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\VariableForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Action.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Actions.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Argument.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\BinaryOperation.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Compilable.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Element.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Entry.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Exit.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Expression.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Factory.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\FSM.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Function.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Guard.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Literal.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Map.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Operation.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Parameter.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Reference.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\SMC.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\State.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Transition.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\UnaryOperation.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Variable.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ElementForCpp.h">
+      <Filter>cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Dumper.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Print.h">
+      <Filter>smc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\..\..\code\iso\itu\osi\als\fsmc\BNF.txt" />
+    <Text Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\BNF.txt">
+      <Filter>cmp</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Character.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Comment.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\fsmc.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Identifier.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\IndentStream.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Keyword.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Number.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Operator.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Parser.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\String.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\TabularStream.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Token.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cmp\Tokenizer.cpp">
+      <Filter>cmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ActionForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ArgumentForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\BinaryOperationForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\CompilableForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\EntryForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ExitForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ExpressionForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FactoryForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FSMForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\FunctionForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\GuardForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\LiteralForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\MapForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ParameterForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ReferenceForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\StateForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\TransitionForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\UnaryOperationForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\VariableForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Action.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Actions.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Argument.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\BinaryOperation.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Element.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Entry.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Exit.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Expression.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\FSM.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Function.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Guard.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Literal.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Map.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Operation.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Parameter.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Reference.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\State.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Transition.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\UnaryOperation.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Variable.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\cpp\ElementForCpp.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Dumper.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\code\iso\itu\osi\fsmc\smc\Print.cpp">
+      <Filter>smc</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

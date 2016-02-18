@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="prov">
+      <UniqueIdentifier>{a6ee3d4e-55b1-450c-bd80-311c943d6651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user">
+      <UniqueIdentifier>{ddb24472-30d3-4332-b107-627c7f58a9ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="serv">
+      <UniqueIdentifier>{a9f56135-b0e7-424e-8719-d2e52e3da17f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tpdu">
+      <UniqueIdentifier>{09f21059-b390-40b5-995b-11c2e85241ee}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\user\Initiator.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\user\Responder.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\serv\Initiator.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\serv\Responder.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\Logger.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\user\Linker.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\FSM.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\serv\Service.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\Exception.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tsap.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\user\DataIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\user\DisconnectIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\serv\DataRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\serv\DisconnectRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\Provider.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\Disconnect.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\Literal.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\AK.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\C.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\CC.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\CR.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\D.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\DC.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\DR.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\DT.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\EA.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\ED.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\ER.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\Reject.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\RJ.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\TPCI.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\TPDUException.h">
+      <Filter>tpdu</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\Provider.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\Logger.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\FSM.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\Exception.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\serv\Service.cpp">
+      <Filter>serv</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\Literal.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\AK.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\C.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\CC.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\CR.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\D.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\DC.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\DR.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\DT.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\EA.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\ED.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\ER.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\RJ.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\TPCI.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\tpdu\TPDUException.cpp">
+      <Filter>tpdu</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\tsap\prov\TSAP.sm">
+      <Filter>prov</Filter>
+    </None>
+  </ItemGroup>
+</Project>

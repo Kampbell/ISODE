@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{e92bda7f-6620-410f-8f0e-0fa6ac993cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="srvc">
+      <UniqueIdentifier>{cd8148a6-3e4d-4f1f-8641-e1a1ea763030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="root">
+      <UniqueIdentifier>{721096e2-cf81-48b8-ba01-9c06090b0530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addr">
+      <UniqueIdentifier>{d932f204-145f-4a5b-8fa2-868e31474696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="serv">
+      <UniqueIdentifier>{2ad48cea-e315-42a4-ae9a-18af4fb453a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user">
+      <UniqueIdentifier>{f9568d6f-7ac6-4cd9-96e2-2fe0ac153d1a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\Buffer.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\ProtocolException.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\DynamicCast.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\OSIService.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\OSIServices.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\PSAPService.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\PSAPServices.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\SSAPService.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\SSAPServices.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\TSAPService.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\TSAPServices.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\AEISAXHandler.h">
+      <Filter>srvc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\root\Object.h">
+      <Filter>root</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\root\Logger.h">
+      <Filter>root</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\Selector.h">
+      <Filter>addr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\AddressException.h">
+      <Filter>addr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\Bits.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\base.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\root\NotYetImplementedException.h">
+      <Filter>root</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\user\Confirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\user\Indication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\serv\Request.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\serv\Response.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\Macros.h">
+      <Filter>addr</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\Buffer.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\ProtocolException.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\DynamicCast.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\OSIService.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\OSIServices.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\PSAPService.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\PSAPServices.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\SSAPService.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\SSAPServices.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\TSAPService.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\TSAPServices.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\srvc\AEISAXHandler.cpp">
+      <Filter>srvc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\root\Object.cpp">
+      <Filter>root</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\root\Logger.cpp">
+      <Filter>root</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\Selector.cpp">
+      <Filter>addr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\AddressException.cpp">
+      <Filter>addr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\util\Bits.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\root\NotYetImplementedException.cpp">
+      <Filter>root</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\base\addr\Macros.cpp">
+      <Filter>addr</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

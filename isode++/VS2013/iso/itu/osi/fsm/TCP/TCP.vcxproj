@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{164AB532-5990-4778-9FAF-50F1AA3051ED}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>TCP</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\AppClient.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\AppServer.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\Eventloop.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\InputListener.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpClient.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpConnection.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpConnectionListener.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpSegment.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpServer.h" />
+    <ClInclude Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TimerListener.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\AppClient.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\AppServer.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\client.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\Eventloop.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\server.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpClient.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpConnection.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpSegment.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TcpServer.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\winsock_strerror.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\demo\iso\itu\osi\fsm\TCP\TCP.sm" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

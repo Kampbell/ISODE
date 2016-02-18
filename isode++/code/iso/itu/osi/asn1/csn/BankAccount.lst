@@ -1,0 +1,806 @@
+
+--<OSS.INCLUDES "Z:/git/ISO.ITU.OSI/cpp/src/iso/itu/osi/asn1/csn\BankAccount.gen">--
+BankAccount
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	Code, CONNECTION-PACKAGE, CONTRACT, ERROR, OPERATION,
+	    OPERATION-PACKAGE, ROS-OBJECT-CLASS
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)}
+	
+	Bind{}, InvokeId, ROS{}, Unbind{}
+	FROM Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t(2)
+	    remote-operations(4) generic-ROS-PDUs(6) version1(0)}
+	
+	APPLICATION-CONTEXT
+	FROM Remote-Operations-Information-Objects-extensions
+	    {joint-iso-itu-t(2) remote-operations(4)
+	    informationObjects-extensions(8) version1(0)}
+	
+	acse, pData
+	FROM Remote-Operations-Realizations {joint-iso-itu-t(2)
+	    remote-operations(4) realizations(9) version1(0)}
+	
+	acse-abstract-syntax
+	FROM Remote-Operations-Abstract-Syntaxes {joint-iso-itu-t(2)
+	    remote-operations(4) remote-operations-abstract-syntaxes(12)
+	    version1(0)}
+	
+	emptyUnbind
+	FROM Remote-Operations-Useful-Definitions {joint-iso-itu-t(2)
+	    remote-operations(4) useful-definitions(7) version1(0)};
+	
+    bankAccountAC APPLICATION-CONTEXT ::= {
+  CONTRACT                  bankAccountContract
+  ESTABLISHED BY            acse
+  INFORMATION TRANSFER BY   pData
+  ABSTRACT SYNTAXES
+    {acse-abstract-syntax | bankAccountAbstractSyntax}
+  APPLICATION CONTEXT NAME  id-ac-bankAccountAC
+}
+    
+    ba ROS-OBJECT-CLASS ::= {INITIATES  {bankAccountContract}
+                          ID         id-rosObject-ba
+}
+    
+    bankAccountContract CONTRACT ::= {
+  CONNECTION             bankAccountConnectionPackage
+  INITIATOR CONSUMER OF  {createPackage | openPackage | modifyPackage}
+  ID                     id-contract-dap
+}
+    
+    bankAccountConnectionPackage CONNECTION-PACKAGE ::= {
+  BIND    bankAccountBind
+  UNBIND  bankAccountUnbind
+  ID      id-package-baConnection
+}
+    
+    bankAccountBind OPERATION ::= {
+  ARGUMENT  AccountBindArgument
+  RESULT    AccountBindResult
+  ERRORS    {daccountBindError}
+}
+    
+    AccountBindArgument ::= INTEGER
+    
+    AccountBindResult ::= Bank
+    
+    bankAccountUnbind OPERATION ::= emptyUnbind
+    
+    createPackage OPERATION-PACKAGE ::= {
+  CONSUMER INVOKES  {create | delete}
+  ID                id-package-create
+}
+    
+    openPackage OPERATION-PACKAGE ::= {
+  CONSUMER INVOKES  {open | close}
+  ID                id-package-open
+}
+    
+    modifyPackage OPERATION-PACKAGE ::= {
+  CONSUMER INVOKES  {deposit | withdraw}
+  ID                id-package-modify
+}
+    
+    bankAccountAbstractSyntax ABSTRACT-SYNTAX ::= {
+	BA-PDUs IDENTIFIED BY id-as-bankAccountAS 
+    }
+    
+    BA-PDUs ::= CHOICE {
+	basicRos ROS{{BA-InvokeIDSet}, {BA-Invokable}, {BA-Returnable}},
+	bind     Bind{bankAccountBind},
+	unbind   Unbind{bankAccountUnbind}
+    }
+    
+    BA-InvokeIDSet ::= InvokeId (ALL EXCEPT absent: NULL)
+    
+    BA-Invokable OPERATION ::= {
+	create | delete | open | close | deposit | withdraw
+    }
+    
+    BA-Returnable OPERATION ::= {
+	create | delete | open | close | deposit | withdraw
+    }
+    
+    create OPERATION ::= {
+	ARGUMENT  AccountId OPTIONAL TRUE
+	RESULT    Account OPTIONAL TRUE
+	ERRORS    { securityError }
+	SYNCHRONOUS TRUE
+	ALWAYS RESPONDS FALSE
+	CODE      id-opcode-create
+}
+    
+    delete OPERATION ::= {
+  	ARGUMENT  AccountId
+  	ERRORS    { securityError }
+  	CODE      id-opcode-delete
+}
+    
+    open OPERATION ::= {
+  	ARGUMENT  AccountId
+  	RESULT    Account
+  	ERRORS    { securityError }
+  	CODE      id-opcode-open
+}
+    
+    close OPERATION ::= {
+  ARGUMENT  AccountId
+  ERRORS    { securityError }
+  CODE      id-opcode-close
+}
+    
+    deposit OPERATION ::= {
+  ARGUMENT  Deposit
+  RESULT    Result
+  ERRORS    { securityError }
+  CODE      id-opcode-deposit
+}
+    
+    withdraw OPERATION ::= {
+  ARGUMENT  Withdraw
+  RESULT    Result
+  ERRORS    { securityError }
+  CODE      id-opcode-withdraw
+}
+    
+    Bank ::= SEQUENCE {
+	name PrintableString,
+	code INTEGER
+    }
+    
+    Teller ::= INTEGER
+    
+    AccountId ::= INTEGER
+    
+    Account ::= INTEGER
+    
+    Amount ::= INTEGER
+    
+    Result ::= INTEGER
+    
+    OperationArgument ::= SEQUENCE {
+	account Account,
+	amount  Amount
+    }
+    
+    Deposit ::= OperationArgument
+    
+    Withdraw ::= OperationArgument
+    
+    Decimal ::= SEQUENCE {
+	mantisse INTEGER,
+	decimal  INTEGER
+    }
+    
+    securityError ERROR ::= {
+  PARAMETER OPTIONALLY-PROTECTED
+    {SET {problem   [0]  SecurityProblem  }}
+  CODE    id-errcode-securityError
+}
+    
+    SecurityProblem ::= INTEGER {
+	inappropriateAuthentication(1),
+	invalidCredentials(2),
+	insufficientAccessRights(3),
+	invalidSignature(4),
+	protectionRequired(5),
+	noInformation(6),
+	blockedCredentials(7),
+	invalidQOPMatch(8),
+	spkmError(9)
+    }
+    
+    id-opcode-deposit Code ::= local: 1
+    
+    id-opcode-withdraw Code ::= local: 2
+    
+    id-opcode-open Code ::= local: 3
+    
+    id-opcode-close Code ::= local: 4
+    
+    id-opcode-create Code ::= local: 5
+    
+    id-opcode-delete Code ::= local: 6
+    
+    id-errcode-securityError Code ::= local: 7
+    
+    id-errcode-attributeError Code ::= local: 1
+    
+    id-errcode-nameError Code ::= local: 2
+    
+    id-errcode-serviceError Code ::= local: 3
+    
+    id-errcode-referral Code ::= local: 4
+    
+    id-errcode-abandoned Code ::= local: 5
+    
+    id-errcode-abandonFailed Code ::= local: 7
+    
+    id-errcode-updateError Code ::= local: 8
+    
+    id-errcode-dsaReferral Code ::= local: 9
+    
+    id-rosObject-ba OBJECT IDENTIFIER ::= {joint-iso-itu-t(2) 3 4 5 1}
+    
+    id-contract-dap OBJECT IDENTIFIER ::= {joint-iso-itu-t(2) 3 4 5 2}
+    
+    id-ac-bankAccountAC OBJECT IDENTIFIER ::= {joint-iso-itu-t(2) 3 4 5 3}
+    
+    id-package-baConnection OBJECT IDENTIFIER ::= {joint-iso-itu-t(2) 3 4 5 4}
+    
+    id-package-create OBJECT IDENTIFIER ::= {joint-iso-itu-t(2) 3 4 5 4}
+    
+    id-package-open OBJECT IDENTIFIER ::= {joint-iso-itu-t(2) 3 4 5 5}
+    
+    id-package-modify OBJECT IDENTIFIER ::= {joint-iso-itu-t(2) 3 4 5 6}
+    
+    id-as-bankAccountAS OBJECT IDENTIFIER ::= {joint-iso-itu-t(2) 3 4 5 7}
+    
+END
+
+Remote-Operations-Information-Objects {joint-iso-itu-t(2) remote-operations(4)
+    informationObjects(5) version1(0)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	emptyBind, emptyUnbind
+	FROM Remote-Operations-Useful-Definitions {joint-iso-itu-t(2)
+	    remote-operations(4) useful-definitions(7) version1(0)};
+	
+    OPERATION ::= CLASS {
+	&ArgumentType          OPTIONAL,
+	&argumentTypeOptional BOOLEAN OPTIONAL,
+	&returnResult         BOOLEAN DEFAULT TRUE,
+	&ResultType            OPTIONAL,
+	&resultTypeOptional   BOOLEAN OPTIONAL,
+	&Errors               ERROR OPTIONAL,
+	&Linked               OPERATION OPTIONAL,
+	&synchronous          BOOLEAN DEFAULT FALSE,
+	&alwaysReturns        BOOLEAN DEFAULT TRUE,
+	&InvokePriority       Priority OPTIONAL,
+	&ResultPriority       Priority OPTIONAL,
+	&operationCode        Code UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ ARGUMENT &ArgumentType 
+	    [ OPTIONAL &argumentTypeOptional ]]
+	[ RESULT &ResultType 
+	    [ OPTIONAL &resultTypeOptional ]]
+	[ RETURN RESULT &returnResult ]
+	[ ERRORS &Errors ]
+	[ LINKED &Linked ]
+	[ SYNCHRONOUS &synchronous ]
+	[ ALWAYS RESPONDS &alwaysReturns ]
+	[ INVOKE PRIORITY &InvokePriority ]
+	[ RESULT-PRIORITY &ResultPriority ]
+	[ CODE &operationCode ]
+    }
+    
+    ERROR ::= CLASS {
+	&ParameterType          OPTIONAL,
+	&parameterTypeOptional BOOLEAN OPTIONAL,
+	&ErrorPriority         Priority OPTIONAL,
+	&errorCode             Code UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ PARAMETER &ParameterType 
+	    [ OPTIONAL &parameterTypeOptional ]]
+	[ PRIORITY &ErrorPriority ]
+	[ CODE &errorCode ]
+    }
+    
+    OPERATION-PACKAGE ::= CLASS {
+	&Both     OPERATION OPTIONAL,
+	&Consumer OPERATION OPTIONAL,
+	&Supplier OPERATION OPTIONAL,
+	&id       OBJECT IDENTIFIER UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ OPERATIONS &Both ]
+	[ CONSUMER INVOKES &Supplier ]
+	[ SUPPLIER INVOKES &Consumer ]
+	[ ID &id ]
+    }
+    
+    CONNECTION-PACKAGE ::= CLASS {
+	&bind               OPERATION DEFAULT emptyBind,
+	&unbind             OPERATION DEFAULT emptyUnbind,
+	&responderCanUnbind BOOLEAN DEFAULT FALSE,
+	&unbindCanFail      BOOLEAN DEFAULT FALSE,
+	&id                 OBJECT IDENTIFIER UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ BIND &bind ]
+	[ UNBIND &unbind ]
+	[ RESPONDER UNBIND &responderCanUnbind ]
+	[ FAILURE TO UNBIND &unbindCanFail ]
+	[ ID &id ]
+    }
+    
+    CONTRACT ::= CLASS {
+	&connection          CONNECTION-PACKAGE OPTIONAL,
+	&OperationsOf        OPERATION-PACKAGE OPTIONAL,
+	&InitiatorConsumerOf OPERATION-PACKAGE OPTIONAL,
+	&InitiatorSupplierOf OPERATION-PACKAGE OPTIONAL,
+	&id                  OBJECT IDENTIFIER UNIQUE OPTIONAL
+    } WITH SYNTAX {
+	[ CONNECTION &connection ]
+	[ OPERATIONS OF &OperationsOf ]
+	[ INITIATOR CONSUMER OF &InitiatorConsumerOf ]
+	[ RESPONDER CONSUMER OF &InitiatorSupplierOf ]
+	[ ID &id ]
+    }
+    
+    ROS-OBJECT-CLASS ::= CLASS {
+	&Is                   ROS-OBJECT-CLASS OPTIONAL,
+	&Initiates            CONTRACT OPTIONAL,
+	&Responds             CONTRACT OPTIONAL,
+	&InitiatesAndResponds CONTRACT OPTIONAL,
+	&id                   OBJECT IDENTIFIER UNIQUE
+    } WITH SYNTAX {
+	[ IS &Is ]
+	[ BOTH &InitiatesAndResponds ]
+	[ INITIATES &Initiates ]
+	[ RESPONDS &Responds ]
+	ID &id 
+    }
+    
+    Code ::= CHOICE {
+	local  INTEGER,
+	global OBJECT IDENTIFIER
+    }
+    
+    Priority ::= INTEGER (0..MAX)
+    
+END
+
+Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t(2) remote-operations(4)
+    generic-ROS-PDUs(6) version1(0)}
+DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	OPERATION, ERROR
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)};
+	
+    ROS {InvokeId : InvokeIdSet, OPERATION : Invokable,
+	    OPERATION : Returnable}  ::= CHOICE {
+	invoke       [1] Invoke{{InvokeIdSet}, {Invokable}},
+	returnResult [2] ReturnResult{{Returnable}},
+	returnError  [3] ReturnError{{Errors{{Returnable}}}},
+	reject       [4] Reject
+    } (CONSTRAINED BY {} ! RejectProblem : general-unrecognizedPDU)
+    
+    Invoke {InvokeId : InvokeIdSet, OPERATION : Operations}  ::= SEQUENCE {
+	invokeId InvokeId (InvokeIdSet) (CONSTRAINED BY
+	    {} ! RejectProblem : invoke-duplicateInvocation),
+	linkedId CHOICE {
+	    present [0] present < InvokeId,
+	    absent  [1] NULL
+	} (CONSTRAINED BY {} ! RejectProblem : invoke-unrecognizedLinkedId)
+	    (CONSTRAINED BY
+	    {} ! RejectProblem : invoke-linkedResponseUnexpected) OPTIONAL,
+	opcode   OPERATION.&operationCode
+	    ({Operations} ! RejectProblem : invoke-unrecognizedOperation),
+	argument OPERATION.&ArgumentType ({Operations}{@.opcode} ! RejectProblem : invoke-mistypedArgument) OPTIONAL
+    } (CONSTRAINED BY {} ! RejectProblem : general-mistypedPDU)
+	    (WITH COMPONENTS { ... ,
+	linkedId   ABSENT
+    } | WITH COMPONENTS { ... ,
+	linkedId   PRESENT,
+	opcode    (CONSTRAINED BY
+	{} ! RejectProblem : invoke-unexpectedLinkedOperation)
+    })
+    
+    ReturnResult {OPERATION : Operations}  ::= SEQUENCE {
+	invokeId InvokeId (CONSTRAINED BY
+	    {} ! RejectProblem : returnResult-unrecognizedInvocation)
+	    (CONSTRAINED BY
+	    {} ! RejectProblem : returnResult-resultResponseUnexpected),
+	result   SEQUENCE {
+	    opcode OPERATION.&operationCode ({Operations}) (CONSTRAINED BY
+		{} ! RejectProblem : returnResult-unrecognizedInvocation),
+	    result OPERATION.&ResultType ({Operations}{@.opcode} ! RejectProblem : returnResult-mistypedResult)
+	} OPTIONAL
+    } (CONSTRAINED BY {} ! RejectProblem : general-mistypedPDU)
+    
+    ReturnError {ERROR : Errors}  ::= SEQUENCE {
+	invokeId  InvokeId (CONSTRAINED BY
+	    {} ! RejectProblem : returnError-unrecognizedInvocation)
+	    (CONSTRAINED BY
+	    {} ! RejectProblem : returnError-errorResponseUnexpected),
+	errcode   ERROR.&errorCode
+	    ({Errors} ! RejectProblem : returnError-unrecognizedError)
+	    (CONSTRAINED BY {} ! RejectProblem : returnError-unexpectedError),
+	parameter ERROR.&ParameterType ({Errors}{@.errcode} ! RejectProblem : returnError-mistypedParameter) OPTIONAL
+    } (CONSTRAINED BY {} ! RejectProblem : general-mistypedPDU)
+    
+    Reject ::= SEQUENCE {
+	invokeId InvokeId,
+	problem  CHOICE {
+	    general      [0] GeneralProblem,
+	    invoke       [1] InvokeProblem,
+	    returnResult [2] ReturnResultProblem,
+	    returnError  [3] ReturnErrorProblem
+	}
+    } (CONSTRAINED BY {} ! RejectProblem : general-mistypedPDU)
+    
+    GeneralProblem ::= INTEGER {
+	unrecognizedPDU(0),
+	mistypedPDU(1),
+	badlyStructuredPDU(2)
+    }
+    
+    InvokeProblem ::= INTEGER {
+	duplicateInvocation(0),
+	unrecognizedOperation(1),
+	mistypedArgument(2),
+	resourceLimitation(3),
+	releaseInProgress(4),
+	unrecognizedLinkedId(5),
+	linkedResponseUnexpected(6),
+	unexpectedLinkedOperation(7)
+    }
+    
+    ReturnResultProblem ::= INTEGER {
+	unrecognizedInvocation(0),
+	resultResponseUnexpected(1),
+	mistypedResult(2)
+    }
+    
+    ReturnErrorProblem ::= INTEGER {
+	unrecognizedInvocation(0),
+	errorResponseUnexpected(1),
+	unrecognizedError(2),
+	unexpectedError(3),
+	mistypedParameter(4)
+    }
+    
+    RejectProblem ::= INTEGER {
+	general-unrecognizedPDU(0),
+	general-mistypedPDU(1),
+	general-badlyStructuredPDU(2),
+	invoke-duplicateInvocation(10),
+	invoke-unrecognizedOperation(11),
+	invoke-mistypedArgument(12),
+	invoke-resourceLimitation(13),
+	invoke-releaseInProgress(14),
+	invoke-unrecognizedLinkedId(15),
+	invoke-linkedResponseUnexpected(16),
+	invoke-unexpectedLinkedOperation(17),
+	returnResult-unrecognizedInvocation(20),
+	returnResult-resultResponseUnexpected(21),
+	returnResult-mistypedResult(22),
+	returnError-unrecognizedInvocation(30),
+	returnError-errorResponseUnexpected(31),
+	returnError-unrecognizedError(32),
+	returnError-unexpectedError(33),
+	returnError-mistypedParameter(34)
+    }
+    
+    InvokeId ::= CHOICE {
+	present INTEGER,
+	absent  NULL
+    }
+    
+    noInvokeId InvokeId ::= absent : NULL
+    
+    NoInvokeId InvokeId ::= {
+	noInvokeId
+    }
+    
+    Errors {OPERATION : Operations} ERROR ::= {Operations.&Errors}
+    
+    Bind {OPERATION : operation}  ::= CHOICE {
+	bind-invoke [16] OPERATION.&ArgumentType ({operation}),
+	bind-result [17] OPERATION.&ResultType ({operation}),
+	bind-error  [18] OPERATION.&Errors.&ParameterType ({operation})
+    }
+    
+    Unbind {OPERATION : operation}  ::= CHOICE {
+	unbind-invoke [19] OPERATION.&ArgumentType ({operation}),
+	unbind-result [20] OPERATION.&ResultType ({operation}),
+	unbind-error  [21] OPERATION.&Errors.&ParameterType ({operation})
+    }
+    
+END
+
+Remote-Operations-Realizations {joint-iso-itu-t(2) remote-operations(4)
+    realizations(9) version1(0)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	REALIZATION
+	FROM Remote-Operations-Information-Objects-extensions
+	    {joint-iso-itu-t(2) remote-operations(4)
+	    informationObjects-extensions(8) version1(0)};
+	
+    RealizationParameter ::= SEQUENCE {
+	realization-type ENUMERATED {
+	    association-service(0),
+	    transfer-service(1)
+	},
+	concatenation    BOOLEAN DEFAULT FALSE
+    }
+    
+    acse REALIZATION ::= {
+  RealizationParameter
+    (WITH COMPONENTS {
+       realization-type  (association-service)
+     })
+  IDENTIFIED BY
+    {joint-iso-itu-t remote-operations(4) association-realizations(10) acse-without-concatenation(0)}
+}
+    
+    acse-with-concatenation REALIZATION ::= {
+  RealizationParameter
+    (WITH COMPONENTS {
+       realization-type  (association-service),
+       concatenation     (TRUE)
+     })
+  IDENTIFIED BY
+    {joint-iso-itu-t remote-operations(4) association-realizations(10) acse-with-concatenation(1)}
+}
+    
+    association-by-RTSE REALIZATION ::= {
+  RealizationParameter
+    (WITH COMPONENTS {
+       realization-type  (association-service)
+     })
+  IDENTIFIED BY
+    {joint-iso-itu-t remote-operations(4) association-realizations(10) association-by-rtse(2)}
+}
+    
+    pData REALIZATION ::= {
+  RealizationParameter(WITH COMPONENTS {
+                         realization-type  (transfer-service)
+                       })
+  IDENTIFIED BY
+    {joint-iso-itu-t remote-operations(4) transfer-realizations(11)  pData-without-concatenation(0)}
+}
+    
+    pData-with-concatenation REALIZATION ::= {
+  RealizationParameter
+    (WITH COMPONENTS {
+       realization-type  (transfer-service),
+       concatenation     (TRUE)
+     })
+  IDENTIFIED BY
+    {joint-iso-itu-t remote-operations(4) transfer-realizations(11) pData-with-concatenation(1)}
+}
+    
+    transfer-by-RTSE REALIZATION ::= {
+  RealizationParameter(WITH COMPONENTS {
+                         realization-type  (transfer-service)
+                       })
+  IDENTIFIED BY
+    {joint-iso-itu-t remote-operations(4) transfer-realizations(11) rTSE-transfer(2)}
+}
+    
+END
+
+Remote-Operations-Abstract-Syntaxes {joint-iso-itu-t(2) remote-operations(4)
+    remote-operations-abstract-syntaxes(12) version1(0)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	OPERATION-PACKAGE
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)}
+	
+	InvokeId, noInvokeId, ROS{}, Bind{}, Unbind{}
+	FROM Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t(2)
+	    remote-operations(4) generic-ROS-PDUs(6) version1(0)}
+	
+	ACSE-apdu
+	FROM ACSE-1 {joint-iso-itu-t(2) association-control(2) modules(0)
+	    apdus(0) version1(1)}
+	
+	RTORQapdu, RTOACapdu, RTORJapdu
+	FROM Reliable-Transfer-APDU {joint-iso-itu-t(2) reliable-transfer(3)
+	    apdus(0)}
+	
+	combine{}, AllOperations{}, ConsumerPerforms{}, SupplierPerforms{}
+	FROM Remote-Operations-Useful-Definitions {joint-iso-itu-t(2)
+	    remote-operations(4) useful-definitions(7) version1(0)}
+	
+	APPLICATION-CONTEXT
+	FROM Remote-Operations-Information-Objects-extensions
+	    {joint-iso-itu-t(2) remote-operations(4)
+	    informationObjects-extensions(8) version1(0)};
+	
+    RTSE-apdus ::= CHOICE {
+	rtorq-apdu [16] IMPLICIT RTORQapdu,
+	rtoac-apdu [17] IMPLICIT RTOACapdu,
+	rtorj-apdu [18] IMPLICIT RTORJapdu,
+	rttp-apdu                RTTPapdu,
+	rttr-apdu                RTTRapdu,
+	rtab-apdu  [22] IMPLICIT RTABapdu
+    }
+    
+    RTTPapdu ::= INTEGER
+    
+    RTTRapdu ::= OCTET STRING
+    
+    RTABapdu ::= SET {
+	abortReason        [0] IMPLICIT AbortReason OPTIONAL,
+	reflectedParameter [1] IMPLICIT BIT STRING OPTIONAL,
+	userdataAB                  [2] TYPE-IDENTIFIER.&Type OPTIONAL
+    }
+    
+    AbortReason ::= INTEGER {
+	localSystemProblem(0),
+	invalidParameter(1),
+	unrecognizedActivity(2),
+	temporaryProblem(3),
+	protocolError(4),
+	permanentProblem(5),
+	userError(6),
+	transferCompleted(7)
+    }
+    
+    acse-abstract-syntax ABSTRACT-SYNTAX ::= {
+	ACSE-apdu IDENTIFIED BY {joint-iso-itu-t(2) association-control(2)
+	    abstract-syntax(1) apdus(0) version1(1)} 
+    }
+    
+    rtse-abstract-syntax ABSTRACT-SYNTAX ::= {
+	RTSE-apdus IDENTIFIED BY {joint-iso-itu-t(2) reliable-transfer(3)
+	    apdus(0)} 
+    }
+    
+    AllValues {APPLICATION-CONTEXT : ac}  ::= CHOICE {
+	bind         Bind{ac.&associationContract.&connection.&bind},
+	unbind       Unbind{ac.&associationContract.&connection.&unbind},
+	ros-singleAS ROS-SingleAS{{ROSEInvokeIds}, combine{{ac.&associationContract.&OperationsOf |
+                       ac.&associationContract.&InitiatorConsumerOf |
+                       ac.&associationContract.&ResponderConsumerOf},
+		    {
+                       ...}, {-- Information Object of class OPERATION-PACKAGE to be defined -- }}}
+    }
+    
+    ROS-SingleAS {InvokeId : ROSEInvokeIds,
+	    OPERATION-PACKAGE : package}  ::= ROS{{ROSEInvokeIds},
+	    {AllOperations{package}}, {AllOperations{package}}}
+    
+    ROS-ConsumerAS {InvokeId : ROSEInvokeIds,
+	    OPERATION-PACKAGE : package}  ::= ROS{{ROSEInvokeIds},
+	    {ConsumerPerforms{package}}, {SupplierPerforms{package}}}
+    
+    ROS-SupplierAS {InvokeId : ROSEInvokeIds,
+	    OPERATION-PACKAGE : package}  ::= ROS{{ROSEInvokeIds},
+	    {SupplierPerforms{package}}, {ConsumerPerforms{package}}}
+    
+    ROSEInvokeIds InvokeId ::= {
+	ALL EXCEPT noInvokeId
+    }
+    
+END
+
+Remote-Operations-Information-Objects-extensions {joint-iso-itu-t(2)
+    remote-operations(4) informationObjects-extensions(8) version1(0)}
+DEFINITIONS EXPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	CONTRACT
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)};
+	
+    APPLICATION-CONTEXT ::= CLASS {
+	&associationContract    CONTRACT,
+	&associationRealization REALIZATION OPTIONAL,
+	&transferRealization    REALIZATION,
+	&AbstractSyntaxes       ABSTRACT-SYNTAX,
+	&applicationContextName OBJECT IDENTIFIER UNIQUE
+    } WITH SYNTAX {
+	CONTRACT &associationContract 
+	[ ESTABLISHED BY &associationRealization ]
+	INFORMATION TRANSFER BY &transferRealization 
+	ABSTRACT SYNTAXES &AbstractSyntaxes 
+	APPLICATION CONTEXT NAME &applicationContextName 
+    }
+    
+    REALIZATION ::= TYPE-IDENTIFIER
+    
+END
+
+Remote-Operations-Useful-Definitions {joint-iso-itu-t(2) remote-operations(4)
+    useful-definitions(7) version1(0)}
+DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+    
+    IMPORTS
+	OPERATION, ERROR, OPERATION-PACKAGE, Code
+	FROM Remote-Operations-Information-Objects {joint-iso-itu-t(2)
+	    remote-operations(4) informationObjects(5) version1(0)}
+	
+	InvokeId, ROS{}
+	FROM Remote-Operations-Generic-ROS-PDUs {joint-iso-itu-t(2)
+	    remote-operations(4) generic-ROS-PDUs(6) version1(0)};
+	
+    emptyBind OPERATION ::= {
+	ERRORS {refuse} 
+	SYNCHRONOUS TRUE 
+	}
+    
+    emptyUnbind OPERATION ::= {
+	SYNCHRONOUS TRUE 
+	}
+    
+    refuse ERROR ::= {
+	CODE local : -1 
+    }
+    
+    no-op OPERATION ::= {
+	ALWAYS RESPONDS FALSE 
+	CODE local : -1 
+    }
+    
+    Forward {OPERATION : OperationSet} OPERATION ::= {OperationSet |
+	OperationSet.&Linked.&Linked |
+	OperationSet.&Linked.&Linked.&Linked.&Linked}
+    
+    Reverse {OPERATION : OperationSet} OPERATION ::= {Forward{{OperationSet.&Linked}}}
+    
+    ConsumerPerforms {OPERATION-PACKAGE : package} OPERATION ::= {Forward{{package.&Consumer}} |
+	Forward{{package.&Both}} | Reverse{{package.&Supplier}} |
+	Reverse{{package.&Both}}}
+    
+    SupplierPerforms {OPERATION-PACKAGE : package} OPERATION ::= {Forward{{package.&Supplier}} |
+	Forward{{package.&Both}} | Reverse{{package.&Consumer}} |
+	Reverse{{package.&Both}}}
+    
+    AllOperations {OPERATION-PACKAGE : package} OPERATION ::= {ConsumerPerforms{package} |
+	SupplierPerforms{package}}
+    
+    recode {OPERATION : operation, Code : code} OPERATION ::= {
+	ARGUMENT operation.&ArgumentType OPTIONAL
+	    operation.&argumentTypeOptional 
+	RESULT operation.&ResultType OPTIONAL operation.&resultTypeOptional 
+	RETURN RESULT operation.&returnResult 
+	ERRORS {operation.&Errors} 
+	LINKED {operation.&Linked} 
+	SYNCHRONOUS operation.&synchronous 
+	ALWAYS RESPONDS operation.&alwaysReturns 
+	INVOKE PRIORITY {operation.&InvokePriority} 
+	RESULT-PRIORITY {operation.&ResultPriority} 
+	CODE code 
+    }
+    
+    switch {OPERATION-PACKAGE : package,
+	    OBJECT IDENTIFIER : id} OPERATION-PACKAGE ::= {
+	OPERATIONS {package.&Both} 
+	CONSUMER INVOKES {package.&Consumer} 
+	SUPPLIER INVOKES {package.&Supplier} 
+	ID id 
+    }
+    
+    combine {OPERATION-PACKAGE : ConsumerConsumes,
+	    OPERATION-PACKAGE : ConsumerSupplies,
+	    OPERATION-PACKAGE : base} OPERATION-PACKAGE ::= {
+	OPERATIONS {ConsumerConsumes.&Both | ConsumerSupplies.&Both} 
+	CONSUMER INVOKES {ConsumerConsumes.&Consumer |
+	    ConsumerSupplies.&Supplier} 
+	SUPPLIER INVOKES {ConsumerConsumes.&Supplier |
+	    ConsumerSupplies.&Consumer} 
+	ID base.&id 
+    }
+    
+    ROS-SingleAS {InvokeId : InvokeIdSet,
+	    OPERATION-PACKAGE : package}  ::= ROS{{InvokeIdSet},
+	    {AllOperations{package}}, {AllOperations{package}}}
+    
+    ROS-ConsumerAS {InvokeId : InvokeIdSet,
+	    OPERATION-PACKAGE : package}  ::= ROS{{InvokeIdSet},
+	    {ConsumerPerforms{package}}, {SupplierPerforms{package}}}
+    
+    ROS-SupplierAS {InvokeId : InvokeIdSet,
+	    OPERATION-PACKAGE : package}  ::= ROS{{InvokeIdSet},
+	    {SupplierPerforms{package}}, {ConsumerPerforms{package}}}
+    
+END
+

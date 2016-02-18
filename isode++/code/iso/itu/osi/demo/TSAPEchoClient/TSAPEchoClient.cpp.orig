@@ -1,0 +1,216 @@
+#include "Poco/DateTime.h"
+#include "Poco/DateTimeFormatter.h"
+#include "Poco/Util/LoggingConfigurator.h"
+#include "Poco/Util/PropertyFileConfiguration.h"
+#include "Poco/AutoPtr.h"
+#include "Poco/Net/SocketReactor.h"
+#include "Poco/Net/SocketAcceptor.h"
+#include "Poco/Net/SocketNotification.h"
+#include "Poco/Net/StreamSocket.h"
+#include "Poco/Net/ServerSocket.h"
+#include "Poco/NObserver.h"
+#include "Poco/Exception.h"
+#include "Poco/Semaphore.h"
+#include "Poco/Thread.h"
+#include "Poco/Util/ServerApplication.h"
+#include "Poco/Util/Option.h"
+#include "Poco/Util/OptionSet.h"
+#include "Poco/Util/HelpFormatter.h"
+#include <sstream>
+#include <fstream>
+#include <iostream>
+
+#include "als/nsap/addr/PSAPAddr.h"
+#include "als/tsap/user/Initiator.h"
+#include "als/tsap/serv/Initiator.h"
+#include "als/tsap/prov/Provider.h"
+ 
+using Poco::Net::SocketReactor;
+using Poco::Net::SocketAcceptor;
+using Poco::Net::ReadableNotification;
+using Poco::Net::ShutdownNotification;
+using Poco::Net::WritableNotification;
+using Poco::Net::TimeoutNotification;
+using Poco::Net::IdleNotification;
+using Poco::Net::ServerSocket;
+using Poco::Net::StreamSocket;
+using Poco::Net::SocketAddress;
+using Poco::Semaphore;
+using Poco::NObserver;
+using Poco::AutoPtr;
+using Poco::Thread;
+using Poco::Util::ServerApplication;
+using Poco::Util::Application;
+using Poco::Util::Option;
+using Poco::Util::OptionSet;
+using Poco::Util::HelpFormatter;
+using Poco::Util::LoggingConfigurator;
+using Poco::Util::PropertyFileConfiguration;
+using Poco::AutoPtr;
+
+using namespace std;
+
+using namespace ALS::NSAP::ADDR;
+
+Semaphore semaphore(0, 1);
+
+namespace ALS {
+	namespace TSAP {
+class TSAPEchoClient : 
+	public Poco::Util::ServerApplication, 
+	public ALS::TSAP::USER::Initiator
+	/// The main application class.
+	///
+	/// This class handles command-line arguments and
+	/// configuration files.
+	/// Start the TSAPEchoClient executable with the help
+	/// option (/help on Windows, --help on Unix) for
+	/// the available command line options.
+	///
+	/// To use the sample configuration file (TSAPEchoClient.properties),
+	/// copy the file to the directory where the TSAPEchoClient executable
+	/// resides. If you start the debug version of the TSAPEchoClient
+	/// (TSAPEchoClientd[.exe]), you must also create a copy of the configuration
+	/// file named TSAPEchoClientd.properties. In the configuration file, you
+	/// can specify the port on which the server is listening (default
+	/// 9977) and the format of the date/time string sent back to the client.
+	///
+	/// To test the TSAPEchoClient you can use any telnet client (telnet localhost 9977).
+{
+private:
+//	Semaphore sema(0);
+	ALS::TSAP::PROV::Provider* provider;
+public:
+	TSAPEchoClient(): help(false)
+	{
+		provider = new ALS::TSAP::PROV::Provider(this);
+	}
+
+	~TSAPEchoClient()
+	{
+		delete provider;
+	}
+
+	ReturnCode TConnectConfirmation(const ALS::NSAP::ADDR::TSAPAddr &, bool, const ALS::NSAP::QualityOfService &, int, ALS::BASE::UTIL::Buffer *) {
+		semaphore.set();
+		return DONE;
+	}
+	ReturnCode TDataIndication(shared_ptr<ALS::BASE::UTIL::Buffer>& data) {
+		provider->logger().information(string(data->data(), data->remaining()));
+		semaphore.set();
+		return DONE;
+	}
+	ReturnCode TExpeditedDataIndication(int cc, const byte * data) {
+		semaphore.set();
+		return DONE;
+	}
+	ReturnCode TDisconnectIndication(int reason, const string& data) {
+		semaphore.set();
+		return DONE;
+	}
+protected:
+	void initialize(Application& self)
+	{
+		loadConfiguration(); // load default configuration files, if present
+		ServerApplication::initialize(self);
+	}
+
+	void uninitialize()
+	{
+		ServerApplication::uninitialize();
+	}
+
+	void defineOptions(OptionSet& options)
+	{
+		ServerApplication::defineOptions(options);
+
+		options.addOption(
+			Option("help", "h", "display help information on command line arguments")
+				.required(false)
+				.repeatable(false));
+	}
+
+	void handleOption(const std::string& name, const std::string& value)
+	{
+		ServerApplication::handleOption(name, value);
+
+		if (name == "help")
+			help = true;
+	}
+
+	void displayHelp()
+	{
+		HelpFormatter helpFormatter(options());
+		helpFormatter.setCommand(commandName());
+		helpFormatter.setUsage("OPTIONS");
+		helpFormatter.setHeader("An echo server implemented using the Reactor and Acceptor patterns.");
+		helpFormatter.format(std::cout);
+	}
+
+	void perform() {
+		ReturnCode rc;
+		PSAPAddr psapaddr;
+		const char* addr = "#128/TELEX+00728722+RFC-1006+03+127.0.0.1";
+		psapaddr.parse(addr);
+		TSAPAddr calling;
+		TSAPAddr called = psapaddr.ssapaddr().tsapaddr();
+		QualityOfService qualityOfService;
+
+		rc = provider->TConnectRequest(calling, called, false, qualityOfService);
+		if (rc != OK)
+			return;
+		semaphore.wait();
+		byte bytes[4] = { 1 };
+		for (int no = 1; no <= 4; no++) {
+			bytes[no - 1] = '0' + no;
+			rc = provider->TDataRequest(no, bytes);
+			if (rc == OK)
+				semaphore.wait();
+		}
+		rc =provider->TDisconnectRequest(0, calling);
+	}
+	int main(const std::vector<std::string>& args)
+	{
+		if (help){
+			displayHelp();
+		}else{
+			ifstream istr;
+			istr.open("initiator.properties");
+			AutoPtr<PropertyFileConfiguration> pConfig = new PropertyFileConfiguration(istr);
+			LoggingConfigurator configurator;
+			configurator.configure(pConfig);
+			istr.close();
+
+			// get parameters from configuration file
+			unsigned short port = 102;//(unsigned short) config().getInt("TSAPEchoClient.port", 9977);
+			perform();
+
+		}
+		return Application::EXIT_OK;
+	}
+
+private:
+	bool help;
+};
+}
+}
+
+int main(int argc, char** argv)
+{
+	ALS::TSAP::TSAPEchoClient app;
+	try {
+		return app.run(argc, argv);
+	}
+	catch (const Poco::Exception& e) {
+		Application& app = Application::instance();
+		app.logger().log(e);
+	}
+	catch (const std::exception& e) {
+		Application& app = Application::instance();
+		app.logger().error(e.what());
+	}
+	catch (...) {
+		Application& app = Application::instance();
+		app.logger().error("unknown exception");
+	}
+}

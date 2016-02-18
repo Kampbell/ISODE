@@ -1,0 +1,166 @@
+%start STATE::STA0
+%header		als/asap/prov/Provider.h
+%fsmclass	FSM
+%package	ALS::ASAP::PROV
+%class		Provider
+//%include	"als/ssap/ResyncOption.h"
+
+
+
+/*
+Recommendation ITU-T X.227
+CONNECTION-ORIENTED PROTOCOL SPECIFICATION
+ASSOCIATION SERVICE PROTOCOL
+
+
+Incoming events
+------------------------------------------------------------------
+Abbreviated name 		Source Name and 	description
+A-ASCreq 		AC-user 	A-ASSOCIATE request primitive
+A-ASCrsp+ 		AC-user 	A-ASSOCIATE response primitive (Result = accepted)
+A-ASCrsp- 		AC-user 	A-ASSOCIATE response primitive [Result = rejected (permanent) or rejected (transient)]
+AARQ 			AC-peer 	A-ASSOCIATE-REQUEST-APDU The AARQ is user data on a P-CONNECT indication
+AARE+ 			AC-peer 	A-ASSOCIATE-RESPONSE-APDU (Result = accepted) The AARE+ is user data on a P-CONNECT confirm primitive (Result = acceptance)
+AARE- 			AC-peer 	A-ASSOCIATE-RESPONSE APDU [Result = rejected (permanent) or rejected (transient)] The AARE- is user data on a P-CONNECT confirm primitive (Result = user-rejection)
+P-CONcnf- 		PS-provider P-CONNECT confirm primitive (Result = provider-rejection)
+A-RLSreq 		AC-user 	A-RELEASE request primitive
+A-RLSrsp+ 		AC-user 	A-RELEASE response primitive (Result = affirmative)
+A-RLSrsp- 		AC-user 	A-RELEASE response primitive A-RELEASE response primitive (Result = negative)
+RLRQ 			AC-peer 	A-RELEASE-REQUEST APDU The RLRQ is user data on a P-RELEASE indication primitive
+RLRE+ 			AC-peer 	A-RELEASE-RESPONSE APDU The RLRE+ is user data on a P-RELEASE confirm primitive (Result = affirmative)
+RLRE- 			AC-peer 	A-RELEASE-RESPONSE APDU The RLRE- is user data on a P-RELEASE confirm primitive (Result = negative)
+A-ABRreq 		AC-user 	A-ABORT request primitive
+ABRT(a)			AC-peer 	A-ABORT APDU The ABRT is user data on a P-U-ABORT indication primitive
+P-PABind 		PS-provider P-P-ABORT indication primitive
+EXTRN-1 		AC-user		P-RESYNCHRONIZE indication primitive, or P-U-EXCEPTION-REPORT indication primitive (received from AE of the AC-peer)
+				PS-provider	P-P-EXCEPTION-REPORT indication primitive
+EXTRN-2 		AC-user		P-RESYNCHRONIZE request primitive, or P-U-EXCEPTION-REPORT request primitive, or (issued within the AE of the AC-user)
+				PS-provider	P-P-EXCEPTION-REPORT indication primitive
+
+a) When supported by Version 1 of the session-protocol (see ITU-T Rec. X.225 | ISO/IEC 8327-1), the A-ABORT APDU has
+no APCI. The receipt of the P-U-ABORT indication implies its existence.
+
+
+
+State
+------------------------------------------------------------------
+Abbreviated name Description
+STA0			idle: unassociated
+STA1			awaiting AARE APDU
+STA2			awaiting A-ASSOCIATE response
+STA3			awaiting RLRE APDU
+STA4			awaiting A-RELEASE response
+STA5			associated
+STA6			awaiting A-RELEASE response (association-initiator)
+STA7			awaiting RLRE APDU (association-responder)
+
+
+
+Outgoing events
+------------------------------------------------------------------
+Abbreviated name 		Target Name and description
+A-ASCind 		AC-user A-ASSOCIATE indication primitive
+A-ASCcnf+ 		AC-user A-ASSOCIATE confirm primitive (Result = accepted)
+A-ASCcnf- 		AC-user A-ASSOCIATE confirm primitive (Result = rejected (permanent) or rejected (transient))
+AARQ 			AC-peer A-ASSOCIATE-REQUEST APDU The AARQ is sent as user data on a P-CONNECT request primitive
+AARE+ 			AC-peer A-ASSOCIATE-RESPONSE APDU (Result = accepted) The AARE+ is sent as user data on a P-CONNECT+ response primitive (Result = acceptance)
+AARE- 			AC-peer A-ASSOCIATE-RESPONSE APDU (Result = rejected (permanent) or rejected (transient)) The AARE- is sent as user data on a P-CONNECT- response primitive (Result = user-rejection)
+A-RLSind 		AC-user A-RELEASE indication primitive
+A-RLScnf+ 		AC-user A-RELEASE confirm primitive (Result = affirmative)
+A-RLScnf- 		AC-user A-RELEASE confirm primitive (Result = negative)
+RLRQ 			AC-peer A-RELEASE-REQUEST ADPU The RLRQ is sent as user data on a P-RELEASE request primitive
+RLRE+ 			AC-peer A-RELEASE-RESPONSE APDU The RLRE+ is sent as user data on a P-RELEASE response primitive (Result = affirmative)
+RLRE- 			AC-peer A-RELEASE-RESPONSE APDU The RLRE- is sent as user data on a P-RELEASE response primitive (Result = negative)
+A-ABRind 		AC-user A-ABORT indication primitive (Source = ACSE service user or ACSE service-provider)
+ABRT(a) 		AC-peer A-ABORT APDU (Source = ACSE service-user or ACSE service-provider) The ABRT is sent as user data on a P-U-ABORT request primitive
+P-PABind 		AC-user A-P-ABORT indication primitive
+
+a) When supported by version 1 of the session-protocol (ITU-T Rec. X.225 | ISO/IEC 8327-1), the A-ABORT APDU has
+no APCI. The receipt of the P-U-ABORT indication implies its existence.
+
+
+
+Predicate
+------------------------------------------------------------------
+Code 			Meaning
+p1				ACPM can support requested connection
+p2				ACPM originated this association
+*/
+
+%map STATE
+%%
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA0 { 	// idle: unassociated
+	A-ASCreq				[p1()]									STA1			{AARQ();}
+	AARQ					[p1()]									STA2			{A-ASCind();}
+	AARQ					[!p1()]									STA0			{AARE(false);}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA1 { 	// awaiting AARE APDU
+	AARE(accept: bool)		[accept]								STA5			{A-ASCcnf(true);}
+	AARE(accept: bool)		[!accept]								STA0			{A-ASCcnf(false);}
+	P-CONcnf(accept: bool)	[!accept]								STA0			{A-ASCcnf(false);}
+	A-ABRreq														STA0			{ABRT();}
+	ABRT															STA0			{A-ABRind();}
+	P-PABind														STA0			{A-ABRind();}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA2 { 	// awaiting A-ASSOCIATE response
+	A-ASCrsp(accept: bool)	[accept]								STA5			{AARE(true);}
+	A-ASCrsp(accept: bool)	[!accept]								STA5			{AARE(false);}
+	A-ABRreq														STA0			{ABRT();}
+	ABRT															STA0			{A-ABRind();}
+	P-PABind														STA0			{A-ABRind();}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA3 { 	// awaiting RLRE APDU
+	RLRQ					[p2()]									STA6			{A-RLSind();}
+	RLRQ					[!p2()]									STA7			{A-RLSind();}
+	RLRE(accept: bool)		[accept]								STA0			{A-RLScnf(true);}
+	RLRE(accept: bool)		[!accept]								STA5			{A-RLScnf(false);}
+	A-ABRreq														STA0			{ABRT();}
+	ABRT															STA0			{A-ABRind();}
+	P-PABind														STA0			{A-ABRind();}
+	EXTERN-1														STA5			{}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA4 { 	// awaiting A-RELEASE response
+	A-RLSrsp(accept: bool)	[accept]								STA0			{RLRE(true);}
+	A-RLSrsp(accept: bool)	[!accept]								STA5			{RLRE(false);}
+	A-ABRreq														STA0			{ABRT();}
+	ABRT															STA0			{A-ABRind();}
+	P-PABind														STA0			{A-ABRind();}
+	EXTERN-3														STA5			{}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA5 { 	// associated
+	A-RLSreq														STA3			{RLRQ();}
+	RLRQ															STA4			{A-RLSind();}
+	A-ABRreq														STA0			{ABRT();}
+	ABRT															STA0			{A-ABRind();}
+	P-PABind														STA0			{A-ABRind();}
+	EXTERN-1														STA5			{}
+	EXTERN-2														STA5			{}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA6 { 	// awaiting A-RELEASE response (association-initiator)
+	A-RLSrsp(accept: bool)	[accept]								STA3			{RLRE(true);}
+	A-ABRreq														STA0			{ABRT();}
+	ABRT															STA0			{A-ABRind();}
+	P-PABind														STA0			{A-ABRind();}
+}
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+STA7 { 	// awaiting RLRE APDU (association-responder)
+	RLRE(accept: bool)		[accept]								STA4			{A-RLScnf(true);}
+	A-ABRreq														STA0			{ABRT();}
+	ABRT															STA0			{A-ABRind();}
+	P-PABind														STA0			{A-ABRind();}
+}
+%%

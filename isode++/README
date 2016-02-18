@@ -1,0 +1,199 @@
+This is the README file for the ISODE++.
+
+In this document you will find a brief description of the directory layout,
+as well as a description necessary steps to build the ISODE++.
+
+ISODE++/				the top directory
+	cpp/				the C++ version of the OSI stack
+		code/			all C++ sources
+			iso/itu/osi/
+				als/		the Application Layer Stack
+					asap/	the AcSAP layer
+					base/	the common base objects
+					fsmc/	the FiniteStateMachine compiler
+					isod/	the OSI stack daemon on the server side
+					nsap/	the NSAP layer
+					psap/	the PSAP layer
+					ssap/	the SSAP layer
+					tsap/	the TSAP layer
+
+		make/			the directory os the GNU make system for building on Linuces
+			... To be published later
+
+		test/			the directory of the unit tests
+			iso/itu/osi/
+				als/		the Application Layer Stack
+					asap/	the AcSAP layer unit tests 
+					base/	the common base unit tests 
+					fsmc/	the FiniteStateMachine compiler unit tests 
+					isod/	the OSI stack daemon unit tests 
+					nsap/	the NSAP layer unit tests
+					psap/	the PSAP layer unit tests
+					ssap/	the SSAP layer unit tests
+					tsap/	the TSAP layer unit tests
+		VS2013/			the directory of the VS2013 version (solution and projects)
+			iso/itu/osi/
+				als/
+					asap/	the AcSAP layer VS2013 project
+					base/	the common base objects VS2013 project
+					fsmc/	the FiniteStateMachine compiler VS2013 project
+					isod/	the OSI stack daemon VS2013 project
+					nsap/	the NSAP layer VS2013 project
+					psap/	the PSAP layer VS2013 project
+					ssap/	the SSAP layer VS2013 project
+					tsap/	the TSAP layer VS2013 project
+					als-x86-vs120.sln the VS2013 solution
+		
+
+
+
+DOCUMENTATION
+=============
+
+All offical ITU-T recommendations can be found in the ISODE++/ITU-T/X Series/X.200 directory
+or to a greater extend at this URL https://www.itu.int/rec/T-REC-X/en under the X Serie panel.
+
+X.200: Information technology - Open Systems Interconnection - Basic Reference Model: The basic model  
+X.210: Information technology - Open Systems Interconnection - Basic Reference Model: Conventions for the definition of OSI services  
+X.211: Information technology - Open Systems Interconnection - Physical service definition  
+X.212: Information technology - Open Systems Interconnection - Data Link service definition  
+X.213: Information technology - Open Systems Interconnection - Network service definition  
+X.214: Information technology - Open Systems Interconnection - Transport service definition  
+X.215: Information technology - Open Systems Interconnection - Session service definition  
+X.216: Information technology - Open Systems Interconnection - Presentation service definition  
+X.217: Information technology - Open Systems Interconnection - Service definition for the Association Control Service Element  
+X.217bis: Information technology - Open Systems Interconnection - Service definition for the Application Service Object Association Control Service Element  
+X.218: Reliable Transfer: Model and service definition 
+X.219: Remote Operations: Model, notation and service definition  
+X.220: Use of X.200-Series protocols in CCITT applications  
+
+X.224: Information technology - Open Systems Interconnection - Protocol for providing the connection-mode transport service  
+X.225: Information technology - Open Systems Interconnection - Connection-oriented Session protocol: Protocol specification  
+X.226: Information technology - Open Systems Interconnection - Connection-oriented Presentation protocol: Protocol specification  
+X.227: nformation technology - Open Systems Interconnection - Connection-oriented protocol for the Association Control Service Element: Protocol specification  
+X.227bis: Information technology - Open Systems Interconnection - Connection-mode protocol for the Application Service Object Association Control Service Element  
+X.228: Reliable Transfer: Protocol specification  
+X.229: Remote Operations: Protocol specification  
+
+
+EXTERNAL DEPENDENCIES
+=====================
+
+The following libraries require third-party software (header files and
+libraries) being installed to build properly:
+	- The Poco library: http://pocoproject.org
+
+
+
+BUILDING ON WINDOWS
+===================
+PREREQUIREMENTS: Installing Poco 
+You must download the poco-1.6.1 msi installer at
+https://github.com/pocoproject/distro/releases/download/Poco-1.6.1/VS2013.Poco.1.6.1.x32.msi
+for the 32 bit architecture and
+https://github.com/pocoproject/distro/releases/download/Poco-1.6.1/VS2013.Poco.1.6.1.x64.msi
+for the 64 bit architecture.
+
+Once installed, create an environment variable named POCO pointing at the 
+installation directory, wich is by default on 32 bit system
+C:\Program Files (x86)\Poco\1.6.1 
+and
+C:\Program Files\Poco\1.6.1
+on 64 system
+
+
+Microsoft Visual Studio 120 (2013), 140 (2015) (professional or express edition) are
+required to build the ISODE++ on Windows platforms. For now, only solution and project files for
+VisualStudio 2013 32 bit is supported.
+
+Open the VisualStudio solution als-x86-vs120.sln located at the ...\ISODE++\cpp\VS2013\iso\itu\osi\als
+directory and build the solution (Build->Batch Build->Select All;Rebuild)
+
+In order to run the test suite and the samples, the top-most bin directory containing
+the shared libraries must be in the PATH environment variable.
+
+IMPORTANT NOTE: 
+Please make sure that the path to the directory containing the
+ISODE++ source tree does not contain spaces. Otherwise, the Microsoft
+message compiler may fail when building the Foundation library.
+
+
+BUILDING ON UNIX/LINUX/MAC OS X
+===============================
+To be provided later.
+
+BUILDING ON QNX NEUTRINO
+========================
+To be provided later.
+
+BUILDING FOR VXWORKS
+====================
+To be provided later.
+
+BUILDING ON OPENVMS
+===================
+To be provided later.
+
+RUNNING ECHO DEMOS
+==================
+At each OSI layer corresponds a 'layer' demo that consists of a <LAYER>EchoCLient 
+and an <LAYER>EchoServer. At the ISODE++/cpp/code/iso/itu/osi/demo directory, there 
+is a VS2013 project for each layer/client/server. For now, only the TSAPEchoCLient & TSAPEchoServer
+are running.
+
+Before running any demo, 
+1/ one should create an environment variable named ISODE that points to your local
+   ISODE++ directory.
+2/ set PATH=%POCO%\bin;%PATH%
+3/ set PATH=%ISODE%\cpp\VS2013\osi\itu\osi\als\Debug;%PATH%
+4/ Open a DOS window, goto %ISODE%\cpp\VS2013\osi\itu\osi\als\Debug, run isodd
+5/ Open a DOS window, goto %ISODE%\cpp\VS2013\osi\itu\osi\als\Debug, run TESPEchoClientd
+
+One should observ the following traces on the client window:
+
+...\ISODE++\cpp\VS2013\iso\itu\osi\als\Debug>tsapechoclientd
+2016-01-26 12:45:33 TSAP: [I] >>> T-CONNECT.REQUEST             : calling=, called=#128/127.0.0.1, cc=0
+2016-01-26 12:45:33 TSAP: [I] Connecting 127.0.0.1
+2016-01-26 12:45:33 NSAP: [I] >>> N-CONNECT.REQUEST             : calling=127.0.0.1, called=127.0.0.1, cc=0
+2016-01-26 12:45:33 NSAP: [I] >>> N-DATA.REQUEST                : cc=21
+2016-01-26 12:45:33 NSAP: [D] 0000  14 E0 00 00 26 58 00 C6  01 01 C1 02 26 58 C2 02  ....&X......&X..
+2016-01-26 12:45:33 NSAP: [D] 0010  00 80 C0 01 0B                                    .....
+2016-01-26 12:45:34 NSAP: [I] <<< N-DATA.INDICATION             : cc=16
+2016-01-26 12:45:34 NSAP: [D] 0000  0F D0 26 58 29 D4 00 C6  01 01 F0 04 00 00 00 0F  ..&X)...........
+2016-01-26 12:45:34 TSAP: [I] <<< T-CONNECT.CONFIRMATION        : responding=#128/nsap, expedited=0, cc=0
+2016-01-26 12:45:34 TSAP: [I] >>> T-DATA.REQUEST                : cc=1
+2016-01-26 12:45:34 NSAP: [I] >>> N-DATA.REQUEST                : cc=4
+2016-01-26 12:45:34 NSAP: [D] 0000  02 F0 80 31                                       ...1
+2016-01-26 12:45:34 NSAP: [I] <<< N-DATA.INDICATION             : cc=4
+2016-01-26 12:45:34 NSAP: [D] 0000  02 F0 80 31                                       ...1
+2016-01-26 12:45:34 TSAP: [I] <<< T-DATA.INDICATION             : cc=1
+2016-01-26 12:45:34 TSAP: [I] 1
+2016-01-26 12:45:34 TSAP: [I] >>> T-DATA.REQUEST                : cc=2
+2016-01-26 12:45:34 NSAP: [I] >>> N-DATA.REQUEST                : cc=5
+2016-01-26 12:45:34 NSAP: [D] 0000  02 F0 80 31 32                                    ...12
+2016-01-26 12:45:35 NSAP: [I] <<< N-DATA.INDICATION             : cc=5
+2016-01-26 12:45:35 NSAP: [D] 0000  02 F0 80 31 32                                    ...12
+2016-01-26 12:45:35 TSAP: [I] <<< T-DATA.INDICATION             : cc=2
+2016-01-26 12:45:35 TSAP: [I] 12
+2016-01-26 12:45:35 TSAP: [I] >>> T-DATA.REQUEST                : cc=3
+2016-01-26 12:45:35 NSAP: [I] >>> N-DATA.REQUEST                : cc=6
+2016-01-26 12:45:35 NSAP: [D] 0000  02 F0 80 31 32 33                                 ...123
+2016-01-26 12:45:36 NSAP: [I] <<< N-DATA.INDICATION             : cc=6
+2016-01-26 12:45:36 NSAP: [D] 0000  02 F0 80 31 32 33                                 ...123
+2016-01-26 12:45:36 TSAP: [I] <<< T-DATA.INDICATION             : cc=3
+2016-01-26 12:45:36 TSAP: [I] 123
+2016-01-26 12:45:36 TSAP: [I] >>> T-DATA.REQUEST                : cc=4
+2016-01-26 12:45:36 NSAP: [I] >>> N-DATA.REQUEST                : cc=7
+2016-01-26 12:45:36 NSAP: [D] 0000  02 F0 80 31 32 33 34                             ...1234
+2016-01-26 12:45:36 NSAP: [I] <<< N-DATA.INDICATION             : cc=7
+2016-01-26 12:45:36 NSAP: [D] 0000  02 F0 80 31 32 33 34                             ...1234
+2016-01-26 12:45:36 TSAP: [I] <<< T-DATA.INDICATION             : cc=4
+2016-01-26 12:45:36 TSAP: [I] 1234
+2016-01-26 12:45:36 TSAP: [I] >>> T-DISCONNECT.REQUEST          : reason=0, cc=0
+2016-01-26 12:45:36 NSAP: [I] >>> N-DISCONNECT.REQUEST          : responding=127.0.0.1, reason=0, cc=0
+
+
+
+MORE INFORMATION
+================
+

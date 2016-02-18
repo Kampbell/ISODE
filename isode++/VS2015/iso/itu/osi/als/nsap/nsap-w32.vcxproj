@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{192BE674-8A12-4B53-84E0-A41A45B32946}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>nsap</RootNamespace>
+    <ProjectName>nsap</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <Import Project="../../poco.props" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>../../../../../..\code\iso\itu\osi;$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>../../../../../../code/iso/itu/osi;$(IncludePath)</IncludePath>
+    <LibraryPath>$(POCO_HOME)/lib64;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>../../../../../..\code\iso\itu\osi;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>../..;../../als;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NSAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>/FS</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ShowProgress>NotSet</ShowProgress>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NSAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <StringPooling>true</StringPooling>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ManifestFile>$(IntDir)$(TargetName)$(TargetExt)d.intermediate.manifest</ManifestFile>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NSAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NSAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\AddrPSAP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\AddrSSAP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\AddrTSAP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\AFI.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ATM.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\DCC.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\DSP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ECMA117Binary.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ECMA117Decimal.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\IANA.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ICD.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ISDN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\LOCAL.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\NSAPAddr.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\NSAPAddrTCP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\NSAPAddrX25.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\PSAPAddr.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\PSTN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\RFC_1006.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\SSAPAddr.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\TELEX.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\TSAPAddr.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\X121.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\X2580.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\Literal.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\nsap.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\Logger.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\NA_TCP_TS_TCP.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\Provider.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\RFC1006.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\RFC106Socket.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\serv\DataRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\serv\DisconnectRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\serv\Initiator.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\serv\QualityOfService.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\serv\ResetRequest.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\serv\ResetResponse.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\serv\Responder.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\user\DataIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\user\DisconnectIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\user\Initiator.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\user\Linker.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\user\ResetConfirmation.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\user\ResetIndication.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\user\Responder.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\AddrPSAP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\AddrSSAP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\AddrTSAP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\AFI.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ATM.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\DCC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\DSP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ECMA117Binary.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ECMA117Decimal.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\IANA.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ICD.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\ISDN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\LOCAL.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\NSAPAddr.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\NSAPAddrTCP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\NSAPAddrX25.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\PSAPAddr.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\PSTN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\RFC_1006.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\SSAPAddr.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\TELEX.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\TSAPAddr.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\X121.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\addr\X2580.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\Literal.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\Logger.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\NA_TCP_TS_TCP.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\Provider.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\RFC1006.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\prov\RFC106Socket.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\nsap\QualityOfService.cpp" />
+    <ClCompile Include="dllmain.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

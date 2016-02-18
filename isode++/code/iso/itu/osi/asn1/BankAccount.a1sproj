@@ -1,0 +1,31 @@
+<OssGuiProject compiler="ASN.1/C++" version="2.0" productVersion="7.0" product="ASN.1 Studio" compilerVersionLastComp=" T" compilerVersionLastUsed="6.0 T" compilerSettingsChangeTime="2014-12-24T13:14:22">
+ <Asn1Files/>
+ <CompilerSettings>
+  <Setting present="true" name="cppNamespaceCheckBox">ASN</Setting>
+  <Setting prefix="PSAP" name="cppOutputDirLineEdit">csn</Setting>
+  <Setting present="true" name="cppToedRadioButton"/>
+  <Setting present="true" name="disablCAGLMessagesCheckBox"/>
+  <Setting present="false" name="encOnlyRadioButton"/>
+  <Setting present="true" name="genDirCheckBox"/>
+  <Setting present="true" name="modListRadioButton"/>
+ </CompilerSettings>
+ <EncodingFiles/>
+ <GeneratedFiles/>
+ <Settings>
+  <Setting name="-2008"/>
+  <Setting present="false" name="-noRelaxedMode"/>
+  <Setting present="false" name="-relaySafe"/>
+  <Setting name="-root"/>
+  <Setting name="AUTOMATIC_ENCDEC"/>
+  <Setting name="DEBUGPDU"/>
+  <Setting name="OSS_AUTO_ENCODE_WITHOUT_CHECKING_CONSTRAINT"/>
+  <Setting name="OSS_HEXBYTES"/>
+  <Setting name="OSS_PRINT_COMMENTS"/>
+  <Setting name="OSS_PRINT_OFFSET"/>
+  <Setting name="OSS_PRINT_TYPE_INFO"/>
+  <Setting name="-ber"/>
+  <Setting name="-der"/>
+  <Setting name="-per"/>
+ </Settings>
+ <UserFiles/>
+</OssGuiProject>

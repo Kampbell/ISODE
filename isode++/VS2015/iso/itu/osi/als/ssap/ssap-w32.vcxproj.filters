@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="user">
+      <UniqueIdentifier>{d249077d-1284-4fbf-aa09-801d4902bbb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="prov">
+      <UniqueIdentifier>{393d74be-23bd-4b42-baea-2315d2902b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="serv">
+      <UniqueIdentifier>{b3dc0714-a968-421f-a303-92a4f925aa39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="spdu">
+      <UniqueIdentifier>{41a74175-ffe5-4417-b1d0-af4534ef6ffd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="spdu\pi">
+      <UniqueIdentifier>{de147dd0-5eed-4147-bef4-a66cd00c582a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="spdu\pgi">
+      <UniqueIdentifier>{f57bd2fc-5b37-4708-b1f2-ada231f8b430}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\Provider.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\Logger.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\FSM.cpp">
+      <Filter>prov</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Exception.cpp" />
+    <ClCompile Include="Requirement.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Literal.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\SSN.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Reference.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AB.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AC.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AD.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ADA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AE.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AEA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AI.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AIA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AR.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AS.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CATENE.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CD.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CDA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CDO.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CN.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CN_AC.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\DN.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\DT.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ED.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ER.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\EX.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\FN.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GT.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GTA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GTC.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\HEADER.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MAA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MAP.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MIA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MIP.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\NF.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\OA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\PR.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\PT.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RA.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RF.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RS.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\SPDU.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\TD.cpp">
+      <Filter>spdu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\AR_LINK.cpp">
+      <Filter>spdu\pgi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\CN_ID.cpp">
+      <Filter>spdu\pgi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\CN_ITEMS.cpp">
+      <Filter>spdu\pgi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\PGI.cpp">
+      <Filter>spdu\pgi</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\Provider.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\AbortRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ActivityRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ActivityResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\DataRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\DataResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\Initiator.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ReleaseRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ReleaseResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\ReportRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\Responder.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\Service.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\TokenRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\Logger.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\FSM.h">
+      <Filter>prov</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\SynchronizeRequest.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\serv\SynchronizeResponse.h">
+      <Filter>serv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\ssap.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\ResyncOption.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\SyncOption.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\AbortCode.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\ActivityId.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Requirement.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Token.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\FunctionalUnit.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Exception.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Literal.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\SSN.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Reference.h" />
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\AbortIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ActivityConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ActivityIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\DataConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\DataIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\Initiator.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\Linker.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ReleaseConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ReleaseIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\ReportIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\Responder.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\SynchronizeConfirmation.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\SynchronizeIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\user\TokenIndication.h">
+      <Filter>user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AB.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AC.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AD.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ADA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AE.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AEA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AI.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AIA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AR.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\AS.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\Category.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CATENE.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CD.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CDA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CDO.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CN.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\CN_AC.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\DN.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\DT.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ED.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\ER.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\EX.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\FN.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GT.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GTA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\GTC.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\HEADER.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MAA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MAP.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MIA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\MIP.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\NF.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\OA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\PR.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\PT.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RA.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RF.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\RS.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\SPDU.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\TD.h">
+      <Filter>spdu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ACT_ID.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ADD_INFO.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\AR_ADDT.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\AR_CALLED.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\AR_CALLING.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\AR_COMMON.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\BUFFER.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\BYTE.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\BYTES.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\CALLED_SS.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\CALLING_SS.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\COMMON_REF.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\DTO.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ENCLOSE.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\INT.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ISN.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\L2ISN.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\LISN.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\LONG.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\MIA_DATA.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\PI.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\PREPARE.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\PROTOCOL_OPT.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\REASON.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\REASONS.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\REFLECT.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\RESYNC.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SERIAL.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SHORT.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SS_TYPE.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SSAP_CALLED.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SSAP_CALLING.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\SYNC.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TABLE.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TDISC.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TOISN.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TOKEN.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TOKEN_SET.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\TSDU_MAXSIZ.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\UDATA.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\ULSN.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\USER_REQ.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\VERSION.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pi\XDATA.h">
+      <Filter>spdu\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\AR_LINK.h">
+      <Filter>spdu\pgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\CN_ID.h">
+      <Filter>spdu\pgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\CN_ITEMS.h">
+      <Filter>spdu\pgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\spdu\pgi\PGI.h">
+      <Filter>spdu\pgi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\Report.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\code\iso\itu\osi\als\ssap\prov\SSAP.sm">
+      <Filter>prov</Filter>
+    </None>
+  </ItemGroup>
+</Project>
