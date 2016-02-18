@@ -8,9 +8,9 @@ addToList(lp, str)
 struct namelist ** lp;
 char *str;
 {
-  for (;*lp != NULLLIST; lp = &(*lp)->next) {};
-  *lp = list_alloc();
-  (*lp)->name = copy_string(str);
-  (*lp)->next = NULLLIST;
+	for (; *lp != NULLLIST; lp = &(*lp)->next) {};
+	*lp = list_alloc();
+	(*lp)->name = copy_string(str);
+	(*lp)->next = NULLLIST;
 }
 

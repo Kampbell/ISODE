@@ -37,13 +37,13 @@ char * parentstr, * thisstr;
 struct namelist ** listp;
 {
 	clearProblemFlags();
-	initAlarm();	
+	initAlarm();
 	if (exactMatch == PERSON)
-	  return(listExactPRRRm(exactString, listp));
-        if (strcmp(thisstr, "*") == 0)
-          return (listAllPRRRm(parentstr, listp));
-        else
-          return (listMatchingPRRRm(parentstr, thisstr, listp));
+		return(listExactPRRRm(exactString, listp));
+	if (strcmp(thisstr, "*") == 0)
+		return (listAllPRRRm(parentstr, listp));
+	else
+		return (listMatchingPRRRm(parentstr, thisstr, listp));
 }
 
 int
@@ -51,11 +51,11 @@ listAllPRRRm(parentstr, listp)
 char * parentstr;
 struct namelist ** listp;
 {
-int ret;
-	
-        sarg = * fillMostPRRSearchArgRm(parentstr, SRA_WHOLESUBTREE);
-        makeAllPRRFilter(&sarg.sra_filter);
-        ret = makeListPRRs(listp, parentstr);
+	int ret;
+
+	sarg = * fillMostPRRSearchArgRm(parentstr, SRA_WHOLESUBTREE);
+	makeAllPRRFilter(&sarg.sra_filter);
+	ret = makeListPRRs(listp, parentstr);
 	if (ret != OK)
 		logListSuccess(LIST_ERROR, "prr", 0);
 	else
@@ -70,36 +70,31 @@ listMatchingPRRRm(parentstr, thisstr, listp)
 char * parentstr, * thisstr;
 struct namelist ** listp;
 {
-VFP * filtarray;
-VFP filterfunc;
-int filtnumber;
+	VFP * filtarray;
+	VFP filterfunc;
+	int filtnumber;
 
-        if (index(thisstr, '*') != NULLCP) /* contains at least one asterisk */
-	{
-                filtarray = explicitPRRRm;
+	if (index(thisstr, '*') != NULLCP) { /* contains at least one asterisk */
+		filtarray = explicitPRRRm;
 		filtnumber = -1;
-	}
-        else
-	{
-                filtarray = normalPRRRm;
+	} else {
+		filtarray = normalPRRRm;
 		filtnumber = 0;
 	}
 	sarg = * fillMostPRRSearchArgRm(parentstr, SRA_WHOLESUBTREE);
-        while ((filterfunc = *filtarray++) != NULLVFP)
-	{
+	while ((filterfunc = *filtarray++) != NULLVFP) {
 		filtnumber++;
-                filterfunc(thisstr, &sarg.sra_filter);
+		filterfunc(thisstr, &sarg.sra_filter);
 		if (sarg.sra_filter == NULLFILTER)
 			continue;
-                if (makeListPRRs(listp, parentstr) != OK)
-		{
+		if (makeListPRRs(listp, parentstr) != OK) {
 			freePRRSearchArgs();
 			logSearchSuccess(SEARCH_ERROR, "prr", thisstr, filtnumber, 0);
 			alarmCleanUp();
-		        return NOTOK;
+			return NOTOK;
 		}
-                if (*listp != NULLLIST)
-                        break;
+		if (*listp != NULLLIST)
+			break;
 	}
 	if (*listp != NULLLIST)
 		logSearchSuccess(SEARCH_OK, "prr", thisstr, filtnumber, listlen(*listp));
@@ -115,11 +110,11 @@ listExactPRRRm(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
 {
-int ret;
+	int ret;
 
-        sarg = * fillMostPRRSearchArgRm(objectstr, SRA_BASEOBJECT);
-        makeExactPRRFilter(&sarg.sra_filter);
-        ret = makeListPRRs(listp, objectstr);
+	sarg = * fillMostPRRSearchArgRm(objectstr, SRA_BASEOBJECT);
+	makeExactPRRFilter(&sarg.sra_filter);
+	ret = makeListPRRs(listp, objectstr);
 	freePRRSearchArgs();
 	alarmCleanUp();
 	return ret;
@@ -130,18 +125,18 @@ fillMostPRRSearchArgRm(parentstr, searchdepth)
 char * parentstr;
 int searchdepth;
 {
-static struct ds_search_arg arg;
-Attr_Sequence * atl;
-AttributeType at;
-struct namelist * x;
-static CommonArgs sca = default_common_args;
+	static struct ds_search_arg arg;
+	Attr_Sequence * atl;
+	AttributeType at;
+	struct namelist * x;
+	static CommonArgs sca = default_common_args;
 
 	arg.sra_common = sca; /* struct copy */
-        arg.sra_common.ca_servicecontrol.svc_options = (SVC_OPT_CHAININGPROHIBIT |
-                                                        SVC_OPT_DONTUSECOPY);
-        arg.sra_common.ca_aliased_rdns = TRUE;
+	arg.sra_common.ca_servicecontrol.svc_options = (SVC_OPT_CHAININGPROHIBIT |
+			SVC_OPT_DONTUSECOPY);
+	arg.sra_common.ca_aliased_rdns = TRUE;
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
-        arg.sra_common.ca_servicecontrol.svc_sizelimit = SVC_NOSIZELIMIT;
+	arg.sra_common.ca_servicecontrol.svc_sizelimit = SVC_NOSIZELIMIT;
 
 	arg.sra_subset = searchdepth;
 	arg.sra_baseobject = str2dn(parentstr);
@@ -149,16 +144,15 @@ static CommonArgs sca = default_common_args;
 	/* specify attributes of interest */
 	arg.sra_eis.eis_allattributes = FALSE;
 	atl = &(arg.sra_eis.eis_select);
-        for (x = rmatts; x != NULLLIST; x = x->next)
-        {
+	for (x = rmatts; x != NULLLIST; x = x->next) {
 		if ((at = str2AttrT(x->name)) == NULLAttrT)
 			continue;
-                *atl = as_comp_alloc();
-                (*atl)->attr_type = at;
+		*atl = as_comp_alloc();
+		(*atl)->attr_type = at;
 		(*atl)->attr_value = NULLAV;
-                atl = &(*atl)->attr_link;
+		atl = &(*atl)->attr_link;
 	}
-        *atl = NULLATTR;
+	*atl = NULLATTR;
 	arg.sra_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	return (&arg);
 }

@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/loc.c,v 9.1 1992/08/25 15:52:32 isode Exp $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/loc.c,v 9.1 1992/08/25 15:52:32 isode Exp $
  *
  *
@@ -69,38 +69,35 @@ VFP explicitLoc[] = {makeExplicitLocFilter, NULLVFP};
 VFP normalLoc[] = {locFilter1, locFilter2, locFilter3, locFilter4, NULLVFP};
 
 void
-saveLocs()
-{
-  copyLocs(&savelocinfo, &qinfo[LOCALITY]);
+saveLocs() {
+	copyLocs(&savelocinfo, &qinfo[LOCALITY]);
 }
 
 void
-restoreSavedLocs()
-{
-  copyLocs(&qinfo[LOCALITY], &savelocinfo);
-  highNumber = qinfo[LOCALITY].listlen;
+restoreSavedLocs() {
+	copyLocs(&qinfo[LOCALITY], &savelocinfo);
+	highNumber = qinfo[LOCALITY].listlen;
 }
 
 void
 copyLocs(a, b)
 struct query * a, * b;
 {
-struct namelist * lp, ** slp;
+	struct namelist * lp, ** slp;
 
-  (void) strcpy(a->defvalue, b->defvalue);
-  (void) strcpy(a->entered, b->entered);
-  (void) strcpy(a->displayed, b->displayed);
-  a->listlen = 0;
-  slp = &a->lp;
-  for (lp = b->lp; lp != NULLLIST; lp = lp->next)
-  {
-    *slp = list_alloc();
-    (*slp)->name = copy_string(lp->name);
-    (*slp)->ats = as_cpy(lp->ats);
-    slp = &(*slp)->next;
-    a->listlen++;
-  }
-  *slp = NULLLIST;
+	(void) strcpy(a->defvalue, b->defvalue);
+	(void) strcpy(a->entered, b->entered);
+	(void) strcpy(a->displayed, b->displayed);
+	a->listlen = 0;
+	slp = &a->lp;
+	for (lp = b->lp; lp != NULLLIST; lp = lp->next) {
+		*slp = list_alloc();
+		(*slp)->name = copy_string(lp->name);
+		(*slp)->ats = as_cpy(lp->ats);
+		slp = &(*slp)->next;
+		a->listlen++;
+	}
+	*slp = NULLLIST;
 }
 
 int
@@ -111,11 +108,11 @@ struct namelist ** llistp;
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == LOCALITY)
-	  return (readExactLoc(exactString, llistp));
-        if (strcmp(lstr, "*") == 0)
-          return (listAllLocs(cstr, llistp));
-        else
-          return (listMatchingLocs(cstr, lstr, llistp));
+		return (readExactLoc(exactString, llistp));
+	if (strcmp(lstr, "*") == 0)
+		return (listAllLocs(cstr, llistp));
+	else
+		return (listMatchingLocs(cstr, lstr, llistp));
 }
 
 void
@@ -123,16 +120,15 @@ printListLocs(loc, llistp)
 char * loc;
 struct namelist * llistp;
 {
-struct namelist * x;
-int i;
+	struct namelist * x;
+	int i;
 
 	if (llistp == NULLLIST)
 		if (strcmp(loc, "*") == 0)
 			pageprint("  No localities found\n");
 		else
 			pageprint("  No localities match string `%s'\n", loc);
-	else
-	{
+	else {
 		for (i = 1, x = llistp; x != NULLLIST; i++, x = x->next)
 			printLastComponent(INDENTON, x->name, LOCALITY, i);
 		showAnyProblems(loc);
@@ -140,23 +136,21 @@ int i;
 }
 
 void
-freeSavedLocs()
-{
-  freeLocs(&savelocinfo.lp);
+freeSavedLocs() {
+	freeLocs(&savelocinfo.lp);
 }
 
 void
 freeLocs(listpp)
 struct namelist ** listpp;
 {
-struct namelist * x, * y;
+	struct namelist * x, * y;
 
 	x = *listpp;
-	while (x != NULLLIST)
-	{
+	while (x != NULLLIST) {
 		if (x->name != NULLCP)
 			free(x->name);
-		as_free(x->ats);		
+		as_free(x->ats);
 		y = x->next;
 		free((char *)x);
 		x = y;
@@ -165,20 +159,18 @@ struct namelist * x, * y;
 }
 
 void
-freeLocListArgs()
-{
-        dn_free(larg.lsa_object);
+freeLocListArgs() {
+	dn_free(larg.lsa_object);
 }
 
 
 void
-freeLocSearchArgs()
-{
-/*
-Attr_Sequence atl, x;
-*/
+freeLocSearchArgs() {
+	/*
+	Attr_Sequence atl, x;
+	*/
 
-        dn_free(sarg.sra_baseobject);
+	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 	/*
 	for (atl = sarg.sra_eis.eis_select; atl != NULLATTR; atl = x)
@@ -195,20 +187,17 @@ listAllLocs(cstr, llistp)
 char * cstr;
 struct namelist ** llistp;
 {
-int ret;
+	int ret;
 
-	if (quipuMastersCo == FALSE)
-	{
+	if (quipuMastersCo == FALSE) {
 		larg = * fillMostLocListArgs(cstr);
 		ret = reallyMakeListLocs(llistp);
+	} else {
+		sarg = * fillMostLocSearchArgs(cstr, SRA_ONELEVEL);
+		makeAllLocFilter(&sarg.sra_filter);
+		ret = makeListLocanisations(llistp);
 	}
-	else
-	{
-	        sarg = * fillMostLocSearchArgs(cstr, SRA_ONELEVEL);
-	        makeAllLocFilter(&sarg.sra_filter);
-	        ret = makeListLocanisations(llistp);
-	}
-        if (ret != OK)
+	if (ret != OK)
 		logListSuccess(LIST_ERROR, "loc", 0);
 	else
 		logListSuccess(LIST_OK, "loc", listlen(*llistp));
@@ -225,49 +214,41 @@ listMatchingLocs(cstr, lstr, llistp)
 char * cstr, * lstr;
 struct namelist ** llistp;
 {
-VFP * filtarray;
-VFP filterfunc;
-int filtnumber;
-char rstr[BUFSIZ];
+	VFP * filtarray;
+	VFP filterfunc;
+	int filtnumber;
+	char rstr[BUFSIZ];
 
-        if (index(lstr, '*') != NULLCP) /* contains at least one asterisk */
-	{
-                filtarray = explicitLoc;
+	if (index(lstr, '*') != NULLCP) { /* contains at least one asterisk */
+		filtarray = explicitLoc;
 		filtnumber = -1;
-	}
-        else
-	{
-                filtarray = normalLoc;
+	} else {
+		filtarray = normalLoc;
 		filtnumber = 0;
 	}
-	if (quipuMastersCo ==FALSE) /* try read first */
-	{
+	if (quipuMastersCo ==FALSE) { /* try read first */
 		(void)sprintf(rstr, "%s@l=%s", cstr, lstr);
-		if (readExactLoc(rstr, llistp) == OK)
-		{
-			logReadSuccess(READ_OK, "loc");		
+		if (readExactLoc(rstr, llistp) == OK) {
+			logReadSuccess(READ_OK, "loc");
 			return OK;
-		}
-		else
+		} else
 			/* else try searches */
 			logReadSuccess(READ_FAIL, "loc");
 	}
 	sarg = * fillMostLocSearchArgs(cstr, SRA_ONELEVEL);
-        while ((filterfunc = *filtarray++) != NULLVFP)
-	{
+	while ((filterfunc = *filtarray++) != NULLVFP) {
 		filtnumber++;
-                filterfunc(lstr, &sarg.sra_filter);
+		filterfunc(lstr, &sarg.sra_filter);
 		if (sarg.sra_filter == NULLFILTER)
 			continue;
-                if (makeListLocanisations(llistp) != OK)
-		{
+		if (makeListLocanisations(llistp) != OK) {
 			freeLocSearchArgs();
 			logSearchSuccess(SEARCH_ERROR, "loc", lstr, filtnumber, 0);
 			alarmCleanUp();
 			return NOTOK;
 		}
-                if (*llistp != NULLLIST)
-                        break;
+		if (*llistp != NULLLIST)
+			break;
 	}
 	if (*llistp != NULLLIST)
 		logSearchSuccess(SEARCH_OK, "loc", lstr, filtnumber, listlen(*llistp));
@@ -283,7 +264,7 @@ readExactLoc(lstr, llistp)
 char * lstr;
 struct namelist ** llistp;
 {
-int ret;
+	int ret;
 
 	ret = readLoc(lstr, llistp);
 	alarmCleanUp();
@@ -294,27 +275,25 @@ int
 reallyMakeListLocs(llistp)
 struct namelist ** llistp;
 {
-struct subordinate * x;
-int retval;
-char * cp;
-DN dn1, dn2;
+	struct subordinate * x;
+	int retval;
+	char * cp;
+	DN dn1, dn2;
 
 	if (rebind() != OK)
 		return NOTOK;
 	retval = ds_list(&larg, &serror, &lresult);
 	if ((retval == DSE_INTR_ABANDONED) &&
-	    (serror.dse_type == DSE_ABANDONED))
-	       abandoned = TRUE;
+			(serror.dse_type == DSE_ABANDONED))
+		abandoned = TRUE;
 
 	/* setProblemFlags(sresult); */
 	highNumber = 0;
 	for (x = lresult.lsr_subordinates; x != (struct subordinate *) NULL;
-	                                    x = x->sub_next)
-	{
+			x = x->sub_next) {
 		/* only add locs to the list */
 		cp = strdup(attr2name(x->sub_rdn->rdn_at, OIDPART));
-		if (strcmp(cp, DE_LOCALITY_NAME) == 0)
-		{
+		if (strcmp(cp, DE_LOCALITY_NAME) == 0) {
 			*llistp = list_alloc();
 			dn1 = dn_cpy(larg.lsa_object);
 			dn2 = dn_comp_new(x->sub_rdn);
@@ -323,7 +302,7 @@ DN dn1, dn2;
 			(*llistp)->ats = NULLATTR;
 			llistp = &(*llistp)->next;
 			highNumber++;
-			
+
 		}
 		free(cp);
 	}
@@ -338,27 +317,26 @@ int
 makeListLocanisations(llistp)
 struct namelist ** llistp;
 {
-entrystruct * x;
-int retval;
+	entrystruct * x;
+	int retval;
 
 	if (rebind() != OK)
 		return NOTOK;
 	retval = ds_search(&sarg, &serror, &sresult);
 	if ((retval == DSE_INTR_ABANDONED) &&
-	    (serror.dse_type == DSE_ABANDONED))
+			(serror.dse_type == DSE_ABANDONED))
 		abandoned = TRUE;
-        if (retval != OK)
-                return NOTOK;
+	if (retval != OK)
+		return NOTOK;
 	correlate_search_results (&sresult);
 
 	setProblemFlags(sresult);
 
 	highNumber = 0;
-	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) 
-	{
+	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) {
 		*llistp = list_alloc();
 		(*llistp)->name = dn2pstr(x->ent_dn);
-                (*llistp)->ats = as_cpy(x->ent_attr);
+		(*llistp)->ats = as_cpy(x->ent_attr);
 		llistp = &(*llistp)->next;
 		highNumber++;
 	}
@@ -375,14 +353,14 @@ readLoc(lstr, llistp)
 char * lstr;
 struct namelist ** llistp;
 {
-static struct ds_read_arg rarg;
-static struct ds_read_result rresult;
-static struct DSError rerror;
-static CommonArgs sca = default_common_args;
-Attr_Sequence * atl;
-AttributeType at;
-struct namelist * x;
-int retval;
+	static struct ds_read_arg rarg;
+	static struct ds_read_result rresult;
+	static struct DSError rerror;
+	static CommonArgs sca = default_common_args;
+	Attr_Sequence * atl;
+	AttributeType at;
+	struct namelist * x;
+	int retval;
 
 	if (rebind() != OK)
 		return NOTOK;
@@ -393,8 +371,7 @@ int retval;
 	/* specify attributes of interest */
 	rarg.rda_eis.eis_allattributes = FALSE;
 	atl = &(rarg.rda_eis.eis_select);
-	for (x = locatts; x != NULLLIST; x = x->next)
-	{
+	for (x = locatts; x != NULLLIST; x = x->next) {
 		if ((at = str2AttrT(x->name)) == NULLAttrT)
 			continue;
 		*atl = as_comp_alloc();
@@ -406,12 +383,12 @@ int retval;
 	rarg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	retval = ds_read(&rarg, &rerror, &rresult);
 	if ((retval == DSE_INTR_ABANDONED) &&
-            (rerror.dse_type == DSE_ABANDONED))
-                abandoned = TRUE;
+			(rerror.dse_type == DSE_ABANDONED))
+		abandoned = TRUE;
 	if (retval != OK)
-	        return NOTOK;
+		return NOTOK;
 	/* setProblemFlags(sresult); */
-	highNumber = 1;	
+	highNumber = 1;
 	*llistp = list_alloc();
 	(*llistp)->name = dn2pstr(rresult.rdr_entry.ent_dn);
 	(*llistp)->ats = as_cpy(rresult.rdr_entry.ent_attr);
@@ -423,8 +400,8 @@ struct ds_list_arg *
 fillMostLocListArgs(str)
 char * str;
 {
-static struct ds_list_arg arg;
-static CommonArgs sca = default_common_args;
+	static struct ds_list_arg arg;
+	static CommonArgs sca = default_common_args;
 
 	arg.lsa_common =sca; /* struct copy */
 	arg.lsa_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
@@ -439,15 +416,15 @@ fillMostLocSearchArgs(cstr, searchdepth)
 char * cstr;
 int searchdepth;
 {
-static struct ds_search_arg arg;
-Attr_Sequence * atl;
-AttributeType at;
-struct namelist * x;
-static CommonArgs sca = default_common_args;
+	static struct ds_search_arg arg;
+	Attr_Sequence * atl;
+	AttributeType at;
+	struct namelist * x;
+	static CommonArgs sca = default_common_args;
 
 	arg.sra_common = sca; /* struct copy */
-        arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
-        arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
+	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
+	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
 
 	arg.sra_subset = searchdepth;
 	if (strcmp(cstr, "root") == 0)
@@ -458,8 +435,7 @@ static CommonArgs sca = default_common_args;
 	/* specify attributes of interest */
 	arg.sra_eis.eis_allattributes = FALSE;
 	atl = &(arg.sra_eis.eis_select);
-	for (x = locatts; x != NULLLIST; x = x->next)
-	{
+	for (x = locatts; x != NULLLIST; x = x->next) {
 		if ((at = str2AttrT(x->name)) == NULLAttrT)
 			continue;
 		*atl = as_comp_alloc();
@@ -483,26 +459,26 @@ makeExplicitLocFilter(lstr, fpp)
 char * lstr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
-int wildcardtype;
-char * lstr1, * lstr2;
+	struct s_filter * fp;
+	int wildcardtype;
+	char * lstr1, * lstr2;
 
 	wildcardtype = starstring(lstr, &lstr1, &lstr2);
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);
 	switch (wildcardtype) {
-		case LEADSUBSTR: /* fall through */
-		case TRAILSUBSTR: /* fall through */
-		case ANYSUBSTR:
-			fp = fp->flt_next = subsfilter(wildcardtype, 
-					DE_LOCALITY_NAME, lstr1);
-			break;
-		case LEADANDTRAIL:
-			fp = fp->flt_next = subsfilter(LEADSUBSTR, 
-					DE_LOCALITY_NAME, lstr1);
-			fp = fp->flt_next = subsfilter(TRAILSUBSTR,
-					DE_LOCALITY_NAME, lstr2);
-                        break;
+	case LEADSUBSTR: /* fall through */
+	case TRAILSUBSTR: /* fall through */
+	case ANYSUBSTR:
+		fp = fp->flt_next = subsfilter(wildcardtype,
+									   DE_LOCALITY_NAME, lstr1);
+		break;
+	case LEADANDTRAIL:
+		fp = fp->flt_next = subsfilter(LEADSUBSTR,
+									   DE_LOCALITY_NAME, lstr1);
+		fp = fp->flt_next = subsfilter(TRAILSUBSTR,
+									   DE_LOCALITY_NAME, lstr2);
+		break;
 	}
 	fp->flt_next = NULLFILTER;
 }
@@ -512,7 +488,7 @@ locFilter1(lstr, fpp)
 char * lstr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);
@@ -525,7 +501,7 @@ locFilter2(lstr, fpp)
 char * lstr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);
@@ -538,7 +514,7 @@ locFilter3(lstr, fpp)
 char * lstr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);
@@ -551,12 +527,11 @@ locFilter4(lstr, fpp)
 char * lstr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
-	if (fuzzyMatching == FALSE)
-	{
+	if (fuzzyMatching == FALSE) {
 		*fpp = NULLFILTER;
-		 return;
+		return;
 	}
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);

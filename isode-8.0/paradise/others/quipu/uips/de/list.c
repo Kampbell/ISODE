@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/list.c,v 9.1 1992/08/25 15:50:26 isode Exp $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/list.c,v 9.1 1992/08/25 15:50:26 isode Exp $
  *
  *
@@ -17,8 +17,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/list.c
  *
  * Revision 8.0  91/07/17  13:18:43  isode
  * Release 7.0
- * 
- * 
+ *
+ *
  */
 
 /*
@@ -42,9 +42,9 @@ addToList(lp, str)
 struct namelist ** lp;
 char *str;
 {
-  for (;*lp != NULLLIST; lp = &(*lp)->next) {};
-  *lp = list_alloc();
-  (*lp)->name = copy_string(str);
-  (*lp)->next = NULLLIST;
+	for (; *lp != NULLLIST; lp = &(*lp)->next) {};
+	*lp = list_alloc();
+	(*lp)->name = copy_string(str);
+	(*lp)->next = NULLLIST;
 }
 

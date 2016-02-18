@@ -24,124 +24,98 @@ static struct namelist * plp = NULLLIST;
 void searchFail(), de_exit();
 
 
-int de_Read()
-{
-  char * more;
-  char * rdn;
-  char name[LINESIZE];
+int de_Read() {
+	char * more;
+	char * rdn;
+	char name[LINESIZE];
 
-  int noEntries;
-  int objectType;
-  int status;
+	int noEntries;
+	int objectType;
+	int status;
 
-  noEntries = 0;
-  
-  more = malloc(LINESIZE);
-  plp = (struct namelist *) malloc(sizeof(struct namelist)); 
-  rdn = malloc(LINESIZE);
+	noEntries = 0;
 
-  fillMostRmArg();
+	more = malloc(LINESIZE);
+	plp = (struct namelist *) malloc(sizeof(struct namelist));
+	rdn = malloc(LINESIZE);
 
-  (void) sprintf(more, yes_string);		/* Enter loop */
+	fillMostRmArg();
 
-  highNumber = 0;
-  
-  while (!(strcmp(more, yes_string)))
-    {
-      (void) sprintf(default_person, "");	/* Avoid default */
-      enterString(ENTRY, person, plp);
+	(void) sprintf(more, yes_string);		/* Enter loop */
 
-      if (!(strcmp(person, quit_String)))
-        {
-	  (void) sprintf(more, no_string);
-          if (noEntries > 0)
-            {
-	      freePRRs(&plp);
-            }
-	  continue;
-	}
-      if (strlen(person) <= 0)
-        {
-	  if (strlen(default_person) <= 0)
-	    {
-	      (void) printf("%s %s %s\n", enter_entry_name, quit_String, to_quit);
-	      continue;
-	    }
-	  else
-	    {
-	      (void) sprintf(person, "%s", default_person);
-	    }
-        }
-      (void) printf("\n");
+	highNumber = 0;
 
-      if (noEntries > 0)
-        {
-	  freePRRs(&plp);
-        }
+	while (!(strcmp(more, yes_string))) {
+		(void) sprintf(default_person, "");	/* Avoid default */
+		enterString(ENTRY, person, plp);
 
-      if (listPRRs(posdit, person, &plp) != OK)
-        {
-          searchFail(person);
-	  de_exit(-1);
-        }
-
-      noEntries = listlen(plp);
-
-      if (noEntries == 0)
-        {
-          (void) printf(no_ent_found);
-          freePRRs(&plp);
-	  continue;
-        }
-      else if (noEntries == 1)
-        {
-	  rdn = copy_string(lastComponent(plp->name, PERSON));
-	  status = get_objectClassPRR(plp, &objectType);
-	  if (status != OK)
-	    {
-	      (void) printf(no_p_rl_rm);
-	      continue;
-	    }
-	  else if (objectType == PERSON)
-	    {
-	      if (listPRRs(posdit, rdn, &plp) != OK)
-	        {
-		  searchFail(rdn);
+		if (!(strcmp(person, quit_String))) {
+			(void) sprintf(more, no_string);
+			if (noEntries > 0) {
+				freePRRs(&plp);
+			}
+			continue;
 		}
-	    }
-	  else if (objectType == ROLE)
-	    {
-	      if (listPRRRl(posdit, rdn, &plp) != OK)
-	        {
-		  searchFail(rdn);
+		if (strlen(person) <= 0) {
+			if (strlen(default_person) <= 0) {
+				(void) printf("%s %s %s\n", enter_entry_name, quit_String, to_quit);
+				continue;
+			} else {
+				(void) sprintf(person, "%s", default_person);
+			}
 		}
-	    }
-	  else if (objectType == ROOM)
-	    {
-	      if (listPRRRm(posdit, rdn, &plp) != OK)
-	        {
-		  searchFail(rdn);
-		}
-	    }
-	  else
-	    {
-	      (void) printf(no_p_rl_rm);
-	      continue;
-	    }
-	  pagerOn(NUMBER_NOT_ALLOWED);
-          printListPRRs(person, plp, COUNTRY, TRUE);
-	  (void) sprintf(default_person, "%s", rdn);
-          highNumber = 0;
-	}
-      else
-        { /* more than 1, select from list */
-	  pagerOn(NUMBER_ALLOWED);
-	  printListPRRs(name, plp, COUNTRY, FALSE);
-	  continue;
-	}
-    }
+		(void) printf("\n");
 
-  free(more);
-  free(rdn);
-  return OK;
+		if (noEntries > 0) {
+			freePRRs(&plp);
+		}
+
+		if (listPRRs(posdit, person, &plp) != OK) {
+			searchFail(person);
+			de_exit(-1);
+		}
+
+		noEntries = listlen(plp);
+
+		if (noEntries == 0) {
+			(void) printf(no_ent_found);
+			freePRRs(&plp);
+			continue;
+		} else if (noEntries == 1) {
+			rdn = copy_string(lastComponent(plp->name, PERSON));
+			status = get_objectClassPRR(plp, &objectType);
+			if (status != OK) {
+				(void) printf(no_p_rl_rm);
+				continue;
+			} else if (objectType == PERSON) {
+				if (listPRRs(posdit, rdn, &plp) != OK) {
+					searchFail(rdn);
+				}
+			} else if (objectType == ROLE) {
+				if (listPRRRl(posdit, rdn, &plp) != OK) {
+					searchFail(rdn);
+				}
+			} else if (objectType == ROOM) {
+				if (listPRRRm(posdit, rdn, &plp) != OK) {
+					searchFail(rdn);
+				}
+			} else {
+				(void) printf(no_p_rl_rm);
+				continue;
+			}
+			pagerOn(NUMBER_NOT_ALLOWED);
+			printListPRRs(person, plp, COUNTRY, TRUE);
+			(void) sprintf(default_person, "%s", rdn);
+			highNumber = 0;
+		} else {
+			/* more than 1, select from list */
+			pagerOn(NUMBER_ALLOWED);
+			printListPRRs(name, plp, COUNTRY, FALSE);
+			continue;
+		}
+	}
+
+	free(more);
+	free(rdn);
+	return OK;
 }

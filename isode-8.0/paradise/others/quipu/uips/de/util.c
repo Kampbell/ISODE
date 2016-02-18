@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/util.c,v 9.1 1992/08/25 15:50:26 isode Exp $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/util.c,v 9.1 1992/08/25 15:50:26 isode Exp $
  *
  *
@@ -17,8 +17,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/util.c
  *
  * Revision 8.0  91/07/17  13:18:50  isode
  * Release 7.0
- * 
- * 
+ *
+ *
  */
 
 /*
@@ -65,90 +65,82 @@ int
 listlen(lp)
 struct namelist * lp;
 {
-int len;
+	int len;
 
-  for (len = 0; lp != NULLLIST; lp = lp->next, len++) {};
-  return len;
+	for (len = 0; lp != NULLLIST; lp = lp->next, len++) {};
+	return len;
 }
 
 unsigned int
-alarmLen()
-{
-  if ((lexequ(qinfo[ORG].entered, origDefaultOrg) == 0) && 
-      (lexequ(qinfo[COUNTRY].entered, origDefaultCo) == 0))
-    return localAlarmTime;
-  else
-    return remoteAlarmTime;
+alarmLen() {
+	if ((lexequ(qinfo[ORG].entered, origDefaultOrg) == 0) &&
+			(lexequ(qinfo[COUNTRY].entered, origDefaultCo) == 0))
+		return localAlarmTime;
+	else
+		return remoteAlarmTime;
 }
 
-void initAlarm()
-{
-void onalarm();
+void initAlarm() {
+	void onalarm();
 
-  (void) signal(SIGALRM, (VFP) onalarm);
-  dots = alarmLen() / 2;
-  dotsPrinted = 0;
-  (void) alarm(2);
+	(void) signal(SIGALRM, (VFP) onalarm);
+	dots = alarmLen() / 2;
+	dotsPrinted = 0;
+	(void) alarm(2);
 }
 
 void
-alarmCleanUp()
-{
+alarmCleanUp() {
 	(void) signal(SIGALRM, SIG_IGN);
 	(void) alarm(0);
-	if (dotsPrinted > 0)
-	{
-	  if (dotsPrinted < dots)
-	    clearDots();
-	  else
-	    (void) printf("\n\n");
-	  dotsPrinted = 0;
+	if (dotsPrinted > 0) {
+		if (dotsPrinted < dots)
+			clearDots();
+		else
+			(void) printf("\n\n");
+		dotsPrinted = 0;
 	}
 }
 
 void
-clearDots()
-{
-int i, len;
+clearDots() {
+	int i, len;
 
-  len = strlen(SEARCHMESS) + dotsPrinted;
-  for (i = 0; i < len; i++)
-    (void)printf("\b \b");
+	len = strlen(SEARCHMESS) + dotsPrinted;
+	for (i = 0; i < len; i++)
+		(void)printf("\b \b");
 }
 
 void
-handleTimeout()
-{
-  de_unbind();
-  (void) signal(SIGALRM, SIG_IGN);
+handleTimeout() {
+	de_unbind();
+	(void) signal(SIGALRM, SIG_IGN);
 }
 
-void startUnbindTimer()
-{
-void handleTimeout();
+void startUnbindTimer() {
+	void handleTimeout();
 
-  (void) signal(SIGALRM, (VFP) handleTimeout);
-  (void) alarm((unsigned)bindTimeout);
+	(void) signal(SIGALRM, (VFP) handleTimeout);
+	(void) alarm((unsigned)bindTimeout);
 }
 
-void stopUnbindTimer()
-{
-  (void) signal(SIGALRM, SIG_IGN);
-  (void) alarm(0);
+void stopUnbindTimer() {
+	(void) signal(SIGALRM, SIG_IGN);
+	(void) alarm(0);
 }
 
 char *
 copy_string(string)
 char *string;
 {
-  char *new_string;
+	char *new_string;
 
-  if (string == NULLCP) return NULLCP;
+	if (string == NULLCP) return NULLCP;
 
-  new_string = (char *) smalloc((strlen(string) + 1));
-  (void) strcpy(new_string, string);
+	new_string = (char *) smalloc((strlen(string) + 1));
+	(void) strcpy(new_string, string);
 
-  return new_string;
+	return new_string;
 }
 
 
@@ -157,53 +149,53 @@ static PS ps = NULLPS;
 char   *dn2pstr (dn)
 DN	dn;
 {
-    char       *cp;
+	char       *cp;
 
-    if (ps == NULL
-	    && ((ps = ps_alloc (str_open)) == NULLPS)
-		    || str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
-	if (ps)
-	    ps_free (ps), ps = NULLPS;
+	if (ps == NULL
+			&& ((ps = ps_alloc (str_open)) == NULLPS)
+			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
+		if (ps)
+			ps_free (ps), ps = NULLPS;
 
-	return NULLCP;
-    }
+		return NULLCP;
+	}
 
-    dn_print (ps, dn, RDNOUT);
-    ps_print (ps, " "); 
-    *--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	dn_print (ps, dn, RDNOUT);
+	ps_print (ps, " ");
+	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
 
-    cp = ps -> ps_base;
+	cp = ps -> ps_base;
 
-    ps -> ps_base = NULL, ps -> ps_cnt = 0;
-    ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_base = NULL, ps -> ps_cnt = 0;
+	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
 
-    return cp;
+	return cp;
 }
 
 char   *rdn2pstr (rdn)
 RDN	rdn;
 {
-    char       *cp;
+	char       *cp;
 
-    if (ps == NULL
-	    && ((ps = ps_alloc (str_open)) == NULLPS)
-		    || str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
-	if (ps)
-	    ps_free (ps), ps = NULLPS;
+	if (ps == NULL
+			&& ((ps = ps_alloc (str_open)) == NULLPS)
+			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
+		if (ps)
+			ps_free (ps), ps = NULLPS;
 
-	return NULLCP;
-    }
+		return NULLCP;
+	}
 
-    rdn_print (ps, rdn, RDNOUT);
-    ps_print (ps, " "); 
-    *--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	rdn_print (ps, rdn, RDNOUT);
+	ps_print (ps, " ");
+	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
 
-    cp = ps -> ps_base;
+	cp = ps -> ps_base;
 
-    ps -> ps_base = NULL, ps -> ps_cnt = 0;
-    ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_base = NULL, ps -> ps_cnt = 0;
+	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
 
-    return cp;
+	return cp;
 }
 
 
@@ -214,34 +206,27 @@ RDN	rdn;
 int starstring(istr, ostr1, ostr2)
 char * istr, ** ostr1, ** ostr2;
 {
-char * lastcp, *cp;
+	char * lastcp, *cp;
 
-  lastcp = istr + strlen(istr) - 1;
-  if ((*istr != '*') && (*lastcp == '*')) 
-  {
-    *lastcp = '\0';
-    *ostr1 = istr;
-    return LEADSUBSTR;
-  } 
-  else if ((*istr == '*') && (*lastcp != '*')) 
-  {
-    *ostr1 = istr + 1;
-    return TRAILSUBSTR;
-  } 
-  else if ((*istr == '*') && (*lastcp == '*')) 
-  {
-    *lastcp = '\0';
-    *ostr1 = istr + 1;
-    return ANYSUBSTR;
-  } 
-  else /* must be of the form foo*bar */
-  {
-    *ostr1 = istr;
-    cp = index(istr, '*');
-    *cp = '\0';
-    *ostr2 = cp + 1;
-    return LEADANDTRAIL;
-  }
+	lastcp = istr + strlen(istr) - 1;
+	if ((*istr != '*') && (*lastcp == '*')) {
+		*lastcp = '\0';
+		*ostr1 = istr;
+		return LEADSUBSTR;
+	} else if ((*istr == '*') && (*lastcp != '*')) {
+		*ostr1 = istr + 1;
+		return TRAILSUBSTR;
+	} else if ((*istr == '*') && (*lastcp == '*')) {
+		*lastcp = '\0';
+		*ostr1 = istr + 1;
+		return ANYSUBSTR;
+	} else { /* must be of the form foo*bar */
+		*ostr1 = istr;
+		cp = index(istr, '*');
+		*cp = '\0';
+		*ostr2 = cp + 1;
+		return LEADANDTRAIL;
+	}
 }
 
 
@@ -252,52 +237,47 @@ char * dnstr;
 int objectType;
 int printNumber;
 {
-char * cp1, * cp2, * savestring;
+	char * cp1, * cp2, * savestring;
 
-  if (strcmp(dnstr, "root") == 0)
-    return;
-  savestring = copy_string(dnstr);
-  cp1 = lastComponent(savestring, objectType);
-  if (cp1 == NULLCP)
-  {
-    savestring = copy_string("Entry with no name!");
-    cp2 = savestring;
-  }
-  else
-  {
-    if (objectType == COUNTRY)
-      cp2 = mapCoName(cp1);
-    else
-      cp2 = cp1;
-  }
-  if (indent == INDENTON)
-  {
-    switch (objectType)
-    {
-      case COUNTRY:
-        break;
-      case LOCALITY:
-        pageprint(" ");
-	break;
-      case ORG:
-        pageprint("  ");
-	break;
-      case ORGUNIT:
-        pageprint("    ");
-	break;
-      case PERSON:
-        pageprint("      ");
-	break;
-      default:
-        (void) fprintf(stderr, "WOT's THIS?  ");
-	break;
-    }
-  }
-  if (printNumber != 0)
-    pageprint("%3d ", printNumber);
-  pageprint("%s\n", cp2);
-  free(cp1);
-  free(savestring);
+	if (strcmp(dnstr, "root") == 0)
+		return;
+	savestring = copy_string(dnstr);
+	cp1 = lastComponent(savestring, objectType);
+	if (cp1 == NULLCP) {
+		savestring = copy_string("Entry with no name!");
+		cp2 = savestring;
+	} else {
+		if (objectType == COUNTRY)
+			cp2 = mapCoName(cp1);
+		else
+			cp2 = cp1;
+	}
+	if (indent == INDENTON) {
+		switch (objectType) {
+		case COUNTRY:
+			break;
+		case LOCALITY:
+			pageprint(" ");
+			break;
+		case ORG:
+			pageprint("  ");
+			break;
+		case ORGUNIT:
+			pageprint("    ");
+			break;
+		case PERSON:
+			pageprint("      ");
+			break;
+		default:
+			(void) fprintf(stderr, "WOT's THIS?  ");
+			break;
+		}
+	}
+	if (printNumber != 0)
+		pageprint("%3d ", printNumber);
+	pageprint("%s\n", cp2);
+	free(cp1);
+	free(savestring);
 }
 
 char *
@@ -305,103 +285,90 @@ lastComponent(dnstr, objectType)
 char * dnstr;
 int objectType;
 {
-char * cp, * cp2, *cp3, * savestring;
-int gotmatch;
+	char * cp, * cp2, *cp3, * savestring;
+	int gotmatch;
 
-  if (dnstr == NULLCP)
-    return NULLCP;
-  if (*dnstr == '\0')
-    return NULLCP;
-  savestring = copy_string(dnstr);
-  cp = cp3 = rindex(savestring, '@');
-  if (cp == NULLCP)
-    cp = dnstr;
-  else
-    cp++;
-  for (;;)
-  {
-    gotmatch = FALSE;
-    switch (objectType)
-    {
-      case PERSON:
-        if (strncmp(cp, SHORT_CN, strlen(SHORT_CN)) == 0)
-	{
-          cp += strlen(SHORT_CN) + 1;
-	  gotmatch = TRUE;
+	if (dnstr == NULLCP)
+		return NULLCP;
+	if (*dnstr == '\0')
+		return NULLCP;
+	savestring = copy_string(dnstr);
+	cp = cp3 = rindex(savestring, '@');
+	if (cp == NULLCP)
+		cp = dnstr;
+	else
+		cp++;
+	for (;;) {
+		gotmatch = FALSE;
+		switch (objectType) {
+		case PERSON:
+			if (strncmp(cp, SHORT_CN, strlen(SHORT_CN)) == 0) {
+				cp += strlen(SHORT_CN) + 1;
+				gotmatch = TRUE;
+			}
+			break;
+		case ORGUNIT:
+			if (strncmp(cp, SHORT_OU, strlen(SHORT_OU)) == 0) {
+				cp += strlen(SHORT_OU) + 1;
+				gotmatch = TRUE;
+			}
+			break;
+		case ORG:
+			if (strncmp(cp, SHORT_ORG, strlen(SHORT_ORG)) == 0) {
+				cp += strlen(SHORT_ORG) + 1;
+				gotmatch = TRUE;
+			}
+			break;
+		case LOCALITY:
+			if (strncmp(cp, SHORT_LOC, strlen(SHORT_LOC)) == 0) {
+				cp += strlen(SHORT_LOC) + 1;
+				gotmatch = TRUE;
+			}
+			break;
+		case COUNTRY:
+			if (strncmp(cp, SHORT_CO, strlen(SHORT_CO)) == 0) {
+				cp += strlen(SHORT_CO) + 1;
+				gotmatch = TRUE;
+			} else if (strncmp(cp, SHORT_LOC, strlen(SHORT_LOC)) == 0) {
+				cp += strlen(SHORT_LOC) + 1;
+				gotmatch = TRUE;
+			}
+			break;
+		}
+		cp2 = index(cp, '%');
+		if (gotmatch == TRUE) {
+			if (cp2 != NULLCP)
+				*cp2 = '\0';
+			break;
+		} else {
+			if (cp2 != NULLCP)
+				cp = cp2 + 1;
+			else
+				break;
+		}
 	}
-        break;
-      case ORGUNIT:
-        if (strncmp(cp, SHORT_OU, strlen(SHORT_OU)) == 0)
-	{
-	  cp += strlen(SHORT_OU) + 1;
-	  gotmatch = TRUE;
+	if (gotmatch == FALSE) {
+		cp = index(cp3, '%');
+		if (cp != NULLCP)
+			*cp = '\0';
+		cp = index(cp3, '=') + 1;
 	}
-	break;
-      case ORG:
-        if (strncmp(cp, SHORT_ORG, strlen(SHORT_ORG)) == 0)
-	{
-	  cp += strlen(SHORT_ORG) + 1;
-	  gotmatch = TRUE;
-	}
-	break;
-      case LOCALITY:
-        if (strncmp(cp, SHORT_LOC, strlen(SHORT_LOC)) == 0)
-	{
-	  cp += strlen(SHORT_LOC) + 1;
-	  gotmatch = TRUE;
-	}
-	break;
-      case COUNTRY:
-        if (strncmp(cp, SHORT_CO, strlen(SHORT_CO)) == 0)
-	{
-	  cp += strlen(SHORT_CO) + 1;
-	  gotmatch = TRUE;
-	}
-	else if (strncmp(cp, SHORT_LOC, strlen(SHORT_LOC)) == 0)
-	{
-	  cp += strlen(SHORT_LOC) + 1;
-	  gotmatch = TRUE;
-	}
-	break;
-    }
-    cp2 = index(cp, '%');
-    if (gotmatch == TRUE)
-    {
-      if (cp2 != NULLCP)
-        *cp2 = '\0';
-      break;
-    }
-    else 
-    {
-      if (cp2 != NULLCP)
-        cp = cp2 + 1;
-      else
-        break;
-    }
-  }
-  if (gotmatch == FALSE)
-  {
-    cp = index(cp3, '%');
-    if (cp != NULLCP)
-      *cp = '\0';
-    cp = index(cp3, '=') + 1;
-  }
-  cp = copy_string(cp);
-  free (savestring);
-  return cp;
+	cp = copy_string(cp);
+	free (savestring);
+	return cp;
 }
 
 char *
 removeLastRDN(dnstr)
 char * dnstr;
 {
-char * cp, * cp2;
+	char * cp, * cp2;
 
 	cp = copy_string(dnstr);
 	if ((cp2 = rindex(cp, '@')) == NULLCP)
-	  return NULLCP;
+		return NULLCP;
 	else
-	*cp2 = '\0';
+		*cp2 = '\0';
 	return cp;
 }
 
@@ -409,19 +376,18 @@ char *
 lastRDN(dnstr)
 char * dnstr;
 {
-char * cp;
+	char * cp;
 
 	cp = rindex(dnstr, '@');
 	if (cp == NULLCP)
 		return dnstr;
-/*		return NULLCP; */
+	/*		return NULLCP; */
 	else
 		return (++cp);
 }
 
 void
-clearProblemFlags()
-{
+clearProblemFlags() {
 	limitProblem = notAllReached = FALSE;
 }
 
@@ -430,10 +396,10 @@ setProblemFlags(sresult)
 struct ds_search_result sresult;
 {
 	if ((sresult.CSR_limitproblem == LSR_SIZELIMITEXCEEDED) ||
-	    (sresult.CSR_limitproblem == LSR_ADMINSIZEEXCEEDED))
+			(sresult.CSR_limitproblem == LSR_ADMINSIZEEXCEEDED))
 		limitProblem = TRUE;
 	if ((sresult.CSR_cr != NULLCONTINUATIONREF) ||
-	    (sresult.CSR_limitproblem == LSR_TIMELIMITEXCEEDED))
+			(sresult.CSR_limitproblem == LSR_TIMELIMITEXCEEDED))
 		notAllReached = TRUE;
 }
 
@@ -441,28 +407,22 @@ struct ds_search_result sresult;
 showAnyProblems(str)
 char * str;
 {
-    if (limitProblem == TRUE)
-    {
-      pageprint("\nA limit has been imposed by the managers of the data which prevents the \n");
-      pageprint("listing of all the entries in the Directory beyond this point.  Try and\n");
-      if (strcmp(str, "*") == 0)
-      {
-	pageprint("guess the name of the entry you want.  The directory may find the entry\n");
-	pageprint("even if you don't get the name exactly right.\n");
-      }
-      else
-        pageprint("specify the query more precisely.\n");
-      pageprint("Please refer to the ?matching help screen for more details.\n");
-    }
-    else
-    {
-      if (notAllReached == TRUE)
-      {
-        pageprint("\nIt was not possible to search all the parts of the Directory necessary\n");
-	pageprint("to complete this search - part of the database is currently inaccessible.\n");
-  	pageprint("There may thus be more results than those displayed.\n\n");
-      }
-    }
+	if (limitProblem == TRUE) {
+		pageprint("\nA limit has been imposed by the managers of the data which prevents the \n");
+		pageprint("listing of all the entries in the Directory beyond this point.  Try and\n");
+		if (strcmp(str, "*") == 0) {
+			pageprint("guess the name of the entry you want.  The directory may find the entry\n");
+			pageprint("even if you don't get the name exactly right.\n");
+		} else
+			pageprint("specify the query more precisely.\n");
+		pageprint("Please refer to the ?matching help screen for more details.\n");
+	} else {
+		if (notAllReached == TRUE) {
+			pageprint("\nIt was not possible to search all the parts of the Directory necessary\n");
+			pageprint("to complete this search - part of the database is currently inaccessible.\n");
+			pageprint("There may thus be more results than those displayed.\n\n");
+		}
+	}
 }
 
 
@@ -474,18 +434,17 @@ char * string;
 int searchNumber;
 int noMatches;
 {
-char filterNumberString[20];
+	char filterNumberString[20];
 
-	if (deLogLevel > 1)
-	{
+	if (deLogLevel > 1) {
 		if (searchNumber == 0)
 			(void) strcpy(filterNumberString, "explicit");
 		else
 			(void) sprintf(filterNumberString, "%d", searchNumber);
-		
+
 		(void) ll_log (de_log, LLOG_NOTICE, NULLCP,
-			"searchOutcome:%s:%s:%s:%s:%d", objecttype,
-			outcome, string, filterNumberString, noMatches);
+					   "searchOutcome:%s:%s:%s:%s:%d", objecttype,
+					   outcome, string, filterNumberString, noMatches);
 	}
 }
 
@@ -494,10 +453,9 @@ char * outcome;
 char * objecttype;
 int noMatches;
 {
-	if (deLogLevel > 1)
-	{
+	if (deLogLevel > 1) {
 		(void) ll_log (de_log, LLOG_NOTICE, NULLCP,
-			"listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
+					   "listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
 	}
 }
 
@@ -505,10 +463,9 @@ void logReadSuccess(outcome, objecttype)
 char * outcome;
 char * objecttype;
 {
-	if (deLogLevel > 1)
-	{
+	if (deLogLevel > 1) {
 		(void) ll_log (de_log, LLOG_NOTICE, NULLCP,
-			"readOutcome:%s:%s", objecttype, outcome);
+					   "readOutcome:%s:%s", objecttype, outcome);
 	}
 }
 

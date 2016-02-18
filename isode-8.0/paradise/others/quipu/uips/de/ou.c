@@ -4,7 +4,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/ou.c,v 9.1 1992/08/25 15:50:26 isode Exp $";
 #endif
 
-/* 
+/*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/ou.c,v 9.1 1992/08/25 15:50:26 isode Exp $
  *
  *
@@ -17,8 +17,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/ou.c,v
  *
  * Revision 8.0  91/07/17  13:18:47  isode
  * Release 7.0
- * 
- * 
+ *
+ *
  */
 
 /*
@@ -76,12 +76,12 @@ struct namelist ** listp;
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == ORGUNIT)
-	  return (readExactOU(exactString, listp));
-/*	  return (listExactOUs(exactString, listp)); */
-        if (strcmp(thisstr, "*") == 0)
-          return (listAllOUs(parentstr, listp));
-        else
-          return (listMatchingOUs(parentstr, thisstr, listp));
+		return (readExactOU(exactString, listp));
+	/*	  return (listExactOUs(exactString, listp)); */
+	if (strcmp(thisstr, "*") == 0)
+		return (listAllOUs(parentstr, listp));
+	else
+		return (listMatchingOUs(parentstr, thisstr, listp));
 }
 
 void
@@ -89,15 +89,14 @@ printListOUs(str, listp)
 char * str;
 struct namelist * listp;
 {
-struct namelist * x;
-int i;
+	struct namelist * x;
+	int i;
 	if (listp == NULLLIST)
 		if (strcmp(str, "*") == 0)
 			pageprint("    No organisational units found\n");
 		else
 			pageprint("    No organisational units match entered string\n");
-	else
-	{
+	else {
 		for (i =1, x = listp; x != NULLLIST; i++, x = x->next)
 			printLastComponent(INDENTON, x->name, ORGUNIT, i);
 		showAnyProblems(str);
@@ -108,11 +107,10 @@ void
 freeOUs(listpp)
 struct namelist ** listpp;
 {
-struct namelist * x, * y;
+	struct namelist * x, * y;
 
 	x = *listpp;
-	while (x != NULLLIST)
-	{
+	while (x != NULLLIST) {
 		if (x->name != NULLCP)
 			free(x->name);
 		as_free(x->ats);
@@ -124,14 +122,12 @@ struct namelist * x, * y;
 }
 
 void
-freeOUListArgs()
-{
+freeOUListArgs() {
 	dn_free(larg.lsa_object);
 }
 
 void
-freeOUSearchArgs()
-{
+freeOUSearchArgs() {
 
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
@@ -142,22 +138,19 @@ listAllOUs(parentstr, listp)
 char * parentstr;
 struct namelist ** listp;
 {
-int ret;
-	
-	if (quipuMastersCo == FALSE)
-	{
+	int ret;
+
+	if (quipuMastersCo == FALSE) {
 		larg = * fillMostOUListArgs(parentstr);
 		ret = reallyMakeListOUs(listp);
+	} else {
+		sarg = * fillMostOUSearchArgs(parentstr, SRA_ONELEVEL);
+		makeAllOUFilter(&sarg.sra_filter);
+		ret = makeListOUs(listp);
 	}
-	else
-	{
-	        sarg = * fillMostOUSearchArgs(parentstr, SRA_ONELEVEL);	
-	        makeAllOUFilter(&sarg.sra_filter);
-	        ret = makeListOUs(listp);
-	}
-        if (ret != OK)
+	if (ret != OK)
 		logListSuccess(LIST_ERROR, "ou", 0);
-        else
+	else
 		logListSuccess(LIST_OK, "ou", listlen(*listp));
 	if (quipuMastersCo == FALSE)
 		freeOUListArgs();
@@ -172,85 +165,70 @@ listMatchingOUs(parentstr, thisstr, listp)
 char * parentstr, * thisstr;
 struct namelist ** listp;
 {
-VFP * filtarray;
-VFP filterfunc;
-int filtnumber;
-char rstr[BUFSIZ];
+	VFP * filtarray;
+	VFP filterfunc;
+	int filtnumber;
+	char rstr[BUFSIZ];
 
-        if (index(thisstr, '*') != NULLCP) /* contains at least one asterisk */
-	{
-                filtarray = explicitOU;
+	if (index(thisstr, '*') != NULLCP) { /* contains at least one asterisk */
+		filtarray = explicitOU;
 		filtnumber = -1;
-	}
-        else
-	{
-                filtarray = normalOU;
+	} else {
+		filtarray = normalOU;
 		filtnumber = 0;
 	}
-	if (quipuMastersCo ==FALSE) /* try read first */
-	{
+	if (quipuMastersCo ==FALSE) { /* try read first */
 		(void)sprintf(rstr, "%s@ou=%s", parentstr, thisstr);
-		if (readExactOrg(rstr, listp) == OK)
-		{
+		if (readExactOrg(rstr, listp) == OK) {
 			logReadSuccess(READ_OK, "ou");
 			return OK;
-		}
-		else
+		} else
 			/* else try searches */
 			logReadSuccess(READ_FAIL, "ou");
 	}
 	sarg = * fillMostOUSearchArgs(parentstr, SRA_ONELEVEL);
-        while ((filterfunc = *filtarray++) != NULLVFP)
-	{
+	while ((filterfunc = *filtarray++) != NULLVFP) {
 		filtnumber++;
-                filterfunc(thisstr, &sarg.sra_filter);
+		filterfunc(thisstr, &sarg.sra_filter);
 		if (sarg.sra_filter == NULLFILTER)
 			continue;
-                if (makeListOUs(listp) != OK)
-		{
+		if (makeListOUs(listp) != OK) {
 			freeOUSearchArgs();
 			logSearchSuccess(SEARCH_ERROR, "ou", thisstr, filtnumber, 0);
 			alarmCleanUp();
 			return NOTOK;
 		}
-                if (*listp != NULLLIST)
-		{
+		if (*listp != NULLLIST) {
 			freeOUSearchArgs();
 			logSearchSuccess(SEARCH_OK, "ou", thisstr, filtnumber, listlen(*listp));
 			alarmCleanUp();
-                        return OK;
+			return OK;
 		}
 	}
 	logSearchSuccess(SEARCH_FAIL, "ou", thisstr, filtnumber, 0);
 
 	/* nothing found by single level searches - let's try subtree searching */
-        if (index(thisstr, '*') != NULLCP) /* contains at least one asterisk */
-	{
-                filtarray = explicitOU;
+	if (index(thisstr, '*') != NULLCP) { /* contains at least one asterisk */
+		filtarray = explicitOU;
 		filtnumber = -1;
-	}
-        else
-	{
-                filtarray = normalOU;
+	} else {
+		filtarray = normalOU;
 		filtnumber = 0;
 	}
 	sarg = * fillMostOUSearchArgs(parentstr, SRA_WHOLESUBTREE);
-        while ((filterfunc = *filtarray++) != NULLVFP)
-	{
+	while ((filterfunc = *filtarray++) != NULLVFP) {
 		filtnumber++;
-                filterfunc(thisstr, &sarg.sra_filter);
-                if (makeListOUs(listp) != OK)
-		{
+		filterfunc(thisstr, &sarg.sra_filter);
+		if (makeListOUs(listp) != OK) {
 			freeOUSearchArgs();
 			alarmCleanUp();
 			return NOTOK;
 		}
-                if (*listp != NULLLIST)
-		{
+		if (*listp != NULLLIST) {
 			freeOUSearchArgs();
 			logSearchSuccess(SEARCH_OK, "ou", thisstr, filtnumber, listlen(*listp));
 			alarmCleanUp();
-                        return OK;
+			return OK;
 		}
 	}
 	logSearchSuccess(SEARCH_FAIL, "ou", thisstr, filtnumber, 0);
@@ -264,38 +242,36 @@ readExactOU(oustr, olistp)
 char * oustr;
 struct namelist ** olistp;
 {
-int ret;
+	int ret;
 
-        ret = readOU(oustr, olistp);
-        alarmCleanUp();
-        return ret;
+	ret = readOU(oustr, olistp);
+	alarmCleanUp();
+	return ret;
 }
 
 int
 reallyMakeListOUs(olistp)
 struct namelist ** olistp;
 {
-struct subordinate * x;
-int retval;
-char * cp;
-DN dn1, dn2;
+	struct subordinate * x;
+	int retval;
+	char * cp;
+	DN dn1, dn2;
 
 	if (rebind() != OK)
 		return NOTOK;
 	retval = ds_list(&larg, &serror, &lresult);
 	if ((retval == DSE_INTR_ABANDONED) &&
-	    (serror.dse_type == DSE_ABANDONED))
-	       abandoned = TRUE;
+			(serror.dse_type == DSE_ABANDONED))
+		abandoned = TRUE;
 
 	/* setProblemFlags(sresult); */
 	highNumber = 0;
 	for (x = lresult.lsr_subordinates; x != (struct subordinate *) NULL;
-	                                    x = x->sub_next)
-	{
+			x = x->sub_next) {
 		/* only add ous to the list */
 		cp = strdup(attr2name(x->sub_rdn->rdn_at, OIDPART));
-		if (strcmp(cp, DE_ORGANISATIONAL_UNIT_NAME) == 0)
-		{
+		if (strcmp(cp, DE_ORGANISATIONAL_UNIT_NAME) == 0) {
 			*olistp = list_alloc();
 			dn1 = dn_cpy(larg.lsa_object);
 			dn2 = dn_comp_new(x->sub_rdn);
@@ -304,7 +280,7 @@ DN dn1, dn2;
 			(*olistp)->ats = NULLATTR;
 			olistp = &(*olistp)->next;
 			highNumber++;
-			
+
 		}
 		free(cp);
 	}
@@ -322,11 +298,11 @@ listExactOUs(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
 {
-int ret;
+	int ret;
 
-        sarg = * fillMostOUSearchArgs(objectstr, SRA_BASEOBJECT);
-        makeAllOUFilter(&sarg.sra_filter);
-        ret = makeListOUs(listp);
+	sarg = * fillMostOUSearchArgs(objectstr, SRA_BASEOBJECT);
+	makeAllOUFilter(&sarg.sra_filter);
+	ret = makeListOUs(listp);
 	freeOUSearchArgs();
 	alarmCleanUp();
 	return ret;
@@ -336,14 +312,14 @@ int
 makeListOUs(listp)
 struct namelist ** listp;
 {
-entrystruct * x;
-int retval;
+	entrystruct * x;
+	int retval;
 
 	if (rebind() != OK)
 		return NOTOK;
 	retval = ds_search(&sarg, &serror, &sresult);
-        if ((retval == DSE_INTR_ABANDONED) &&
-	    (serror.dse_type == DSE_ABANDONED))
+	if ((retval == DSE_INTR_ABANDONED) &&
+			(serror.dse_type == DSE_ABANDONED))
 		abandoned = TRUE;
 	if (retval != OK)
 		return NOTOK;
@@ -355,7 +331,7 @@ int retval;
 	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) {
 		*listp = list_alloc();
 		(*listp)->name = dn2pstr(x->ent_dn);
-                (*listp)->ats = as_cpy(x->ent_attr);
+		(*listp)->ats = as_cpy(x->ent_attr);
 		listp = &(*listp)->next;
 		highNumber++;
 	}
@@ -372,14 +348,14 @@ readOU(ostr, olistp)
 char * ostr;
 struct namelist ** olistp;
 {
-static struct ds_read_arg rarg;
-static struct ds_read_result rresult;
-static struct DSError rerror;
-static CommonArgs sca = default_common_args;
-Attr_Sequence * atl;
-AttributeType at;
-struct namelist * x;
-int retval;
+	static struct ds_read_arg rarg;
+	static struct ds_read_result rresult;
+	static struct DSError rerror;
+	static CommonArgs sca = default_common_args;
+	Attr_Sequence * atl;
+	AttributeType at;
+	struct namelist * x;
+	int retval;
 
 	if (rebind() != OK)
 		return NOTOK;
@@ -390,8 +366,7 @@ int retval;
 	/* specify attributes of interest */
 	rarg.rda_eis.eis_allattributes = FALSE;
 	atl = &(rarg.rda_eis.eis_select);
-	for (x = ouatts; x != NULLLIST; x = x->next)
-	{
+	for (x = ouatts; x != NULLLIST; x = x->next) {
 		if ((at = str2AttrT(x->name)) == NULLAttrT)
 			continue;
 		*atl = as_comp_alloc();
@@ -403,12 +378,12 @@ int retval;
 	rarg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	retval = ds_read(&rarg, &rerror, &rresult);
 	if ((retval == DSE_INTR_ABANDONED) &&
-            (rerror.dse_type == DSE_ABANDONED))
-                abandoned = TRUE;
+			(rerror.dse_type == DSE_ABANDONED))
+		abandoned = TRUE;
 	if (retval != OK)
-	        return NOTOK;
+		return NOTOK;
 	/* setProblemFlags(sresult); */
-	highNumber = 1;	
+	highNumber = 1;
 	*olistp = list_alloc();
 	(*olistp)->name = dn2pstr(rresult.rdr_entry.ent_dn);
 	(*olistp)->ats = as_cpy(rresult.rdr_entry.ent_attr);
@@ -420,8 +395,8 @@ struct ds_list_arg *
 fillMostOUListArgs(str)
 char * str;
 {
-static struct ds_list_arg arg;
-static CommonArgs sca = default_common_args;
+	static struct ds_list_arg arg;
+	static CommonArgs sca = default_common_args;
 
 	arg.lsa_common =sca; /* struct copy */
 	arg.lsa_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
@@ -438,15 +413,15 @@ fillMostOUSearchArgs(parentstr, searchdepth)
 char * parentstr;
 int searchdepth;
 {
-static struct ds_search_arg arg;
-Attr_Sequence * atl;
-AttributeType at;
-struct namelist * x;
-static CommonArgs sca = default_common_args;
+	static struct ds_search_arg arg;
+	Attr_Sequence * atl;
+	AttributeType at;
+	struct namelist * x;
+	static CommonArgs sca = default_common_args;
 
 	arg.sra_common = sca; /* struct copy */
-        arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
-        arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
+	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
+	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
 
 	arg.sra_subset = searchdepth;
 	arg.sra_baseobject = str2dn(parentstr);
@@ -454,16 +429,15 @@ static CommonArgs sca = default_common_args;
 	/* specify attributes of interest */
 	arg.sra_eis.eis_allattributes = FALSE;
 	atl = &(arg.sra_eis.eis_select);
-        for (x = ouatts; x != NULLLIST; x = x->next)
-        {
+	for (x = ouatts; x != NULLLIST; x = x->next) {
 		if ((at = str2AttrT(x->name)) == NULLAttrT)
 			continue;
-                *atl = as_comp_alloc();
-                (*atl)->attr_type = at;
+		*atl = as_comp_alloc();
+		(*atl)->attr_type = at;
 		(*atl)->attr_value = NULLAV;
-                atl = &(*atl)->attr_link;
-        }
-        *atl = NULLATTR;
+		atl = &(*atl)->attr_link;
+	}
+	*atl = NULLATTR;
 	arg.sra_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	return (&arg);
 }
@@ -479,26 +453,26 @@ makeExplicitOUFilter(oustr, fpp)
 char * oustr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
-int wildcardtype;
-char * ostr1, * ostr2;
+	struct s_filter * fp;
+	int wildcardtype;
+	char * ostr1, * ostr2;
 
 	wildcardtype = starstring(oustr, &ostr1, &ostr2);
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
 	switch (wildcardtype) {
-		case LEADSUBSTR: /* fall through */
-		case TRAILSUBSTR: /* fall through */
-		case ANYSUBSTR:
-			fp = fp->flt_next = subsfilter(wildcardtype, 
-					DE_ORGANISATIONAL_UNIT_NAME, ostr1);
-			break;
-		case LEADANDTRAIL:
-			fp = fp->flt_next = subsfilter(LEADSUBSTR, 
-					DE_ORGANISATIONAL_UNIT_NAME, ostr1);
-			fp = fp->flt_next = subsfilter(TRAILSUBSTR,
-					DE_ORGANISATIONAL_UNIT_NAME, ostr2);
-                        break;
+	case LEADSUBSTR: /* fall through */
+	case TRAILSUBSTR: /* fall through */
+	case ANYSUBSTR:
+		fp = fp->flt_next = subsfilter(wildcardtype,
+									   DE_ORGANISATIONAL_UNIT_NAME, ostr1);
+		break;
+	case LEADANDTRAIL:
+		fp = fp->flt_next = subsfilter(LEADSUBSTR,
+									   DE_ORGANISATIONAL_UNIT_NAME, ostr1);
+		fp = fp->flt_next = subsfilter(TRAILSUBSTR,
+									   DE_ORGANISATIONAL_UNIT_NAME, ostr2);
+		break;
 	}
 	fp->flt_next = NULLFILTER;
 }
@@ -508,7 +482,7 @@ ouFilter1(oustr, fpp)
 char * oustr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
@@ -521,7 +495,7 @@ ouFilter2(oustr, fpp)
 char * oustr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
@@ -534,7 +508,7 @@ ouFilter3(oustr, fpp)
 char * oustr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
@@ -547,12 +521,11 @@ ouFilter4(oustr, fpp)
 char * oustr;
 struct s_filter ** fpp;
 {
-struct s_filter * fp;
+	struct s_filter * fp;
 
-	if (fuzzyMatching == FALSE)
-	{
+	if (fuzzyMatching == FALSE) {
 		*fpp = NULLFILTER;
-		 return;
+		return;
 	}
 	*fpp = andfilter();
 	fp = (*fpp)->FUFILT = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
