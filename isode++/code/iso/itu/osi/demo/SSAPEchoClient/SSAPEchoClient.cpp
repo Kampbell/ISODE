@@ -410,7 +410,7 @@ class SSAPEchoClient :
 			if (isn < 0)
 				isn = -isn;
 		} else {
-			isn = SSN::SERIAL_NONE;
+			isn = SERIAL_NONE;
 		}
 		return isn;
 	}

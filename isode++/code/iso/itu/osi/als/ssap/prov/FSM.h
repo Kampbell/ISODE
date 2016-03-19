@@ -1,6 +1,5 @@
 #ifndef ALS_SSAP_PROV_FSM_H
 #define ALS_SSAP_PROV_FSM_H
-#define SMC_USES_IOSTREAMS
 #include "statemap.h"
 namespace ALS {
 	namespace SSAP {
@@ -68,7 +67,7 @@ namespace ALS {
 				virtual void AIA(FSM<Provider>& context);
 				virtual void AR(FSM<Provider>& context);
 				virtual void AR(FSM<Provider>& context, nat4 ssn);
-				virtual void AS(FSM<Provider>& context);
+				virtual void AS(FSM<Provider>& context, const ActivityId& id);
 				virtual void CD(FSM<Provider>& context);
 				virtual void CDA(FSM<Provider>& context);
 				virtual void CDO(FSM<Provider>& context);
@@ -192,7 +191,7 @@ namespace ALS {
 				void AI(FSM<Provider>& context);
 				void AIA(FSM<Provider>& context);
 				void AR(FSM<Provider>& context);
-				void AS(FSM<Provider>& context);
+				void AS(FSM<Provider>& context, const ActivityId& id);
 				void CD(FSM<Provider>& context);
 				void CDA(FSM<Provider>& context);
 				void ED(FSM<Provider>& context);
@@ -252,7 +251,7 @@ namespace ALS {
 				void AI(FSM<Provider>& context);
 				void AIA(FSM<Provider>& context);
 				void AR(FSM<Provider>& context);
-				void AS(FSM<Provider>& context);
+				void AS(FSM<Provider>& context, const ActivityId& id);
 				void CD(FSM<Provider>& context);
 				void CDA(FSM<Provider>& context);
 				void ED(FSM<Provider>& context);
@@ -296,7 +295,7 @@ namespace ALS {
 				void AI(FSM<Provider>& context);
 				void AIA(FSM<Provider>& context);
 				void AR(FSM<Provider>& context);
-				void AS(FSM<Provider>& context);
+				void AS(FSM<Provider>& context, const ActivityId& id);
 				void CD(FSM<Provider>& context);
 				void CDA(FSM<Provider>& context);
 				void ED(FSM<Provider>& context);
@@ -724,7 +723,7 @@ namespace ALS {
 				void SACTDreq(FSM<Provider>& context);
 				void SACTIreq(FSM<Provider>& context);
 				void AR(FSM<Provider>& context, nat4 ssn);
-				void AS(FSM<Provider>& context);
+				void AS(FSM<Provider>& context, const ActivityId& id);
 				void GT(FSM<Provider>& context, int tokens);
 				void PT(FSM<Provider>& context, int tokens);
 				void SGTreq(FSM<Provider>& context, int tokens);
@@ -810,7 +809,7 @@ namespace ALS {
 				void SACTIreq(FSM<Provider>& context);
 				void SACTIrsp(FSM<Provider>& context);
 				void AR(FSM<Provider>& context);
-				void AS(FSM<Provider>& context);
+				void AS(FSM<Provider>& context, const ActivityId& id);
 				void CD(FSM<Provider>& context);
 				void CDA(FSM<Provider>& context);
 				void SACTRreq(FSM<Provider>& context);
@@ -864,7 +863,7 @@ namespace ALS {
 				void AI(FSM<Provider>& context);
 				void AIA(FSM<Provider>& context);
 				void AR(FSM<Provider>& context);
-				void AS(FSM<Provider>& context);
+				void AS(FSM<Provider>& context, const ActivityId& id);
 				void CD(FSM<Provider>& context);
 				void CDA(FSM<Provider>& context);
 				void ED(FSM<Provider>& context);
@@ -1025,7 +1024,7 @@ namespace ALS {
 				void SACTDreq(FSM<Provider>& context);
 				void SACTIreq(FSM<Provider>& context);
 				void AR(FSM<Provider>& context, nat4 ssn);
-				void AS(FSM<Provider>& context);
+				void AS(FSM<Provider>& context, const ActivityId& id);
 				void CD(FSM<Provider>& context);
 				void SACTRreq(FSM<Provider>& context, nat4 ssn);
 				void SACTSreq(FSM<Provider>& context, const ActivityId& id, int cc, const void* data);
@@ -1192,9 +1191,9 @@ namespace ALS {
 				    getState().AR(*this, ssn);
 				    setTransition(nullptr);
 				};
-				void AS() {
+				void AS(const ActivityId& id) {
 				    setTransition("AS");
-				    getState().AS(*this);
+				    getState().AS(*this, id);
 				    setTransition(nullptr);
 				};
 				void CD() {

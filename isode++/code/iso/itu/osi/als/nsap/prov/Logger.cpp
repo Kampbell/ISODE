@@ -52,7 +52,7 @@ void Logger::dump(const void* buffer, std::size_t length, Message::Priority prio
 			message.append(offset == 7 ? "  " : " ");
 			++offset;
 		}
-		if (offset < 7) message.append(" ");
+		if (offset < 7) message.append(" "); 
 		while (offset < BYTES_PER_LINE) { message.append("   "); ++offset; }
 		message.append(" ");
 		offset = 0;
@@ -89,17 +89,18 @@ ReturnCode Logger::NConnectIndication(const NSAPAddr& responding, bool receiptCo
 ReturnCode Logger::NDataRequest(NetworkBuffer* nsdu, bool confirmation) {
 	poco_check_ptr(nsdu);
 	trace(prefix + "cc=%?u", REQUEST, ::NDataRequest, nsdu ? nsdu->remaining() : 0);
-	dump(nsdu->here(), nsdu->remaining());
+	dump(nsdu->bytes(), nsdu->remaining());
 	return OK;
 }
 ReturnCode Logger::NDataRequest(int cc, byte* data, bool confirmation) {
+	poco_check_ptr(data);
 	trace(prefix + "cc=%?d", REQUEST, ::NDataRequest, cc);
 	dump(data, cc);
 	return OK;
 }
 ReturnCode Logger::NDataIndication(const SharedNetworkBuffer& nsdu) {
 	trace(prefix + "cc=%?u", INDICATION, ::NDataIndication, nsdu ? nsdu.total() : 0);
-	dump(nsdu->here(), nsdu->remaining());
+	dump(nsdu->bytes(), nsdu->remaining());
 	return DONE;
 }
 ReturnCode Logger::NDataAcknoledgeRequest(){

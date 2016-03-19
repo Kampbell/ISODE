@@ -76,7 +76,7 @@ ReturnCode TSAPTestSuiteResponder::TDataIndication(const SharedNetworkBuffer& da
 	tsap_serv_provider->TDataRequest(offset, tosend.get());
 	return DONE;
 }
-ReturnCode TSAPTestSuiteResponder::TExpeditedDataIndication(int cc, const byte* data) {
+ReturnCode TSAPTestSuiteResponder::TExpeditedDataIndication(const SharedNetworkBuffer& data) {
 	tsap_serv_provider->TExpeditedDataRequest();
 	return DONE;
 }

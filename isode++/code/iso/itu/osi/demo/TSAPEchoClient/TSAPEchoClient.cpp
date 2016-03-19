@@ -70,7 +70,7 @@ class TSAPEchoClient :
 			event.set();
 		return DONE;
 	}
-	ReturnCode TExpeditedDataIndication(int cc, const byte * data) {
+	ReturnCode TExpeditedDataIndication(const SharedNetworkBuffer& data) {
 		return DONE;
 	}
 	ReturnCode TDisconnectIndication(int reason, const string& data) {

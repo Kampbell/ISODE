@@ -24,6 +24,8 @@ namespace ALS {
 	namespace BASE {
 		namespace UTIL {
 			class BASE_API NetworkBuffer {
+				friend class BinaryInputStream;
+				friend class BinaryOutputStream;
 			private:
 				static const int OFFSET;
 
@@ -91,13 +93,13 @@ namespace ALS {
 				NetworkBuffer& shrink(int size);
 				NetworkBuffer& skip(int size);
 
-				inline byte		get()			{ return getByte(); }
+				inline byte				get()			{ return getByte(); }
 				inline NetworkBuffer&	put(byte b)		{ return putByte(b); }
 
-				byte	getByte();
-				int2	getShort();
-				int4	getInt();
-				int8	getLong();
+				byte			getByte();
+				int2			getShort();
+				int4			getInt();
+				int8			getLong();
 
 				NetworkBuffer&	putByte(byte b);
 				NetworkBuffer&	putShort(int2 s);
@@ -109,9 +111,9 @@ namespace ALS {
 				NetworkBuffer&	putInt(nat2 position, int4 i);
 				NetworkBuffer&	putLong(nat2 position, int8 l);
 
-				nat2	getBytes(nat2 length, byte* bytes);
+				nat2			getBytes(nat2 length, byte* bytes);
 				NetworkBuffer&	putBytes(nat2 length, const byte*bytes);
-				nat2	getBytes(nat2 length, char* bytes);
+				nat2			getBytes(nat2 length, char* bytes);
 				NetworkBuffer&	putBytes(nat2 length, const char*bytes);
 
 
@@ -134,27 +136,33 @@ namespace ALS {
 				inline byte* here() const { return ((byte*)this) + OFFSET + position(); }
 				inline byte* here(int position) const { return ((byte*)this) + OFFSET + position; }
 #endif
-				inline char* begin()					{ return ((char*)_buffer); }
-				inline char* data()						{ return ((char*)_buffer) + position(); }
-				inline const char* begin() const		{ return ((char*)_buffer); }
-				inline const char* data() const			{ return ((char*)_buffer) + position(); }
-				inline byte at(int no) const			{ return *(_buffer + position() + no); }
-				inline byte operator[](int no) const	{ return *(_buffer + position() + no); }
-				string str(int length) const			{ return string(data(), length); }
+				byte*			buffer(int position) const;
+				char*			begin() const;
+				byte*			bytes() const;
+				char*			data() const;
+				char*			chars() const;
+				byte			at(int no) const;
+				byte			operator[](int no) const;
 
 				void			dump(Printer& printer) const;
 				const string	info() const;
 
-				inline byte* buffer(int position)		{ return ((byte*)_buffer) + position; }
-				inline byte* here() 					{ return ((byte*)_buffer) + position(); }
 
+private:
 				int checkByteIndex(nat2 index);
 				int checkShortIndex(nat2 index);
 				int checkIntIndex(nat2 index);
 				int checkLongIndex(nat2 index);
-private:
 				void discardMark();
 			};
+
+			inline char* NetworkBuffer::begin()	const			{ return ((char*)_buffer); }
+			inline byte*NetworkBuffer::bytes() const			{ return ((byte*)_buffer) + position(); }
+			inline char* NetworkBuffer::data()	const			{ return ((char*)_buffer) + position(); }
+			inline char* NetworkBuffer::chars()	const			{ return ((char*)_buffer) + position(); }
+			inline byte NetworkBuffer::at(int no) const			{ return *(_buffer + position() + no); }
+			inline byte NetworkBuffer::operator[](int no) const	{ return *(_buffer + position() + no); }
+			inline byte*NetworkBuffer::buffer(int position)	const{ return ((byte*)_buffer) + position; }
 
 			inline NetworkBuffer& NetworkBuffer::markit() {
 				_mark = position();

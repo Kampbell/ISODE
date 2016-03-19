@@ -14,6 +14,7 @@ using ALS::SSAP::AbortCode;
 #include "als/ssap/spdu/pi/ACT_ID.h"
 #include "als/ssap/spdu/pi/ENCLOSE.h"
 #include "als/ssap/spdu/pi/XDATA.h"
+#include "als/ssap/spdu/pi/UDATA.h"
 
 namespace ALS {
 namespace SSAP {
@@ -57,6 +58,13 @@ namespace SPDU {
 					ENCLOSE pi(tsdu);
 					setEnclose(pi.getValue());
 					addMask(SMASK_ENCLOSE);
+				}
+					break;
+				case PI::PI_UDATA: {
+					UDATA pi(tsdu);
+					int cc = 0;
+					const byte* data = pi.getValue(cc);
+		    		setData(cc, data);
 				}
 					break;
 				case PI::PI_XDATA: {

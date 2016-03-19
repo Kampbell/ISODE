@@ -54,7 +54,7 @@ private:
 	virtual ReturnCode TDataRequest(int cc = 0, const byte* data = nullptr);
 	virtual ReturnCode TDataIndication(const SharedNetworkBuffer& data);
 	virtual ReturnCode TExpeditedDataRequest(int cc = 0, const byte* data = nullptr);
-	virtual ReturnCode TExpeditedDataIndication(int cc = 0, const byte* data = nullptr);
+	virtual ReturnCode TExpeditedDataIndication(const SharedNetworkBuffer& data);
 	virtual ReturnCode TDisconnectRequest(int reason, const TSAPAddr& responding, int cc = 0, const byte* data = nullptr);
 	virtual ReturnCode TDisconnectIndication(int reason, const string& data);
 	virtual ReturnCode TSetSSAPServices(const ALS::BASE::SRVC::SSAPServices* ssapServices);

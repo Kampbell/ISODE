@@ -35,13 +35,12 @@ public:
 	 *
 	 * @return the return code
 	 */
-	virtual ReturnCode TExpeditedDataIndication(int cc = 0, const byte* data = nullptr) = 0;
+	virtual ReturnCode TExpeditedDataIndication(const SharedNetworkBuffer& data) = 0;
 
 protected:
 	DataIndication() {}
-private:
-	DataIndication(const DataIndication&){}
-	DataIndication& operator = (const DataIndication&) { return *this; };
+	DataIndication(const DataIndication&) = delete;
+	DataIndication& operator = (const DataIndication&) = delete;
 };
 
 }

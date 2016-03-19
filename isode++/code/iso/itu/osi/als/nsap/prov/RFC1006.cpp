@@ -77,7 +77,7 @@ namespace ALS {
 					length -= 4;
 					buffer = new NetworkBuffer(length);
 				}
-				received = socket.receiveBytes(buffer->here(), buffer->remaining());
+				received = socket.receiveBytes(buffer->bytes(), buffer->remaining());
 				buffer->position(buffer->position() + received);
 				if (buffer->hasRemaining())
 					return 0;

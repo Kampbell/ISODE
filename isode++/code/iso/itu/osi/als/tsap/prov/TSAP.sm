@@ -163,6 +163,11 @@ Exit  {Exit("OPEN::Exit");}
 		CR								[P9()]			OPEN				{}
 		DT(tsdu: const SharedNetworkBuffer&)			OPEN				{TDTind(tsdu);}
 		DR								[P5()]			ERROR				{}
+//
+// Below ED TPDU is allowaed for class 0 over RFC1006
+//
+		ED(tsdu: const SharedNetworkBuffer&)			OPEN				{TEXind(tsdu);}
+		TEXreq(cc: int, data: const byte*)				OPEN				{ED(cc, data);}
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

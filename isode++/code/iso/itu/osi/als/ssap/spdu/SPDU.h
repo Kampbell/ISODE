@@ -339,10 +339,11 @@ protected:
 private:
 	int				spdu_mask;
 	void			reset();
+public:
+	virtual ~SPDU();
 protected:
 	SPDU(Category category, byte si);
 	SPDU(Category category, int si, NetworkBuffer& tsdu);
-	virtual ~SPDU();
 
 	Category category() const				{ return spdu_category; }
 	void	sli(int cc)						{ HEADER::hli(cc); }

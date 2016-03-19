@@ -17,9 +17,9 @@ namespace ALS {
 			class RA : public SPDU {
 				// RESYNCHRONIZE SPDU
 			private:
-				static const int SMASK_RA_SET = 0x0001;
-				static const int SMASK_RA_TYPE = 0x0002;
-				static const int SMASK_RA_SSN = 0x0004;
+				static const int SMASK_RA_SET	= 0x0001;
+				static const int SMASK_RA_TYPE	= 0x0002;
+				static const int SMASK_RA_SSN	= 0x0004;
 				static const int SMASK_RA_SECOND_TYPE = 0x0008;
 				static const int SMASK_RA_SECOND_SSN = 0x0010;
 				static const int RA_SIZE = 512;
@@ -43,18 +43,18 @@ namespace ALS {
 				//	static final boolean SYNC_OK(int r) {
 				//		return  r <= SSAPSync.SS_SET;
 				//	}
-				void setSerial(nat4 serial) {
+				void serial(nat4 serial) {
 					addMask(SMASK_RA_SSN);
 					ra_serial = serial;
 				}
-				void setSecondSerial(nat4 serial) {
+				void secondSerial(nat4 serial) {
 					addMask(SMASK_RA_SECOND_SSN);
 					ra_second_serial = serial;
 				}
-				const nat4& SSN() const			{ return ra_serial; }
+				const nat4& ssn() const			{ return ra_serial; }
 				const nat4& secondSSN() const	{ return ra_second_serial; }
 
-				void setType(ResyncOption resync) {
+				void type(ResyncOption resync) {
 					addMask(SMASK_RA_TYPE);
 					switch (resync) {
 					case RESTART: ra_resync = 0; break;
@@ -63,11 +63,14 @@ namespace ALS {
 					default: throw InvalidArgumentException();
 					}
 				}
-				void setSettings(byte settings) {
+				byte settings() const {
+					return ra_settings;
+				}
+				void settings(byte settings) {
 					addMask(SMASK_RA_SET);
 					ra_settings = settings;
 				}
-				ResyncOption getType() const {
+				ResyncOption type() const {
 					switch (ra_resync) {
 					case 0: return RESTART;
 					case 1: return ABANDON;

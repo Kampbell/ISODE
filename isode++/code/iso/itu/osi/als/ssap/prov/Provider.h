@@ -76,6 +76,8 @@ namespace ALS {
 			class MIP;
 			class RA;
 			class RS;
+			class PR;
+			class SPDU;
 		}
 	}
 }
@@ -340,7 +342,7 @@ namespace PROV {
 		ReturnCode TConnectIndication(const TSAPAddr& callingAddr, const TSAPAddr& calledAddr, bool expedited, int tsdusize, const QualityOfService& qualityOfService, int cc = 0, const byte* data = nullptr);
 		ReturnCode TConnectConfirmation(const TSAPAddr& responding, bool expedited, const QualityOfService& qualityOfService, int tsdusize, NetworkBuffer* data = nullptr);
 		ReturnCode TDataIndication(const SharedNetworkBuffer& data);
-		ReturnCode TExpeditedDataIndication(int cc = 0, const byte* data = nullptr);
+		ReturnCode TExpeditedDataIndication(const SharedNetworkBuffer& data);
 		ReturnCode TDisconnectIndication(int reason, const string& data);
 		ReturnCode TSetSSAPServices(const ALS::BASE::SRVC::SSAPServices* ssapServices);
 
@@ -517,7 +519,8 @@ are specified in clause 7 and are summarized in Table A.4.
 		int								sb_rsettings;		//proposed token settings on resync
 		int								sb_pr;				//SPDU to prepare for (an SPDU code)
 		SPKT*							sb_xspdu;			//saved expedited SPDU (really should be a linked list!)
-		SPKT*							sb_spdu;			//for concatenated SPDUs
+//TBD	SPKT*							sb_spdu;			//for concatenated SPDUs
+		ALS::SSAP::SPDU::SPDU*			sb_spdu;			//for concatenated SPDUs
 		NetworkBuffer*					sb_qbuf;			//for segmented (T)SSDUs
 		int								sb_cc;				//  ..
 		const void*						sb_data;
@@ -557,7 +560,7 @@ private:
 	ReturnCode SACTIind();							// SS-provider S-ACTIVITY-INTERRUPT indication primitive
 	ReturnCode SACTIcnf();							// SS-provider S-ACTIVITY-INTERRUPT confirm primitive
 	ReturnCode SACTRind();							// SS-provider S-ACTIVITY-RESUME indication primitive
-	ReturnCode SACTSind();							// SS-provider S-ACTIVITY-START indication primitive
+	ReturnCode SACTSind(const ActivityId& id);		// SS-provider S-ACTIVITY-START indication primitive
 	ReturnCode SCDind();							// SS-provider S-ACTIVITY-DATA indication primitive
 	ReturnCode SCDcnf();							// SS-provider S-CAPABILITY-DATA confirm primitive
 	ReturnCode SCGind();							// SS-provider S-CONTROL-GIVE indication primitive

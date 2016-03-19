@@ -8,7 +8,7 @@
 #ifndef ALS_SSAP_SYNCOPTION_H_
 #define ALS_SSAP_SYNCOPTION_H_
 
-#include "als/als.h"
+#include "als/ssap/ssap.h"
 
 namespace ALS {
 namespace SSAP {

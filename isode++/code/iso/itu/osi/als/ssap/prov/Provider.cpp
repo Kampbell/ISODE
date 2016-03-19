@@ -288,7 +288,7 @@ ReturnCode Provider::TConnectConfirmation(const TSAPAddr& responding, bool exped
 //FIXME sb_responding is also wronng
 //FIXME	sb_responding = responding;
 	sb_expedited = expedited;
-
+	TEXP = expedited;
 //	spkt = retry;
 //	retry = nullptr;
 
@@ -298,16 +298,25 @@ ReturnCode Provider::TConnectConfirmation(const TSAPAddr& responding, bool exped
 	if (expedited)
 		sb_state.add(SB_EXPD);
 	else
-		sb_requirements[EXPEDITED] = true;
+		sb_requirements[EXPEDITED] = false;
 	if (sb_version < SB_VRSN2) /* XXX */
 		sb_tsdu_us = sb_tsdu_them = GET_TSDU_SIZE(tsdusize);
 
 	TCONcnf();
 	return DONE;
 }
-ReturnCode Provider::TExpeditedDataIndication(int cc, const byte* data) {
+ReturnCode Provider::TExpeditedDataIndication(const SharedNetworkBuffer& data) {
 	ReturnCode rc = DONE;
 	try {
+		sb_tx = data;
+		unique_ptr<SPDU::SPDU> spdu(SPDU::SPDU::fromTSDU(Category::CAT0_OR_CAT1, *sb_tx.get()));
+		ALS::SSAP::SPDU::PR* pr = (SPDU::PR*)spdu.get();
+		switch (pr->type()) {
+		case SPDU::PR::PR_MAA: FSM<Provider>::PR_MAA(); break;
+		case SPDU::PR::PR_RS:  FSM<Provider>::PR_RS(); break;
+		case SPDU::PR::PR_RA:  FSM<Provider>::PR_RA(); break;
+		case SPDU::PR::PR_AB:  FSM<Provider>::PR_AB(); break;
+		}
 	} catch (const SmcException& e) {
 		rc = providerException(e);
 	}
@@ -328,11 +337,10 @@ ReturnCode Provider::TDataIndication(const SharedNetworkBuffer& data) {
 	int result = 0;
 	try {
 		sb_tx = data;
-		SPDU::SPDU* spdu = SPDU::SPDU::fromTSDU(Category::CAT0_OR_CAT1, *sb_tx.get());
 
-		if (spdu == nullptr) {
-			int i = 2;
-		}
+		unique_ptr<SPDU::SPDU> spdu(SPDU::SPDU::fromTSDU(Category::CAT0_OR_CAT1, *sb_tx.get()));
+		sb_spdu = spdu.get();
+		poco_check_ptr(sb_spdu);
 #if 0
 		if (!spdu.hasMask(SMASK_SPDU_EXPD)) {
 			switch (sb_pr) {
@@ -664,7 +672,7 @@ drop_it:
 				break;
 			}
 			case SPDU::SPDU::SPDU_AC: {	// ACCEPT
-				SPDU::AC& spdu_ac = *(SPDU::AC*) spdu;
+				SPDU::AC& spdu_ac = *(SPDU::AC*) spdu.get();
 				result = AbortCode::SC_ACCEPT;
 				if (spdu_ac.hasMask(SPDU::SPDU::SMASK_CN_REF))
 					sb_reference = spdu_ac.getReference();
@@ -940,7 +948,7 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 			}
 //			case SPDU::SPDU::SPDU_AE:	// aka SPDU_MAP
 			case SPDU::SPDU::SPDU_MAP: {
-				SPDU::MAP& spdu_map = *(SPDU::MAP*) spdu;
+				SPDU::MAP& spdu_map = *(SPDU::MAP*) spdu.get();
 #if 0
 				if (V(M) != spdu_map.getSerial()) {
 					if (sb_spdu != nullptr)
@@ -979,14 +987,13 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 					return sn;
 #else
 					FSM<Provider>::MAP(spdu_map);
-					updateAMR02(Event::MAP, spdu_map.getSerial());
 #endif
 				}
 
 				break;
 			}
 			case SPDU::SPDU::SPDU_AEA: { //SPDU_MAA
-				SPDU::MAA& spdu_maa = *(SPDU::MAA*) spdu;
+				SPDU::MAA& spdu_maa = *(SPDU::MAA*) spdu.get();
 				//TODO split AEA and PAA processing
 				FSM<Provider>::MAA(spdu_maa.getSerial());
 				break;
@@ -995,14 +1002,13 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 //			case SPDU::SPDU::SPDU_AIA: { AIA(); break; }
 			case SPDU::SPDU::SPDU_AR: {
 				//TODO split SPDU_AI and SPDU_AIA processing from AR processing
-				SPDU::AR& spdu_ar = *(SPDU::AR*) spdu;
-				updateAMR11(Event::AR, spdu_ar.getSerial());
+				SPDU::AR& spdu_ar = *(SPDU::AR*) spdu.get();
 				FSM<Provider>::AR();
 				break;
 			}
 			case SPDU::SPDU::SPDU_AS: {
-				updateAMR12(Event::AS);
-				FSM<Provider>::AS();
+				SPDU::AS& spdu_as = *(SPDU::AS*) spdu.get();
+				FSM<Provider>::AS(spdu_as.getId());
 				break;
 			}
 			case SPDU::SPDU::SPDU_CD: {
@@ -1018,7 +1024,7 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 				break;
 			}
 			case SPDU::SPDU::SPDU_CN: {
-				SPDU::CN& spdu_cn = *(SPDU::CN*)spdu;
+				SPDU::CN& spdu_cn = *(SPDU::CN*)spdu.get();
 				if (spdu_cn.hasMask(SPDU::SPDU::SMASK_CN_VRSN) && !(spdu_cn.getVersion() & SB_ALLVRSNS)) {
 					//					spktlose(SC_VERSION | SC_REFUSE, nullptr,	"version mismatch: expecting something in 0x%x, got 0x%x", SB_ALLVRSNS, spdu_cn.getVersion());
 					return NOTOK;
@@ -1087,7 +1093,7 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 					V(A) = isn;
 					V(M) = isn;
 				} else
-					isn = SSN::SERIAL_NONE;
+					isn = SERIAL_NONE;
 
 				if (!spdu_cn.hasMask(SPDU::SPDU::SMASK_CN_TSDU)) {
 					spdu_cn.setTSDUInitiator((short)0);
@@ -1177,9 +1183,9 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 				FSM<Provider>::DN();
 				break;
 			}
-			//		case SPDU::SPDU::SPDU_DT: {
-			//			DT(); break;
-			//		}
+//			case SPDU::SPDU::SPDU_DT: {
+//				DT(); break;
+//			}
 			case SPDU::SPDU::SPDU_ED: {
 				FSM<Provider>::ED();
 				break;
@@ -1193,14 +1199,14 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 				break;
 			}
 			case SPDU::SPDU::SPDU_FN: {
-				SPDU::FN& spdu_fn = *(SPDU::FN*) spdu;
+				SPDU::FN& spdu_fn = *(SPDU::FN*) spdu.get();
 				FSM<Provider>::FN(spdu_fn.getDisconnect() & SPDU::SPDU::FN_DISC_RELEASE);
 				break;
 			}
 			case SPDU::SPDU::SPDU_GT: {
 				byte tokens;
 				if (spdu->category() == Category::CAT0) { //SPDU_GT
-					SPDU::GT& spdu_gt = *(SPDU::GT*) spdu;
+					SPDU::GT& spdu_gt = *(SPDU::GT*) spdu.get();
 					if (sb_state.has(SB_GTC)) {
 						if (sb_spdu != nullptr)
 							;// FIXME continue;
@@ -1251,16 +1257,16 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 				FSM<Provider>::GTC(sb_avail);
 				break;
 			}
-			//		case SPDU::SPDU::SPDU_MAA: { MAA(); break; }
-			//		case SPDU::SPDU::SPDU_MAP: { MAP(); break; }
+//			case SPDU::SPDU::SPDU_MAA: { MAA(); break; }
+//			case SPDU::SPDU::SPDU_MAP: { MAP(); break; }
 			case SPDU::SPDU::SPDU_MIA: {
-				SPDU::MIA& spdu_mia = *(SPDU::MIA*) spdu;
+				SPDU::MIA& spdu_mia = *(SPDU::MIA*) spdu.get();
 				updateAMR06(Event::MIA, spdu_mia.getSerial());
 				FSM<Provider>::MIA(spdu_mia.ssn());
 				break;
 			}
 			case SPDU::SPDU::SPDU_MIP: {
-				SPDU::MIP& spdu_mip = *(SPDU::MIP*) spdu;
+				SPDU::MIP& spdu_mip = *(SPDU::MIP*) spdu.get();
 				updateAMR03(Event::AE, spdu_mip.getSerial());
 				FSM<Provider>::MIP(false, spdu_mip);
 				break;
@@ -1277,11 +1283,11 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 				break;
 			}
 			case SPDU::SPDU::SPDU_PT: {
-				SPDU::PT& spdu_pt = *(SPDU::PT*) spdu;
+				SPDU::PT& spdu_pt = *(SPDU::PT*) spdu.get();
 				if (sb_state.has(SB_GTC)) {
 					spdu = nullptr;
-					if (sb_spdu != nullptr)
-						;//FIXME continue;
+					//if (sb_spdu != nullptr)
+					//	;//FIXME continue;
 				}
 				int tokens = 0;
 				if (spdu_pt.hasMask(SPDU::SPDU::SMASK_PT_TOKEN)) {
@@ -1302,8 +1308,8 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 				break;
 			}
 			case SPDU::SPDU::SPDU_RA: {
-				SPDU::RA& spdu_ra = *(SPDU::RA*) spdu;
-				FSM<Provider>::RA();
+				SPDU::RA& spdu_ra = *(SPDU::RA*) spdu.get();
+				FSM<Provider>::RA(spdu_ra.ssn(), spdu_ra.settings());
 				break;
 			}
 			case SPDU::SPDU::SPDU_RF: {
@@ -1311,8 +1317,8 @@ if (spdu_ac.hasMask(SPDU::SPDU::SMASK_AC_TOKEN) && (spdu_ac.getToken() & bit)) \
 				break;
 			}
 			case SPDU::SPDU::SPDU_RS: {
-				SPDU::RS& spdu_rs = *(SPDU::RS*) spdu;
-				FSM<Provider>::RS(spdu_rs.getFirstType());
+				SPDU::RS& spdu_rs = *(SPDU::RS*) spdu.get();
+				FSM<Provider>::RS(spdu_rs.type());
 				break;
 			}
 			case SPDU::SPDU::SPDU_TD: {
@@ -1398,11 +1404,11 @@ ReturnCode Provider::SConnectRequest(const Reference& reference, const SSAPAddr&
 		}
 
 	if (requirements[MINORSYNC] || requirements[MAJORSYNC] || requirements[RESYNCHRONIZE]) {
-		if (!requirements[ACTIVITY] || firstInitialSSN.ssn() != SSN::SERIAL_NONE)
+		if (!requirements[ACTIVITY] || firstInitialSSN.ssn() != SERIAL_NONE)
 			if (!firstInitialSSN.isValid()) {
 				return NOTOK;//FIXME sa.ssaplose(SC_PARAMETER, nullptr, "bad choice for initial serial number");
 			}
-	} else if (firstInitialSSN.ssn() != SSN::SERIAL_NONE) {
+	} else if (firstInitialSSN.ssn() != SERIAL_NONE) {
 		return NOTOK;//FIXME sa.ssaplose(SC_PARAMETER, nullptr, "initial serial number invalid given requirements");
 	}
 
@@ -1649,11 +1655,11 @@ ReturnCode Provider::SConnectResponse(const Reference& reference, const SSAPAddr
 		}
 #endif
 		if (sb_requirements[MINORSYNC] || sb_requirements[MAJORSYNC] || sb_requirements[RESYNCHRONIZE]) {
-			if (!sb_requirements[ACTIVITY] || firstInitialSSN.ssn() != SSN::SERIAL_NONE) {
+			if (!sb_requirements[ACTIVITY] || firstInitialSSN.ssn() != SERIAL_NONE) {
 				if (!firstInitialSSN.isValid())
 					return NOTOK;//FIXME sa.ssaplose(SC_PARAMETER, nullptr, "bad choice for initial serial number");
 			}
-		} else if (firstInitialSSN.ssn() != SSN::SERIAL_NONE)
+		} else if (firstInitialSSN.ssn() != SERIAL_NONE)
 			return NOTOK;//FIXME sa.ssaplose(SC_PARAMETER, nullptr, "initial serial number invalid given requirements");
 		break;
 
@@ -1697,7 +1703,7 @@ ReturnCode Provider::SConnectResponse(const Reference& reference, const SSAPAddr
 	ac.setOptions(SPDU::SPDU::CR_OPT_NULL);
 	ac.setVersion((1 << sb_version));
 
-	if (firstInitialSSN.ssn() != SSN::SERIAL_NONE) {
+	if (firstInitialSSN.ssn() != SERIAL_NONE) {
 		ac.setIsn((int)firstInitialSSN.ssn());
 	}
 
@@ -2583,8 +2589,7 @@ ReturnCode Provider::SACTRind() { 		// SS-provider S-ACTIVITY-RESUME indication 
 	activityIndication().SActivityResumeIndication(id, oid, sb_firstSSN, sb_secondSSN, oref);
 	return DONE;
 }
-ReturnCode Provider::SACTSind() { 		// SS-provider S-ACTIVITY-START indication primitive
-	ActivityId id;
+ReturnCode Provider::SACTSind(const ActivityId& id) { 		// SS-provider S-ACTIVITY-START indication primitive
 	sb_logger->SActivityStartIndication(id);
 	activityIndication().SActivityStartIndication(id);
 	return DONE;
@@ -2657,13 +2662,10 @@ ReturnCode Provider::SRELcnf(bool accept) { 	// SS-provider S-RELEASE (accept(tr
 	return DONE;
 }
 ReturnCode Provider::SRSYNind() { 		// SS-provider S-RESYNCHRONIZE indication primitive
-	SSN sb_firstSSN;
-	SSN sb_secondSSN;
-	ResyncOption sb_firstResync;
-	ResyncOption sb_secondResync;
-
-	sb_logger->SResynchronizeIndication(sb_firstResync, sb_firstSSN, sb_secondResync, sb_secondSSN, sb_settings);
-	synchronizeIndication().SResynchronizeIndication(sb_firstResync, sb_firstSSN, sb_secondResync, sb_secondSSN, sb_settings);
+	poco_assert(sb_spdu->si() == SPDU::SPDU::SPDU_RS);
+	SPDU::RS& rs = *(SPDU::RS*)sb_spdu;
+	sb_logger->SResynchronizeIndication(rs.type(), rs.ssn(), rs.secondType(), rs.secondSSN(), rs.settings());
+	synchronizeIndication().SResynchronizeIndication(rs.type(), rs.ssn(), rs.secondType(), rs.secondSSN(), rs.settings());
 	return DONE;
 }
 ReturnCode Provider::SRSYNcnf() { 		// SS-provider S-RESYNCHRONIZE confirm primitive
@@ -2893,7 +2895,7 @@ ReturnCode Provider::CN() { 			// CONNECT SPDU
 	spdu.setReference(sb_reference);
 	spdu.setVersion(sb_vrsnmask);
 
-	if (sb_firstInitialSSN.ssn() != SSN::SERIAL_NONE) {
+	if (sb_firstInitialSSN.ssn() != SERIAL_NONE) {
 		spdu.setIsn((int)sb_firstInitialSSN.ssn());
 	}
 
@@ -3158,7 +3160,7 @@ ReturnCode Provider::RF(bool reuse) {	// REFUSE (reuse(r)/not reuse(nr)) SPDU
 ReturnCode Provider::RS(ResyncOption resync, nat4 ssn) { 	// RESYNCHRONIZE (abandon(a)/restart(r)/set(s)) SPDU
 	ReturnCode rc = OK;
 	GTCAT(RS, rs);
-	rs.setFirstType(resync);
+	rs.type(resync);
 	rs.setSerial(ssn);
 	gt.encode();
 	rs.encode();
@@ -3204,8 +3206,8 @@ void Provider::SA5(nat4 ssn) {
 	Vcoll = false;
 	Vrsp = no;
 	Vsc = false;
-	V(Ado) = SSN::SERIAL_NONE;
-	V(Adi) = SSN::SERIAL_NONE;
+	V(Ado) = SERIAL_NONE;
+	V(Adi) = SERIAL_NONE;
 	TEXP = false;
 	/* FIXME
 	Set FU(f) for f in fu-dom according to the intersection of Session User Requirements
@@ -3343,8 +3345,8 @@ void Provider::SA28(nat4 ssn) {
 	if (Vrsp == s)
 		V(R) = 0;
 	Vrsp = no;
-	V(Ado) = SSN::SERIAL_NONE;
-	V(Adi) = SSN::SERIAL_NONE;
+	V(Ado) = SERIAL_NONE;
+	V(Adi) = SERIAL_NONE;
 	discard_rcv_flow = false;
 	discard_snd_flow = false;
 }

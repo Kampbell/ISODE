@@ -7,6 +7,7 @@
 
 #ifndef ALS_SSAP_SPDU_RS_H_
 #define ALS_SSAP_SPDU_RS_H_
+#include "als/ssap/SSN.h"
 #include "als/ssap/spdu/SPDU.h"
 #include "als/ssap/ResyncOption.h"
 
@@ -14,8 +15,7 @@ namespace ALS {
 	namespace SSAP {
 		namespace SPDU {
 
-			class RS : public SPDU {
-				// RESYNCHRONIZE SPDU
+			class RS : public SPDU {	// RESYNCHRONIZE SPDU
 			private:
 				static const int SMASK_RS_SET = 0x0001;
 				static const int SMASK_RS_TYPE = 0x0002;
@@ -26,11 +26,11 @@ namespace ALS {
 				static const int RS_BASE_SIZE = 17;
 
 				//
-				byte rs_settings;
-				byte rs_resync;
-				nat4 rs_serial;
-				byte rs_second_resync;
-				nat4 rs_second_serial;
+				byte rs_settings = 0;
+				byte rs_resync = 0;
+				nat4 rs_serial = SERIAL_NONE;
+				byte rs_second_resync = 0;
+				nat4 rs_second_serial = SERIAL_NONE;
 
 			public:
 				RS() : SPDU(CAT2, SPDU_RS) {
@@ -51,10 +51,10 @@ namespace ALS {
 					addMask(SMASK_RS_SECOND_SSN);
 					rs_second_serial = serial;
 				}
-				const nat4& SSN() const			{ return rs_serial; }
+				const nat4& ssn() const			{ return rs_serial; }
 				const nat4& secondSSN() const	{ return rs_second_serial; }
 
-				void setFirstType(ResyncOption resync) {
+				void type(ResyncOption resync) {
 					addMask(SMASK_RS_TYPE);
 					switch (resync) {
 					case RESTART: rs_resync = 0; break;
@@ -67,8 +67,18 @@ namespace ALS {
 					addMask(SMASK_RS_SET);
 					rs_settings = settings;
 				}
-				ResyncOption getFirstType() const {
+				byte settings() const { return rs_settings; }
+				ResyncOption type() const {
 					switch (rs_resync) {
+					case 0: return RESTART;
+					case 1: return ABANDON;
+					case 2: return SET;
+					default: throw InvalidArgumentException();
+					}
+					return NOSYNC;
+				}
+				ResyncOption secondType() const {
+					switch (rs_second_resync) {
 					case 0: return RESTART;
 					case 1: return ABANDON;
 					case 2: return SET;

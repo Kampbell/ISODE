@@ -43,7 +43,7 @@ namespace ALS {
 				sended = socket.sendBytes(&netendian, sizeof(netendian));
 				poco_assert(sended == sizeof(netendian));
 				if (logger && logger->trace()) {
-					string message = Util::string_to_hex(cos.str(length));
+					string message = Util::string_to_hex(string(cos.data(), length));
 					logger->trace(message);
 				}
 				sended = socket.sendBytes(cos.data(), length);

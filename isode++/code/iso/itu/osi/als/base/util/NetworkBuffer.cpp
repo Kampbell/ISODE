@@ -79,7 +79,7 @@ byte NetworkBuffer::getByte() {
 	byte b;
 	if (_position + sizeof(b) > _limit)
 		throw RangeException(__FILE__, __LINE__);
-	b = *(byte*)here();
+	b = *(byte*)bytes();
 	_position += sizeof(b);
 	return b;
 }
@@ -87,7 +87,7 @@ int2 NetworkBuffer::getShort() {
 	int2 s;
 	if (_position + sizeof(s) > _limit)
 		throw RangeException(__FILE__, __LINE__);
-	s = ByteOrder::fromNetwork(*(short*)here());
+	s = ByteOrder::fromNetwork(*(short*)bytes());
 	_position += sizeof(s);
 	return s;
 }
@@ -95,54 +95,54 @@ int4 NetworkBuffer::getInt() {
 	int4 i;
 	if (_position + sizeof(i) > _limit)
 		throw RangeException(__FILE__, __LINE__);
-	i = ByteOrder::fromNetwork(*(int*)here());
+	i = ByteOrder::fromNetwork(*(int*)bytes());
 	_position += sizeof(i);
 	return i;
 }
-nat2 NetworkBuffer::getBytes(nat2 length, byte*bytes) {
+nat2 NetworkBuffer::getBytes(nat2 length, byte*data) {
 	length = std::min(length, remaining());
-	memcpy(bytes, here(), length);
+	memcpy(data, bytes(), length);
 	_position += length;
 	return length;
 }
-nat2 NetworkBuffer::getBytes(nat2 length, char*bytes) {
+nat2 NetworkBuffer::getBytes(nat2 length, char*data) {
 	length = std::min(length, remaining());
-	memcpy(bytes, here(), length);
+	memcpy(data, bytes(), length);
 	_position += length;
 	return length;
 }
 NetworkBuffer& NetworkBuffer::putByte(byte b) {
 	if (_position + sizeof(b) > _limit)
 		throw RangeException(__FILE__, __LINE__);
-	*(byte*)here() = b;
+	*(byte*)bytes() = b;
 	_position += sizeof(byte);
 	return *this;
 }
 NetworkBuffer& NetworkBuffer::putShort(int2 s) {
 	if (_position + sizeof(s) > _limit)
 		throw RangeException(__FILE__, __LINE__);
-	*(int2*)here() = ByteOrder::toNetwork(s);
+	*(int2*)bytes() = ByteOrder::toNetwork(s);
 	_position += sizeof(short);
 	return *this;
 }
 NetworkBuffer& NetworkBuffer::putInt(int4 i) {
 	if (_position + sizeof(i) > _limit)
 		throw RangeException(__FILE__, __LINE__);
-	*(int4*)here() = ByteOrder::toNetwork(i);
+	*(int4*)bytes() = ByteOrder::toNetwork(i);
 	_position += sizeof(int);
 	return *this;
 }
-NetworkBuffer& NetworkBuffer::putBytes(nat2 length, const byte*bytes) {
+NetworkBuffer& NetworkBuffer::putBytes(nat2 length, const byte*data) {
 	if (_position + length > _limit)
 		throw RangeException(__FILE__, __LINE__);
-	memcpy(here(), bytes, length);
+	memcpy(bytes(), data, length);
 	_position += length;
 	return *this;
 }
-NetworkBuffer& NetworkBuffer::putBytes(nat2 length, const char*bytes) {
+NetworkBuffer& NetworkBuffer::putBytes(nat2 length, const char*data) {
 	if (_position + length > _limit)
 		throw RangeException(__FILE__, __LINE__);
-	memcpy(here(), bytes, length);
+	memcpy(bytes(), data, length);
 	_position += length;
 	return *this;
 }

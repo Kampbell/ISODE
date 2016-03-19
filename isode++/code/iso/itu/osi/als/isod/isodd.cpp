@@ -367,6 +367,7 @@ class isod: public Poco::Util::ServerApplication
 
 			parser.parse(AEI.toString());
 
+			cout << "listening on port " << port << endl;
 			// set-up a server socket
 			ServerSocket svs(port);
 			// set-up a SocketReactor...

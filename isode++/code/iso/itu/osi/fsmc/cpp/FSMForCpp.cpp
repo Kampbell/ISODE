@@ -48,7 +48,6 @@ void FSMForCpp::generate(const Path& out, bool debug) const {
 		inc << "#ifndef " << define << "_H" << endl;
 		inc << "#define " << define << "_H" << endl;
 
-		inc << "#define SMC_USES_IOSTREAMS" << endl;
 		inc << "#include \"statemap.h\"" << endl;
 
 		openNamespaces(inc);

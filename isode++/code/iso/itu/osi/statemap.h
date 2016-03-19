@@ -43,6 +43,9 @@
 // CHANGE LOG
 // (See bottom of file)
 //
+#if !defined(SMC_USES_IOSTREAMS) || !defined(SMC_USES_FUNCTOR) || !defined(SMC_USES_TRACE)
+#define SMC_USES_IOSTREAMS
+#endif
 
 #if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 #if defined(SMC_USES_IOSTREAMS)
@@ -74,8 +77,6 @@
 #include <cstring>
 #endif
 
-// Limit names to 100 ASCII characters.
-// Why 100? Because it is a round number.
 #define MAX_NAME_LEN 32
 
 namespace statemap {
@@ -410,9 +411,9 @@ class State {
   private:
 };
 
-class Debugger {
+class Logger {
   public:
-	virtual  void operator()() = 0;
+	virtual  void operator()(const char*, ...) = 0;
 };
 class FSMContext {
 	//-----------------------------------------------------------
@@ -495,19 +496,15 @@ class FSMContext {
 		return(this == &fsm);
 	};
 
-	// Returns the debug flag's current setting.
 	bool getDebugFlag() {
 		return(_debug_flag);
 	};
 
-	// Sets the debug flag. A true value means debugging
-	// is on and false means off.
 	void setDebugFlag(bool flag) {
 		_debug_flag = flag;
-		return;
 	};
 
-#ifdef SMC_USES_IOSTREAMS
+#if defined(SMC_USES_IOSTREAMS)
 	// Returns the stream to which debug output is written.
 	std::ostream& getDebugStream() {
 		return (*_debug_stream);
@@ -543,9 +540,12 @@ class FSMContext {
 #endif // ! SMC_FIXED_STACK
 
 		_transition = copyString(transition);
-#ifdef SMC_USES_IOSTREAMS
+#if defined(SMC_USES_IOSTREAMS)
 		if (getDebugFlag() && transition)
 			getDebugStream() << "ENTER TRANSITION: " << transition << std::endl;
+#elif defined(SMC_USES_FUNCTOR)
+		if (getDebugFlag() && transition)
+			log("ENTER TRANSITION : %s", transition);
 
 #endif // SMC_USES_IOSTREAMS
 		return;
@@ -575,14 +575,13 @@ class FSMContext {
 
 		_state = const_cast<State *>(&state);
 
-		if (_debug_flag == true) {
-#ifdef SMC_USES_IOSTREAMS
-			*_debug_stream << "ENTER STATE     : "
-						   << _state->getName()
-						   << std::endl;
+		if (_debug_flag) {
+#if defined(SMC_USES_IOSTREAMS)
+			*_debug_stream << "ENTER STATE     : " << _state->getName() << std::endl;
+#elif defined(SMC_USES_FUNCTOR)
+			log("ENTER STATE     : %s", _state->getName());
 #else
-			TRACE("ENTER STATE     : %s\n",
-				  _state->getName());
+			TRACE("ENTER STATE     : %s\n",  _state->getName());
 #endif // SMC_USES_IOSTREAMS
 		}
 	};
@@ -621,13 +620,12 @@ class FSMContext {
 		_state = const_cast<State *>(&state);
 
 		if (_debug_flag == true) {
-#ifdef SMC_USES_IOSTREAMS
-			*_debug_stream << "PUSH TO STATE   : "
-						   << _state->getName()
-						   << std::endl;
+#if defined(SMC_USES_IOSTREAMS)
+			*_debug_stream << "PUSH TO STATE   : "  << _state->getName()  << std::endl;
+#elif defined(SMC_USES_FUNCTOR)
+			log("PUSH TO STATE   : %s", _state->getName());
 #else
-			TRACE("PUSH TO STATE   : %s\n",
-				  _state->getName());
+			TRACE("PUSH TO STATE   : %s\n", _state->getName());
 #endif // SMC_USES_IOSTREAMS
 		}
 	};
@@ -649,13 +647,12 @@ class FSMContext {
 		_state = _state_stack[_state_stack_depth];
 
 		if (_debug_flag == true) {
-#ifdef SMC_USES_IOSTREAMS
-			*_debug_stream << "POP TO STATE    : "
-						   << _state->getName()
-						   << std::endl;
+#if defined(SMC_USES_IOSTREAMS)
+			*_debug_stream << "POP TO STATE    : " << _state->getName() << std::endl;
+#elif defined(SMC_USES_FUNCTOR)
+			log("POP TO STATE    : %s", _state->getName());
 #else
-			TRACE("POP TO STATE    : %s\n",
-				  _state->getName());
+			TRACE("POP TO STATE    : %s\n",  _state->getName());
 #endif // SMC_USES_IOSTREAMS
 		}
 	};
@@ -700,13 +697,12 @@ class FSMContext {
 		_state = const_cast<State *>(&state);
 
 		if (_debug_flag == true) {
-#ifdef SMC_USES_IOSTREAMS
-			*_debug_stream << "PUSH TO STATE   : "
-						   << _state->getName()
-						   << std::endl;
+#if defined(SMC_USES_IOSTREAMS)
+			*_debug_stream << "PUSH TO STATE   : "  << _state->getName() << std::endl;
+#elif defined(SMC_USES_FUNCTOR)
+			log("PUSH TO STATE   : %s", _state->getName());
 #else
-			TRACE("PUSH TO STATE   : %s\n",
-				  _state->getName());
+			TRACE("PUSH TO STATE   : %s\n",  _state->getName());
 #endif // SMC_USES_IOSTREAMS
 		}
 	};
@@ -732,13 +728,12 @@ class FSMContext {
 		delete entry;
 
 		if (_debug_flag == true) {
-#ifdef SMC_USES_IOSTREAMS
-			*_debug_stream << "POP TO STATE    : "
-						   << _state->getName()
-						   << std::endl;
+#if defined(SMC_USES_IOSTREAMS)
+			*_debug_stream << "POP TO STATE    : "  << _state->getName() << std::endl;
+#elif defined(SMC_USES_FUNCTOR)
+			log("POP TO STATE    : %s", _state->getName());
 #else
-			TRACE("POP TO STATE    : %s\n",
-				  _state->getName());
+			TRACE("POP TO STATE    : %s\n",  _state->getName());
 #endif // SMC_USES_IOSTREAMS
 		}
 	};
@@ -748,13 +743,10 @@ class FSMContext {
 		StateEntry *state_ptr,
 				   *next_ptr;
 
-		for (state_ptr = _state_stack;
-				state_ptr != nullptr;
-				state_ptr = next_ptr) {
+		for (state_ptr = _state_stack; state_ptr != nullptr; state_ptr = next_ptr) {
 			next_ptr = state_ptr->getNext();
 			delete state_ptr;
 		}
-
 		_state_stack = nullptr;
 	};
 #endif // ! SMC_FIXED_STACK
@@ -771,9 +763,11 @@ class FSMContext {
 		  _state_stack(nullptr),
 #endif
 		  _transition(nullptr),
-#ifdef SMC_USES_IOSTREAMS
+#if defined(SMC_USES_IOSTREAMS)
 		  _debug_flag(false),
 		  _debug_stream(&std::cerr)
+#elif defined(SMC_USES_FUNCTOR)
+		  _debug_flag(false)
 #else
 		  _debug_flag(false)
 #endif // SMC_USES_IOSTREAMS
@@ -822,90 +816,15 @@ class FSMContext {
 	bool _debug_flag;
 
 // Include the following only if C++ iostreams are being used.
-#ifdef SMC_USES_IOSTREAMS
+#if defined(SMC_USES_IOSTREAMS)
 	// When FSM debugging is on, debug messages will be
 	// written to this output stream. This stream is set to
 	// standard error by default.
 	std::ostream *_debug_stream;
+#elif defined(SMC_USES_FUNCTOR)
+	Logger&	log;
 #endif // SMC_USES_IOSTREAMS
 
 }; // end of class FSMContext
 }
-
-//
-// CHANGE LOG
-// Log: statemap.h,v
-// Revision 1.19  2014/09/06 19:31:28  fperrad
-// remove hard tab
-//
-// Revision 1.18  2013/07/14 14:32:36  cwrapp
-// check in for release 6.2.0
-//
-// Revision 1.17  2011/11/20 14:58:32  cwrapp
-// Check in for SMC v. 6.1.0
-//
-// Revision 1.16  2010/09/11 19:09:38  fperrad
-// remove \r from debug message
-//
-// Revision 1.15  2009/11/24 20:42:39  cwrapp
-// v. 6.0.1 update
-//
-// Revision 1.14  2009/03/01 18:20:40  cwrapp
-// Preliminary v. 6.0.0 commit.
-//
-// Revision 1.13  2008/05/20 18:31:12  cwrapp
-// ----------------------------------------------------------------------
-//
-// Committing release 5.1.0.
-//
-// Modified Files:
-// 	Makefile README.txt smc.mk tar_list.txt bin/Smc.jar
-// 	examples/Ant/EX1/build.xml examples/Ant/EX2/build.xml
-// 	examples/Ant/EX3/build.xml examples/Ant/EX4/build.xml
-// 	examples/Ant/EX5/build.xml examples/Ant/EX6/build.xml
-// 	examples/Ant/EX7/build.xml examples/Ant/EX7/src/Telephone.java
-// 	examples/Java/EX1/Makefile examples/Java/EX4/Makefile
-// 	examples/Java/EX5/Makefile examples/Java/EX6/Makefile
-// 	examples/Java/EX7/Makefile examples/Ruby/EX1/Makefile
-// 	lib/statemap.jar lib/C++/statemap.h lib/Java/Makefile
-// 	lib/Php/statemap.php lib/Scala/Makefile
-// 	lib/Scala/statemap.scala net/sf/smc/CODE_README.txt
-// 	net/sf/smc/README.txt net/sf/smc/Smc.java
-// ----------------------------------------------------------------------
-//
-// Revision 1.12  2007/12/28 12:34:40  cwrapp
-// Version 5.0.1 check-in.
-//
-// Revision 1.11  2007/08/05 12:58:54  cwrapp
-// Version 5.0.1 check-in. See net/sf/smc/CODE_README.txt for more information.
-//
-// Revision 1.10  2007/01/15 00:23:50  cwrapp
-// Release 4.4.0 initial commit.
-//
-// Revision 1.9  2006/07/11 18:28:22  cwrapp
-// Move SmcException::copyString() to a package-wide routine.
-//
-// Revision 1.8  2006/04/22 12:45:24  cwrapp
-// Version 4.3.1
-//
-// Revision 1.7  2005/06/08 11:09:14  cwrapp
-// + Updated Python code generator to place "pass" in methods with empty
-//   bodies.
-// + Corrected FSM errors in Python example 7.
-// + Removed unnecessary includes from C++ examples.
-// + Corrected errors in top-level makefile's distribution build.
-//
-// Revision 1.6  2005/05/28 18:44:13  cwrapp
-// Updated C++, Java and Tcl libraries, added CSharp, Python and VB.
-//
-// Revision 1.2  2005/02/21 19:01:42  charlesr
-// Changed State::_id to State::_stateId because of Object-C++
-// reserved word conflict.
-//
-// Revision 1.1  2004/05/31 13:44:41  charlesr
-// Added support for non-iostreams output.
-//
-// Revision 1.0  2003/12/14 20:37:49  charlesr
-// Initial revision
-
 #endif

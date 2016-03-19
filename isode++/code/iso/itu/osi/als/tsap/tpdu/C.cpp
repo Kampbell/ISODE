@@ -111,7 +111,7 @@ void	C::tpdusize(nat4 size) {
 	if (k == (1 << (j - 1)))
 		j--;
 #else
-	int tpdusize;
+	int tpdusize = 0;
 	switch (size) {
 		case 8192: tpdusize = SIZE_8K; break;
 		case 4096: tpdusize = SIZE_4K; break;
@@ -120,7 +120,11 @@ void	C::tpdusize(nat4 size) {
 		case 512:  tpdusize = SIZE_512; break;
 		case 256:  tpdusize = SIZE_256; break;
 		case 128:  tpdusize = SIZE_128; break;
-		default:   tp_prefered_tpdusize = size;
+		default:   
+			if (size % 128 == 0)
+				tp_prefered_tpdusize = size;
+			else
+				throw  InvalidArgumentException();
 	}
 #endif
 	if (tp_prefered_tpdusize > 0) {

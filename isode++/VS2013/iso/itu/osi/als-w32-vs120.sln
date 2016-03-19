@@ -144,10 +144,56 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "acsap", "acsap", "{1C007E96
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "X.200", "X.200", "{1566C51E-2242-4955-8646-C332855C0714}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.200-199407-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.200-199407-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.207-199311-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.207-199311-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.210-199311-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.210-199311-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.211-199511-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.211-199511-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.212-199511-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.212-199511-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.213-200110-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.213-200110-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.214-199311-S!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.214-199311-S!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.214-199511-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.214-199511-I!!PDF-E.pdf
 		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.215-199511-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.215-199511-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.215-199708-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.215-199708-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.215-199712-I!Amd2!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.215-199712-I!Amd2!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.215-200003-I!Cor1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.215-200003-I!Cor1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.216-199407-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.216-199407-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.216-199708-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.216-199708-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.216-199712-I!Amd2!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.216-199712-I!Amd2!PDF-E.pdf
 		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.217-199504-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.217-199504-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.217-199610-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.217-199610-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.217-199708-I!Amd2!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.217-199708-I!Amd2!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.217bis-199809-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.217bis-199809-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.218-199303-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.218-199303-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.219-198811-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.219-198811-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.220-199303-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.220-199303-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.222-199504-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.222-199504-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.222-199610-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.222-199610-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.223-199311-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.223-199311-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.223-199610-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.223-199610-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.224-199311-S!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.224-199311-S!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.224-199511-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.224-199511-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.224-199708-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.224-199708-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-198811-S!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-198811-S!!PDF-E.pdf
 		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-199511-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-199511-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-199511-S!Add1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-199511-S!Add1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-199708-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-199708-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-199712-I!Amd2!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-199712-I!Amd2!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-200003-I!Cor1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.225-200003-I!Cor1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.226-199407-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.226-199407-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.226-199708-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.226-199708-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.226-199712-I!Amd2!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.226-199712-I!Amd2!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.227-199504-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.227-199504-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.227-199610-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.227-199610-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.227-199708-I!Amd2!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.227-199708-I!Amd2!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.227bis-199809-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.227bis-199809-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.229-198811-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.229-198811-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.236-199504-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.236-199504-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.236-199906-I!Amd1!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.236-199906-I!Amd1!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.260-199610-I!!PDF-E.pdf = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.260-199610-I!!PDF-E.pdf
+		..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.Imp200-200612-I!!MSW-E.doc = ..\..\..\..\..\ITU-T\X Series\X.200\T-REC-X.Imp200-200612-I!!MSW-E.doc
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "trial\Test\Test.vcxproj", "{61B54997-D2E5-45A8-ACC9-15605985638D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -271,6 +317,12 @@ Global
 		{12AF759E-04E8-4293-8803-AD728C52B520}.Debug|x64.ActiveCfg = Debug|Win32
 		{12AF759E-04E8-4293-8803-AD728C52B520}.Release|Win32.ActiveCfg = Release|Win32
 		{12AF759E-04E8-4293-8803-AD728C52B520}.Release|x64.ActiveCfg = Release|Win32
+		{61B54997-D2E5-45A8-ACC9-15605985638D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{61B54997-D2E5-45A8-ACC9-15605985638D}.Debug|Win32.Build.0 = Debug|Win32
+		{61B54997-D2E5-45A8-ACC9-15605985638D}.Debug|x64.ActiveCfg = Debug|Win32
+		{61B54997-D2E5-45A8-ACC9-15605985638D}.Release|Win32.ActiveCfg = Release|Win32
+		{61B54997-D2E5-45A8-ACC9-15605985638D}.Release|Win32.Build.0 = Release|Win32
+		{61B54997-D2E5-45A8-ACC9-15605985638D}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -302,5 +354,6 @@ Global
 		{12AF759E-04E8-4293-8803-AD728C52B520} = {F811E546-1205-49CE-A0AA-D8328AABA958}
 		{4B6AEBF9-2DD2-4E73-B1E0-A20ACDA8AA74} = {2367B5BC-731C-4B97-97BD-D388BC5C085E}
 		{1C007E96-C9F5-453C-B7B8-34F0537C4F62} = {2367B5BC-731C-4B97-97BD-D388BC5C085E}
+		{61B54997-D2E5-45A8-ACC9-15605985638D} = {48E6B60A-B56F-4831-9B5D-5CF2FD26FA78}
 	EndGlobalSection
 EndGlobal

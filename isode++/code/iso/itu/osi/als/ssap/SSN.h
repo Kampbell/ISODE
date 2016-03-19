@@ -14,27 +14,25 @@ using std::string;
 
 namespace ALS {
 namespace SSAP {
+/** The Constant SERIAL_NONE. */
+static const int	SERIAL_NONE = -1;		// No SSN
+/** The Constant SERIAL_MIN with value 000 000. */
+static const int	SERIAL_MIN = 000000;	// the min SSN
+/** The Constant SERIAL_MAX with value 999 998. */
+static const int	SERIAL_MAX = 999998;	// the max SSN
+
+static const int	UPPER_LIMIT_SERIAL_NUMBER = 6;
 
 class SSAP_API SSN {
-public:
-	/** The Constant SERIAL_NONE. */
-	static const int	SERIAL_NONE = -1;		// No SSN
-	/** The Constant SERIAL_MIN with value 000 000. */
-	static const int	SERIAL_MIN = 000000;	// the min SSN
-	/** The Constant SERIAL_MAX with value 999 998. */
-	static const int	SERIAL_MAX = 999998;	// the max SSN
-
-	static const int	UPPER_LIMIT_SERIAL_NUMBER = 6;
-
 private:
 	static const int	SIZE_CN_ISN = 6;
-	int	serial = SERIAL_NONE;
+	nat4	serial;
 
 public:
-	SSN() {
+	SSN() : serial(SERIAL_NONE){
 	}
 	SSN(int ssn) {
-		if (!isValid((int)ssn)) {
+		if (!isValid(ssn)) {
 			throw  1;// RuntimeException("invalid SSN: " + ssn);
 		}
 		serial = ssn;
@@ -43,9 +41,10 @@ public:
 		this->serial = ssn.serial;
 	}
 	~SSN() {
+		serial = SERIAL_NONE;
 	}
 	int			ssn() const { return serial;	}
-	const SSN&	ssn(int ssn) {
+	const SSN&	ssn(nat4 ssn) {
 		if (!isValid(ssn)) {
 			throw  1;//  RuntimeException();
 		}

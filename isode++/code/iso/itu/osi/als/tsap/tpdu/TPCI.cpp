@@ -133,7 +133,7 @@ int	TPCI::encode(unique_ptr<NetworkBuffer>& nsdu) {
 void TPCI::addData(unique_ptr<NetworkBuffer>& nsdu) {
 	poco_assert(!(tp_buffer != nullptr && tp_data != nullptr));
 	if (tp_buffer != nullptr) {
-		nsdu->putBytes(tp_buffer->remaining(), tp_buffer->here());
+		nsdu->putBytes(tp_buffer->remaining(), tp_buffer->bytes());
 		tp_buffer = nullptr;tp_len = 0;
 	} else
 	if (tp_len > 0 && tp_data != nullptr) {

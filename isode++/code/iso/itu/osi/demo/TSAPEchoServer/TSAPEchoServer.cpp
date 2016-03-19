@@ -41,7 +41,7 @@ TSAPEchoServer::provider() {
 }
 ReturnCode TSAPEchoServer::TConnectIndication(const TSAPAddr& callingAddr, const TSAPAddr& calledAddr, bool expedited, int tsdusize, const QualityOfService& qualityOfService, int cc, const byte* data) {
 	try {
-		tsap_serv_provider->TConnectResponse(calledAddr, false, qualityOfService);
+		tsap_serv_provider->TConnectResponse(calledAddr, expedited, qualityOfService);
 	} catch (const Poco::Exception& e) {
 		tsap_serv_provider->logger().error(e.message());
 	}
@@ -76,8 +76,14 @@ ReturnCode TSAPEchoServer::TDataIndication(const SharedNetworkBuffer& data) {
 	tsap_serv_provider->TDataRequest(offset, tosend.get());
 	return DONE;
 }
-ReturnCode TSAPEchoServer::TExpeditedDataIndication(int cc, const byte* data) {
-	tsap_serv_provider->TExpeditedDataRequest();
+ReturnCode TSAPEchoServer::TExpeditedDataIndication(const SharedNetworkBuffer& data) {
+	const byte* bytes = nullptr;
+	int cc = 0;
+	if (data && data->hasRemaining()) {
+		cc = data->remaining();
+		bytes = data->bytes();
+	}
+	tsap_serv_provider->TExpeditedDataRequest(cc, bytes);
 	return DONE;
 }
 ReturnCode TSAPEchoServer::TDisconnectIndication(int reason, const string& data) {

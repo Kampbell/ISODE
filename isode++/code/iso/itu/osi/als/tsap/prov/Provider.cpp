@@ -307,11 +307,12 @@ ReturnCode Provider::TConnectResponse(const TSAPAddr& responding, bool expedited
 			}
 		} else {
 			if (tb_tpdusize > SIZE_MAXTP0) {
-				tb_tsdusize = SIZE_MAXTP0-tb_tpduslop;
+				tb_tpdusize = SIZE_MAXTP0;
+				tb_tsdusize = tb_tpdusize-tb_tpduslop;
 			}
 
 			if (tb_tpdusize != SIZE_DFLT) {
-				tpdu_cc.tpdusize(tb_tsdusize);
+				tpdu_cc.tpdusize(tb_tpdusize);
 			}
 		}
 
@@ -368,19 +369,14 @@ ReturnCode Provider::TDataRequest(int cc, const byte* data) {
 }
 ReturnCode Provider::TExpeditedDataRequest(int cc, const byte* data) {
 	ReturnCode rc = OK;
+	TtoomuchP (cc, data, TX_SIZE);
 	try {
 		tb_logger->TExpeditedDataRequest(cc, data);
-		FSM<Provider>::TEXreq();
+		FSM<Provider>::TEXreq(cc, data);
 	} catch (statemap::SmcException& e) {
 		rc = serviceException(e);
 	}
 	return rc;
-}
-ReturnCode Provider::NResetIndication(const NSAPAddr& originator, int reason) {
-	return DONE;
-}
-ReturnCode Provider::NResetConfirmation() {
-	return DONE;
 }
 ReturnCode Provider::TDisconnectRequest(int reason, const TSAPAddr& responding, int cc, const byte* data) {
 	tb_logger->TDisconnectRequest(reason, responding, cc, data);
@@ -391,6 +387,12 @@ ReturnCode Provider::TDisconnectRequest(int reason, const TSAPAddr& responding, 
 		rc = serviceException(e);
 	}
 	return rc;
+}
+ReturnCode Provider::NResetIndication(const NSAPAddr& originator, int reason) {
+	return DONE;
+}
+ReturnCode Provider::NResetConfirmation() {
+	return DONE;
 }
 ReturnCode Provider::NConnectIndication(const NSAPAddr& responding, bool receiptConfirmationSelection, bool expeditedDataSelection, const QualityOfService& qualityOfService, const QualityOfServiceParameters& qosp, int cc, const byte* data) {
 	poco_assert(nsap_serv_responder != nullptr);
@@ -656,7 +658,8 @@ ReturnCode Provider::NDataIndication(const SharedNetworkBuffer& nsdu) {
 			}
 			rc = indications().TExpeditedDataIndication(tex);
 #endif
-			FSM<Provider>::ED();
+			FSM<Provider>::ED(nsdu);
+			tb_qbuf.reset();
 		}
 		break;
 
@@ -779,10 +782,10 @@ void Provider::TDTind(const SharedNetworkBuffer& tsdu) {
 }
 // ---------------------------------------------------------------------------------
 // TS-provider 	T-EXPEDITED DATA indication primitive
-void Provider::TEXind() {
-	tb_logger->TExpeditedDataIndication();
+void Provider::TEXind(const SharedNetworkBuffer& tsdu) {
+	tb_logger->TExpeditedDataIndication(tsdu);
 	poco_assert(tsap_user_dataIndication != nullptr);
-	tsap_user_dataIndication->TExpeditedDataIndication();
+	tsap_user_dataIndication->TExpeditedDataIndication(tsdu);
 }
 // ---------------------------------------------------------------------------------
 // TS-provider 	T-DISCONNECT indication primitive
@@ -890,8 +893,10 @@ void Provider::DT(TPDU::DT& dt) {
 }
 // ---------------------------------------------------------------------------------
 // TPDU 			Expedited Data
-void Provider::ED(TPDU::ED& ed) {
+void Provider::ED(int cc, const byte* data) {
 	unique_ptr<NetworkBuffer>	nsdu((nullptr_t)nullptr);
+	TPDU::ED ed;
+	ed.setData(cc, data);
 	ed.encode(nsdu);
 	nsap_data_request->NDataRequest(nsdu.get());
 }
@@ -995,7 +1000,7 @@ ReturnCode Provider::tsapPsig() const {
 
 ReturnCode Provider::TmissingP(void* p, const string& s)  const {
 	if (p == nullptr) {
-		return tsaplose(Disconnect::DR_PARAMETER, nullptr, "missing mandatory parameter: " , s);
+		return tsaplose(Disconnect::DR_PARAMETER, nullptr, "missing mandatory parameter: %s" , s);
 	}
 	return OK;
 }

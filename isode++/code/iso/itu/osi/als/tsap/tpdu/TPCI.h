@@ -48,7 +48,7 @@ protected:
 public:
 	byte			li() const		{ return tp_li; }
 	byte			code() const	{ return tp_code; }
-	NetworkBuffer*			data() const	{ return tp_buffer; }
+	NetworkBuffer*	data() const	{ return tp_buffer; }
 
 	static TPCI*	decodeTPDU(NetworkBuffer* nsdu);
 	virtual int		encode(unique_ptr<NetworkBuffer>& nsdu) = 0;
@@ -68,12 +68,12 @@ protected:
 	void			addData(unique_ptr<NetworkBuffer>& nsdu);
 
 protected:
-	int			tp_len;
-	const byte*	tp_data;
-	NetworkBuffer*		tp_buffer;
+	int				tp_len;
+	const byte*		tp_data;
+	NetworkBuffer*	tp_buffer;
 
-	byte		tp_li;
-	byte		tp_code;
+	byte			tp_li;
+	byte			tp_code;
 
 
 private:

@@ -437,7 +437,7 @@ STA01A 	// Wait for the ABORT ACCEPT SPDU
 
 //	Activity start, resume and capability data -----------------------------------------------------
 	AR																	STA01A	{}
-	AS																	STA01A	{}
+	AS(id: const ActivityId&)											STA01A	{}
 	CD																	STA01A	{}
 	CDA																	STA01A	{}
 
@@ -519,7 +519,7 @@ STA01C 	// Idle, transport connected
 
 //	Activity start, resume and capability data -----------------------------------------------------
 	AR																	STA01	{TDISreq();}
-	AS																	STA01	{TDISreq();}
+	AS(id: const ActivityId&)											STA01	{TDISreq();}
 	CD																	STA01	{TDISreq();}
 	CDA																	STA01	{TDISreq();}
 
@@ -581,7 +581,7 @@ STA01D 	// Wait for the CONNECT DATA OVERFLOW SPDU
 
 //	Activity start, resume and capability data -----------------------------------------------------
 	AR																	STA01	{TDISreq();}
-	AS																	STA01	{TDISreq();}
+	AS(id: const ActivityId&)											STA01	{TDISreq();}
 	CD																	STA01	{TDISreq();}
 	CDA																	STA01	{TDISreq();}
 
@@ -1252,7 +1252,7 @@ STA15B 	// After PREPARE, wait for the RESYNCHRONIZE SPDU or the ACTIVITY INTERR
 
 //	Activity start, resume and capability data -----------------------------------------------------
 	AR(ssn: nat4)					[p44()]								STA15B	{SACTRind();SA12();SA27(ssn);}
-	AS								[p44()]								STA15B	{SACTSind();SA12();SA26();}
+	AS(id: const ActivityId&)		[p44()]								STA15B	{SACTSind(id);SA12();SA26();}
 
 //	Token management & exception -------------------------------------------------------------------
 	GT(tokens: int)					[p59(tokens)&&p185()]				STA15B	{}
@@ -1377,7 +1377,7 @@ STA15D 	// After PREPARE, wait for the ABORT SPDU
 
 //	Activity start, resume and capability data -----------------------------------------------------
 	AR																	STA15D	{}
-	AS																	STA15D	{}
+	AS(id: const ActivityId&)											STA15D	{}
 	CD																	STA15D	{}
 	CDA																	STA15D	{}
 	SACTRreq															STA15D	{}
@@ -1448,7 +1448,7 @@ STA16 	// Wait for T-DISCONNECT indication
 
 //	Activity start, resume and capability data -----------------------------------------------------
 	AR																	STA16	{}
-	AS																	STA16	{}
+	AS(id: const ActivityId&)											STA16	{}
 	CD																	STA16	{}
 	CDA																	STA16	{}
 
@@ -1696,7 +1696,7 @@ STA713 	// Data transfer state
 
 //	Activity start, resume and capability data -----------------------------------------------------
 	AR(ssn: nat4)					[p44()]								STA713	{SACTRind();SA12();SA27(ssn);SA6();}
-	AS								[p44()]								STA713	{SACTSind();SA12();SA26();SA6();}
+	AS(id: const ActivityId&)		[p44()]								STA713	{SACTSind(id);SA12();SA26();SA6();}
 	CD								[p64()]								STA22	{SCDind();}
 	SACTRreq(ssn: nat4)				[p45()]								STA713	{AR();SA12();SA27(ssn);}
 	SACTSreq(id:const ActivityId&, cc: int, data:  const void*)

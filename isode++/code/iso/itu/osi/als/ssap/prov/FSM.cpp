@@ -89,7 +89,7 @@ namespace ALS {
 			void ProviderState::AR(FSM<Provider>& context, nat4 ssn) {
 			     Default(context);
 			}
-			void ProviderState::AS(FSM<Provider>& context) {
+			void ProviderState::AS(FSM<Provider>& context, const ActivityId& id) {
 			     Default(context);
 			}
 			void ProviderState::CD(FSM<Provider>& context) {
@@ -576,7 +576,7 @@ namespace ALS {
 			};
 			
 			// ----------------------------------------------------
-			void SSAP_STA01A::AS(FSM<Provider>& context) {
+			void SSAP_STA01A::AS(FSM<Provider>& context, const ActivityId& id) {
 				Provider& ctxt = context.getOwner();
 				
 				(context.getState()).Exit(context);
@@ -1124,7 +1124,7 @@ namespace ALS {
 			};
 			
 			// ----------------------------------------------------
-			void SSAP_STA01C::AS(FSM<Provider>& context) {
+			void SSAP_STA01C::AS(FSM<Provider>& context, const ActivityId& id) {
 				Provider& ctxt = context.getOwner();
 				
 				(context.getState()).Exit(context);
@@ -1558,7 +1558,7 @@ namespace ALS {
 			};
 			
 			// ----------------------------------------------------
-			void SSAP_STA01D::AS(FSM<Provider>& context) {
+			void SSAP_STA01D::AS(FSM<Provider>& context, const ActivityId& id) {
 				Provider& ctxt = context.getOwner();
 				
 				(context.getState()).Exit(context);
@@ -6739,19 +6739,19 @@ namespace ALS {
 			};
 			
 			// ----------------------------------------------------
-			void SSAP_STA15B::AS(FSM<Provider>& context) {
+			void SSAP_STA15B::AS(FSM<Provider>& context, const ActivityId& id) {
 				Provider& ctxt = context.getOwner();
 				
 				if (ctxt.p44()) {
 					(context.getState()).Exit(context);
 					context.setState(context.STA15B);
 					(context.getState()).Entry(context);
-					ctxt.SACTSind();
+					ctxt.SACTSind(id);
 					ctxt.SA12();
 					ctxt.SA26();
 				} else 
 				{
-				     SSAP_Default::AS(context);
+				     SSAP_Default::AS(context, id);
 				}
 				return;
 			};
@@ -7723,7 +7723,7 @@ namespace ALS {
 			};
 			
 			// ----------------------------------------------------
-			void SSAP_STA15D::AS(FSM<Provider>& context) {
+			void SSAP_STA15D::AS(FSM<Provider>& context, const ActivityId& id) {
 				Provider& ctxt = context.getOwner();
 				
 				(context.getState()).Exit(context);
@@ -8237,7 +8237,7 @@ namespace ALS {
 			};
 			
 			// ----------------------------------------------------
-			void SSAP_STA16::AS(FSM<Provider>& context) {
+			void SSAP_STA16::AS(FSM<Provider>& context, const ActivityId& id) {
 				Provider& ctxt = context.getOwner();
 				
 				(context.getState()).Exit(context);
@@ -10200,20 +10200,20 @@ namespace ALS {
 			};
 			
 			// ----------------------------------------------------
-			void SSAP_STA713::AS(FSM<Provider>& context) {
+			void SSAP_STA713::AS(FSM<Provider>& context, const ActivityId& id) {
 				Provider& ctxt = context.getOwner();
 				
 				if (ctxt.p44()) {
 					(context.getState()).Exit(context);
 					context.setState(context.STA713);
 					(context.getState()).Entry(context);
-					ctxt.SACTSind();
+					ctxt.SACTSind(id);
 					ctxt.SA12();
 					ctxt.SA26();
 					ctxt.SA6();
 				} else 
 				{
-				     SSAP_Default::AS(context);
+				     SSAP_Default::AS(context, id);
 				}
 				return;
 			};

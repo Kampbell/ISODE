@@ -51,7 +51,7 @@ public:
 
 	virtual ReturnCode TConnectIndication(const TSAPAddr& callingAddr, const TSAPAddr& calledAddr, bool expedited, int tsdusize, const QualityOfService& qualityOfService, int cc = 0, const byte* data = nullptr);
 	virtual ReturnCode TDataIndication(const SharedNetworkBuffer& data);
-	virtual ReturnCode TExpeditedDataIndication(int cc = 0, const byte* data = nullptr);
+	virtual ReturnCode TExpeditedDataIndication(const SharedNetworkBuffer& data);
 	virtual ReturnCode TDisconnectIndication(int reason, const string& data);
 	virtual ReturnCode TSetSSAPServices(const ALS::BASE::SRVC::SSAPServices* ssapServices) { return OK; }
 

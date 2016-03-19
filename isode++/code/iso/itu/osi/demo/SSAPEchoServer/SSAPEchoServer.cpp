@@ -216,12 +216,12 @@ ReturnCode SSAPEchoServer::SConnectIndication(
 	ssap().logger()->info("owned tokens: " + Token::responder(owned));
 
 	if (!(requirements[MINORSYNC] || requirements[MAJORSYNC] || requirements[RESYNCHRONIZE])) {
-		firstInitialSSN = SSN::SERIAL_NONE;
-		secondInitialSSN = SSN::SERIAL_NONE;
+		firstInitialSSN = SERIAL_NONE;
+		secondInitialSSN = SERIAL_NONE;
 	}
 	else {
-		firstInitialSSN = SSN::SERIAL_MIN;
-		secondInitialSSN = SSN::SERIAL_MIN;
+		firstInitialSSN = SERIAL_MIN;
+		secondInitialSSN = SERIAL_MIN;
 	}
 
 	rc = OK;
@@ -304,7 +304,7 @@ ReturnCode SSAPEchoServer::SDataIndication(const SharedNetworkBuffer& data) {
 		return DONE;
 
 	if (requirements[HALFDUPLEX]) {
-		if (hx) { // && hx->length() > 0) {
+		if (hx) {
 			text = "protocol screw-up";
 			if (ssap().SUAbortRequest(0, text) == NOTOK)
 				rc = ss_adios(Literal::S_U_ABORT_REQUEST);
@@ -328,12 +328,13 @@ ReturnCode SSAPEchoServer::SDataIndication(const SharedNetworkBuffer& data) {
 	return rc; 
 }
 ReturnCode SSAPEchoServer::SCapabilityDataIndication(const SharedNetworkBuffer& data) {
-	byte* p = nullptr;
+	byte* p = nullptr;int cc = 0;
 
-	if (data.get() != nullptr) {
-//		p = data.bytes();
+	if (data && data->hasRemaining()) {
+		p = data->bytes();
+		cc = data->remaining();
 	}
-	if (ssap().SCapabilityDataResponse(0, p) == NOTOK)
+	if (ssap().SCapabilityDataResponse(cc, p) == NOTOK)
 		ss_adios(Literal::S_CAPABILITY_DATA_RESPONSE);
 
 	return DONE; 
@@ -344,20 +345,33 @@ ReturnCode SSAPEchoServer::SCapabilityDataConfirmation(const SharedNetworkBuffer
 }
 ReturnCode SSAPEchoServer::SExpeditedDataIndication(const SharedNetworkBuffer& data) {
 	byte* p = nullptr;
+	int cc = 0;
+
+	if (data && data->hasRemaining()) {
+		p = data->bytes();
+		cc = data->remaining();
+	}
 
 	if (mode == echo) {
-//		p = data->bytes();
-		if (ssap().SExpeditedDataRequest(0, p) == NOTOK)
+		p = data->bytes();
+		if (ssap().SExpeditedDataRequest(cc, p) == NOTOK)
 			ss_adios(Literal::S_EXPEDITED_DATA_REQUEST);
 	}
 	return DONE; 
 }
-ReturnCode SSAPEchoServer::STypedDataIndication(const SharedNetworkBuffer& dataL) {
+ReturnCode SSAPEchoServer::STypedDataIndication(const SharedNetworkBuffer& data) {
 	byte* p = nullptr;
+	int cc = 0;
+
+	if (data && data->hasRemaining()) {
+		p = data->bytes();
+		cc = data->remaining();
+	}
+
 
 	if (mode == echo) {
-//		p = data.bytes();
-		if (ssap().STypedDataRequest(0, p) == NOTOK)
+		p = data->bytes();
+		if (ssap().STypedDataRequest(cc, p) == NOTOK)
 			ss_adios(Literal::S_TYPED_DATA_REQUEST);
 	}
 	return DONE; 
@@ -393,6 +407,31 @@ ReturnCode SSAPEchoServer::SPExceptionReportIndication(int reason) {
 	return DONE; 
 }
 ReturnCode SSAPEchoServer::SResynchronizeIndication(const ResyncOption& firstResync, const SSN& firstSSN, const ResyncOption& secondResync, const SSN& secondSSN, int settings, int cc, const void* data) { 
+#ifdef ISODE
+#define	dotoken(requires,shift,bit,type) \
+{ \
+	    if (requirements.has(requires)) \
+		switch (settings & (CHOICE_MASK << shift)) { \
+		    case CALLED_VALUE << shift: \
+			settings &= ~(CHOICE_MASK << shift); \
+			settings |= RESPONDER_VALUE << shift; \
+		    case RESPONDER_VALUE << shift: \
+			owned.add(bit); \
+			break; \
+ \
+		    case INITIATOR_VALUE << shift: \
+			owned.rem(bit); \
+			break; \
+ \
+		    default: \
+			return adios (nullptr, format("%s token: reserved", type)); \
+			break; \
+		} \
+}
+		dotokens ();
+#undef	dotoken
+
+#else
 	if (requirements.has(RELEASE_UNIT_EXISTS)) {
 		switch (selectReleaseToken(settings)) {
 		case RELEASE_TOKEN_AS_CALLED_CHOICE:
@@ -468,10 +507,11 @@ ReturnCode SSAPEchoServer::SResynchronizeIndication(const ResyncOption& firstRes
 			break;
 		}
 	}
+#endif // ISODE
 
 	SSN firstAbandonSSN;
 	SSN secondAbandonSSN;
-	if (ssap().SResynchronizeRequest(ABANDON, firstAbandonSSN, ABANDON, secondAbandonSSN, settings, 0, mode == echo ? data : nullptr) == NOTOK)
+	if (ssap().SResynchronizeRequest(ABANDON, firstAbandonSSN, ABANDON, secondAbandonSSN, settings, mode == echo ? cc : 0, mode == echo ? data : nullptr) == NOTOK)
 		return ss_adios(Literal::S_RESYNCHRONIZE_REQUEST);
 
 	return DONE; 

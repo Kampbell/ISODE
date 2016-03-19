@@ -7,6 +7,10 @@
 
 #ifndef ALS_SSAP_SPDU_SERIAL_H_
 #define ALS_SSAP_SPDU_SERIAL_H_
+#include "als/ssap/Exception.h"
+#include "als/ssap/AbortCode.h"
+using ALS::SSAP::Exception;
+using ALS::SSAP::AbortCode;
 #include "als/ssap/spdu/pi/PI.h"
 
 namespace ALS {
@@ -23,8 +27,10 @@ public:
 	}
 	SERIAL(NetworkBuffer& tsdu) : PI(PI_SERIAL, tsdu) {
 		char ssnc[SIZE_CN_ISN + 1];
-		tsdu.getBytes(SIZE_CN_ISN, ssnc);
-		ssnc[SIZE_CN_ISN] = 0;
+		if (pli() > SIZE_CN_ISN)
+			throw Exception(AbortCode::SC_PROTOCOL);
+		tsdu.getBytes(pli(), ssnc);
+		ssnc[pli()] = 0;
 		ssn = strtol(ssnc, nullptr, 10);
 	}
 	virtual ~SERIAL() {

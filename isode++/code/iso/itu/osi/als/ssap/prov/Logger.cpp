@@ -270,19 +270,23 @@ ReturnCode Logger::SUExceptionReportRequest(int reason, int cc, const void* data
 	return OK;
 }
 ReturnCode Logger::SResynchronizeRequest(const ResyncOption& firstResync, const SSN& firstSSN, const ResyncOption& secondResync, const SSN& secondSSN, int settings, int cc, const void* data) { 
-	trace(prefix + "firstResync=%?d, firstSSN=%?d, settings=%s, cc=%?d", REQUEST, ::SResynchronizeRequest, firstResync, (int)firstSSN, NumberFormatter::formatHex(settings, true), cc);
+	string resyncAsString = resync_to_string(firstResync);
+	trace(prefix + "resync=%s, ssn=%?d, settings=%s, cc=%?d", REQUEST, ::SResynchronizeRequest, resyncAsString, (int)firstSSN, NumberFormatter::formatHex(settings, true), cc);
 	return OK;
 }
 ReturnCode Logger::SResynchronizeResponse(const ResyncOption& firstResync, const SSN& firstSSN, const ResyncOption& secondResync, const SSN& secondSSN, int settings, int cc, const void* data) { 
-	trace(prefix + "settings=%s, cc=%?d", RESPONSE, ::SResynchronizeResponse,  NumberFormatter::formatHex(settings, true), cc);
+	string resyncAsString = resync_to_string(firstResync);
+	trace(prefix + "resync=%s, ssn=%?d, settings=%s, cc=%?d", RESPONSE, ::SResynchronizeResponse,  resyncAsString, (int)firstSSN, NumberFormatter::formatHex(settings, true), cc);
 	return OK;
 }
 ReturnCode Logger::SResynchronizeIndication(const ResyncOption& firstResync, const SSN& firstSSN, const ResyncOption& secondResync, const SSN& secondSSN, int settings, int cc, const void* data) { 
-	trace(prefix + "resync=%s, ssn=%?d, settings=%s, cc=%?d", INDICATION, ::SResynchronizeIndication, resync_to_string(firstResync), (int)firstSSN, NumberFormatter::formatHex(settings, true), cc);
+	string resyncAsString = resync_to_string(firstResync);
+	trace(prefix + "resync=%s, ssn=%?d, settings=%s, cc=%?d", INDICATION, ::SResynchronizeIndication, resyncAsString, (int)firstSSN, NumberFormatter::formatHex(settings, true), cc);
 	return DONE;
 }
 ReturnCode Logger::SResynchronizeConfirmation(const ResyncOption& firstResync, const SSN& firstSSN, const ResyncOption& secondResync, const SSN& secondSSN, int settings, int cc, const void* data) { 
-	trace(prefix + "resync=%s, settings=%s, cc=%?d", CONFIRMATION, ::SResynchronizeConfirmation, resync_to_string(firstResync), NumberFormatter::formatHex(settings, true), cc);
+	string resyncAsString = resync_to_string(firstResync);
+	trace(prefix + "resync=%s, ssn=%?d, settings=%s, cc=%?d", CONFIRMATION, ::SResynchronizeConfirmation, resyncAsString, (int)firstSSN,  NumberFormatter::formatHex(settings, true), cc);
 	return DONE;
 }
 ReturnCode Logger::SSyncMajorRequest(SSN& firstSSN, int cc, const void* data) { 

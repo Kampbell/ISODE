@@ -43,21 +43,25 @@
 	#endif
 #endif
 
-/** The EXPEDITED DATA maximum size. */
-// EXPEDITED DATA (XSSDU) only
-const int	SX_EXSIZE = 14;
 
-/** The CAPABILITY DATA maximum size. */
-// CAPABILITY DATA only
-const int	SX_CDSIZE = 512;
+namespace ALS {
+	namespace SSAP {
+	/** The EXPEDITED DATA maximum size. */
+	// EXPEDITED DATA (XSSDU) only
+	const int	SX_EXSIZE = 14;
 
-/** The CAPABILITY DATA ACKNOWLEDGE maximum size. */
-// CAPABILITY DATA ACK only
-const int	SX_CDASIZE = 512;
+	/** The CAPABILITY DATA maximum size. */
+	// CAPABILITY DATA only
+	const int	SX_CDSIZE = 512;
 
-// someday support CDO/OA SPDUs and Data Overflow PI...
-const int	MAX_CONNECT_DATA_SIZE = 10240;
+	/** The CAPABILITY DATA ACKNOWLEDGE maximum size. */
+	// CAPABILITY DATA ACK only
+	const int	SX_CDASIZE = 512;
 
+	// someday support CDO/OA SPDUs and Data Overflow PI...
+	const int	MAX_CONNECT_DATA_SIZE = 10240;
+	}
+}
 #define	dotokens() \
 { \
     dotoken (RELEASE_UNIT_EXISTS, RELEASE_SHIFT, RELEASE_TOKEN, RELEASE_LITERAL); \

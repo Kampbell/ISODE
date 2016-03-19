@@ -35,19 +35,19 @@ namespace ALS {
 			BinaryOutputStream& BinaryOutputStream::operator << (bool value) {
 				if (position() + sizeof(value) > limit())
 					throw RangeException(exception(sizeof(value)));
-				*(bool*)here() = value; position() += sizeof(value);
+				*(bool*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (char value) {
 				if (position() + sizeof(value) > limit())
 					throw RangeException(exception(sizeof(value)));
-				*(char*)here() = value; position() += sizeof(value);
+				*(char*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (int1 value) {
 				if (position() + sizeof(value) > limit())
 					throw RangeException(exception(sizeof(value)));
-				*(int1*)here() = value; position() += sizeof(value);
+				*(int1*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (int2 value) {
@@ -55,7 +55,7 @@ namespace ALS {
 					throw RangeException(exception(sizeof(value)));
 				if (flipbytes)
 					value = ByteOrder::toNetwork(value);
-				*(int2*)here() = value; position() += sizeof(value);
+				*(int2*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (int4 value) {
@@ -63,7 +63,7 @@ namespace ALS {
 					throw RangeException(exception(sizeof(value)));
 				if (flipbytes)
 					value = ByteOrder::toNetwork(value);
-				*(int4*)here() = value; position() += sizeof(value);
+				*(int4*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (int8 value) {
@@ -71,13 +71,13 @@ namespace ALS {
 					throw RangeException(exception(sizeof(value)));
 				if (flipbytes)
 					value = ByteOrder::toNetwork(value);
-				*(int8*)here() = value; position() += sizeof(value);
+				*(int8*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (nat1 value) {
 				if (position() + sizeof(value) > limit())
 					throw RangeException(exception(sizeof(value)));
-				*(nat1*)here() = value; position() += sizeof(value);
+				*(nat1*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (nat2 value) {
@@ -85,7 +85,7 @@ namespace ALS {
 					throw RangeException(exception(sizeof(value)));
 				if (flipbytes)
 					value = ByteOrder::toNetwork(value);
-				*(nat2*)here() = value; position() += sizeof(value);
+				*(nat2*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (nat4 value) {
@@ -93,7 +93,7 @@ namespace ALS {
 					throw RangeException(exception(sizeof(value)));
 				if (flipbytes)
 					value = ByteOrder::toNetwork(value);
-				*(nat4*)here() = value; position() += sizeof(value);
+				*(nat4*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (nat8 value) {
@@ -101,38 +101,38 @@ namespace ALS {
 					throw RangeException(exception(sizeof(value)));
 				if (flipbytes)
 					value = ByteOrder::toNetwork(value);
-				*(nat8*)here() = value; position() += sizeof(value);
+				*(nat8*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (float value) {
 				if (position() + sizeof(value) > limit())
 					throw RangeException(exception(sizeof(value)));
-				*(float*)here() = value; position() += sizeof(value);
+				*(float*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (double value) {
 				if (position() + sizeof(value) > limit())
 					throw RangeException(exception(sizeof(value)));
-				*(double*)here() = value; position() += sizeof(value);
+				*(double*)bytes() = value; position() += sizeof(value);
 				return *this;
 			}
 
 			BinaryOutputStream& BinaryOutputStream::operator << (const std::string& value) {
 				if (position() + value.size() > limit())
 					throw RangeException(exception(value.size()));
-				memcpy(here(), value.data(), value.size()); position() += value.size();
+				memcpy(bytes(), value.data(), value.size()); position() += value.size();
 				return *this;
 			}
 			BinaryOutputStream& BinaryOutputStream::operator << (const char* value) {
 				if (position() + strlen(value) > limit())
 					throw RangeException(exception(sizeof(int)));
-				memcpy(here(), value, strlen(value)); position() += strlen(value);
+				memcpy(bytes(), value, strlen(value)); position() += strlen(value);
 				return *this;
 			}
 			BinaryOutputStream&   BinaryOutputStream::operator <<(const NetworkBuffer& buffer) {
 				if (position() + buffer.remaining() > limit())
 					throw RangeException(exception(buffer.remaining()));
-				memcpy(here(), buffer.data(), buffer.remaining());
+				memcpy(bytes(), buffer.data(), buffer.remaining());
 				position() += buffer.remaining();
 				return *this;
 			}
@@ -140,14 +140,14 @@ namespace ALS {
 				checkByteIndex(position);
 				if (flipbytes)
 					value = ByteOrder::toNetwork(value);
-				*(byte*)(here() + position) = value;
+				*(byte*)(bytes() + position) = value;
 				return *this;
 			}
 			BinaryOutputStream&	BinaryOutputStream::put(int position, unsigned char value) {
 				checkByteIndex(position);
 				if (flipbytes)
 					value = ByteOrder::toNetwork(value);
-				*(byte*)(here() + position) = value;
+				*(byte*)(bytes() + position) = value;
 				return *this;
 			}
 			BinaryOutputStream&	BinaryOutputStream::put(int position, int2 value) {
@@ -178,16 +178,16 @@ namespace ALS {
 				*(nat4*)buffer(position) = value;
 				return *this;
 			}
-			BinaryOutputStream&	BinaryOutputStream::put(const char*bytes, int length) {
+			BinaryOutputStream&	BinaryOutputStream::put(const char*data, int length) {
 				if (position() + length > limit())
 					throw RangeException(exception(length));
-				memcpy(here(), bytes, length); position() += length;
+				memcpy(bytes(), data, length); position() += length;
 				return *this;
 			}
-			BinaryOutputStream&	BinaryOutputStream::write(const char*bytes, int length) {
+			BinaryOutputStream&	BinaryOutputStream::write(const char*data, int length) {
 				if (position() + length > limit())
 					throw RangeException(exception(length));
-				memcpy(here(), bytes, length); position() += length;
+				memcpy(bytes(), data, length); position() += length;
 				return *this;
 			}
 			const string BinaryOutputStream::exception(int size) const {

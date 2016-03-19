@@ -74,11 +74,12 @@ class TSAP_API Provider :
 	public ALS::TSAP::PROV::FSM<Provider> {
 	friend class ALS::NSAP::TSAPServiceHandler;
 private:
-	static const int	TS_SIZE		= 32;
+	static const int	TS_SIZE		= 32;					// CR user data max
+	static const int	TC_SIZE		= 32;					// CC user data max
+	static const int	TX_SIZE		= 16;					// expdited data max
 	static const int	SIZE_DFLT	= 128;
 	static const int	SIZE_MAXTP0	= 2 * 1024;
 	static const int	SIZE_8K		= 8 * 1024;
-	static const int	TC_SIZE		= 32;
 
 	static const int	TB_NULL		= 0x0000;
 	static const int	TB_CONN		= 0x0001;				// connected
@@ -161,7 +162,7 @@ public:
 	void TCONind();										// TS-provider 							T-CONNECT indication primitive
 	void TCONconf();									// TS-provider 							T-CONNECT confirm primitive
 	void TDTind(const SharedNetworkBuffer& tsdu);		// TS-provider 							T-DATA indication primitive
-	void TEXind();										// TS-provider 							T-EXPEDITED DATA indication primitive
+	void TEXind(const SharedNetworkBuffer& tsdu);		// TS-provider 							T-EXPEDITED DATA indication primitive
 	void TDISind();										// TS-provider 							T-DISCONNECT indication primitive
 	void TDISind(int reason, const char* message = nullptr);
 	void NDISreq(int reason, int cc = 0, const byte* data = nullptr);	// NS-user 								N-DISCONNECT Request primitive
@@ -177,7 +178,7 @@ public:
 	void AK(TPDU::AK& ak);								// TPDU Data Acknowledgement 			TPDU
 	void EA(TPDU::EA& ea);								// TPDU Expedited Data Acknowledgement 	TPDU
 	void DT(TPDU::DT& dt);								// TPDU Data 							TPDU
-	void ED(TPDU::ED& ed);								// TPDU Expedited Data 					TPDU
+	void ED(int cc, const byte* data);					// TPDU Expedited Data 					TPDU
 	void ER();											// TPDU Error	 						TPDU
 	void RJ();											// TPDU Reject 							TPDU
 	void Entry(const char*);

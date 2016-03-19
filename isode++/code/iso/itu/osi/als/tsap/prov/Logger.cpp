@@ -62,8 +62,8 @@ ReturnCode Logger::TExpeditedDataRequest(int cc, const byte* data) {
 	trace(prefix + "cc=%?d", REQUEST, ::TExpeditedDataRequest, cc);
 	return OK;
 }
-ReturnCode Logger::TExpeditedDataIndication(int cc, const byte* data) {
-	trace(prefix, INDICATION, ::TExpeditedDataIndication);
+ReturnCode Logger::TExpeditedDataIndication(const SharedNetworkBuffer& tsdu) {
+	trace(prefix + "cc=%?u", INDICATION, ::TExpeditedDataIndication, tsdu ? tsdu.total() : 0);
 	return OK;
 }
 ReturnCode Logger::TDisconnectRequest(int reason, const TSAPAddr& responding, int cc, const byte* data){

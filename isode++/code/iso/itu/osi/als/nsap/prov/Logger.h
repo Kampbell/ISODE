@@ -81,7 +81,7 @@ public:
 
 
 private:
-	void dump(const void* buffer, std::size_t length, Message::Priority prio = Message::PRIO_DEBUG);
+	void dump(const void* buffer, std::size_t length, Message::Priority prio = Message::PRIO_TRACE);
 };
 
 }
